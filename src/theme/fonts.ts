@@ -1,3 +1,4 @@
+import {TextStyle} from 'react-native';
 const size = {
   xs: 10,
   s: 12,
@@ -7,7 +8,9 @@ const size = {
   xlg: 24,
   xxlg: 30,
 };
-const weight = {
+
+// TextStyle to fix red underline on fontWeight
+const weight: {[key: string]: TextStyle['fontWeight']} = {
   full: '900',
 
   semi: '600',
