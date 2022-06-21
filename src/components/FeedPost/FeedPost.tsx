@@ -8,15 +8,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import colors from '../../theme/colors';
 import Comment from '../Comment';
+import {IPost} from '../../types/models';
 
 interface IFeedPost {
-  post: {
-    id: string;
-    description: string;
-    user: {
-      username: string;
-    };
-  };
+  post: IPost;
 }
 
 const FeedPost = ({post}: IFeedPost) => {
