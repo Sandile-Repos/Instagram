@@ -9,7 +9,19 @@ import styles from './styles';
 import colors from '../../theme/colors';
 import Comment from '../Comment';
 
-const FeedPost = ({post}) => {
+interface IFeedPost {
+  post: {
+    id: string;
+    description: string;
+    user: {
+      username: string;
+    };
+  };
+}
+
+const FeedPost = ({post}: IFeedPost) => {
+  // const FeedPost = (props: IFeedPost) => {
+  //   const {post} = props;
   return (
     <SafeAreaView style={styles.post}>
       {/* Header */}
