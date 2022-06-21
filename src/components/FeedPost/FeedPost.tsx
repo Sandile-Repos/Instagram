@@ -7,8 +7,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 import colors from '../../theme/colors';
+import Comment from '../Comment';
 
-const FeedPost = () => {
+const FeedPost = ({post}) => {
   return (
     <SafeAreaView style={styles.post}>
       {/* Header */}
@@ -17,10 +18,10 @@ const FeedPost = () => {
           resizeMode="contain"
           style={styles.userAvatar}
           source={{
-            uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg ',
+            uri: post.user.image,
           }}
         />
-        <Text style={styles.userName}>Sandile Dladla</Text>
+        <Text style={styles.userName}>{post.user.username}</Text>
         <Entypo
           name="dots-three-horizontal"
           size={16}
@@ -32,7 +33,7 @@ const FeedPost = () => {
       <Image
         style={styles.image}
         source={{
-          uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg',
+          uri: post.image,
         }}
       />
 
@@ -60,6 +61,7 @@ const FeedPost = () => {
           <Feather
             name="bookmark"
             size={24}
+            // eslint-disable-next-line react-native/no-inline-styles
             style={{marginLeft: 'auto'}}
             color={colors.black}
           />
@@ -68,29 +70,23 @@ const FeedPost = () => {
         {/* likes */}
         <Text style={styles.text}>
           Liked by <Text style={styles.bold}>Simpiwe Mojozi</Text> and{' '}
-          <Text style={styles.bold}>66 others</Text>
+          <Text style={styles.bold}>{post.nofLikes}</Text>
         </Text>
 
         {/* Post description */}
         <Text style={styles.text}>
-          <Text style={styles.bold}>Sandile Dladla </Text> Lorem ipsum dolor,
-          sit amet consectetur adipisicing elit. Magnam inventore consectetur
-          porro ducimus ad nostrum quod quo? Totam distinctio natus deserunt
-          libero laudantium unde eos, quasi, numquam, impedit voluptatum minima!{' '}
+          <Text style={styles.bold}>{post.user.username} </Text>
+          {post.description}
         </Text>
 
         {/* Comments */}
-        <Text>View all 16 comments</Text>
-        <View style={styles.comment}>
-          <Text style={styles.commentText}>
-            <Text style={styles.bold}>Sandile Dladla </Text> Lorem ipsum dolor,
-            sit amet consectetur adipisicing elit.{' '}
-          </Text>
-          <AntDesign name={'hearto'} style={styles.icon} color={colors.black} />
-        </View>
+        <Text>View all {post.nofComments} comments</Text>
+        {post.comments.map(comment => (
+          <Comment key={comment.id} comment={comment} />
+        ))}
 
         {/* Posted date */}
-        <Text>16 June, 2022</Text>
+        <Text>{post.createdAt}</Text>
       </View>
     </SafeAreaView>
   );

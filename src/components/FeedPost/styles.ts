@@ -38,19 +38,11 @@ export default StyleSheet.create({
   icon: {
     marginHorizontal: 5,
   },
-  bold: {
-    fontWeight: fonts.weight.bold,
-  },
   text: {
     color: colors.black,
     lineHeight: 18,
   },
-  comment: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  commentText: {
-    flex: 1,
-    color: colors.black,
+  bold: {
+    fontWeight: fonts.weight.bold,
   },
 });
