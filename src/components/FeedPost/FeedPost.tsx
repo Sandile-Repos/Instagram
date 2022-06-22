@@ -9,6 +9,8 @@ import styles from './styles';
 import colors from '../../theme/colors';
 import Comment from '../Comment';
 import DoublePressable from '../DoublePressable';
+import Carousel from '../Carousel';
+import {IComment} from '../../types/models';
 interface IFeedPost {
   post: IPost;
 }
@@ -27,14 +29,23 @@ const FeedPost = ({post}: IFeedPost) => {
       return !like;
     });
   };
-  // let lastTap = 0;
-  // const handleDoublePress = () => {
-  //   const now = Date.now();
-  //   if (now - lastTap < 300) {
-  //     toggleLiked();
-  //   }
-  //   lastTap = now;
-  // };
+
+  let content = null;
+  if (post.image) {
+    content = (
+      <DoublePressable onDoublePress={toggleLiked}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: post.image,
+          }}
+        />
+      </DoublePressable>
+    );
+  } else if (post.images) {
+    content = <Carousel images={post.images} onDoublePress={toggleLiked} />;
+  }
+
   return (
     <SafeAreaView style={styles.post}>
       {/* Header */}
@@ -55,14 +66,7 @@ const FeedPost = ({post}: IFeedPost) => {
       </View>
 
       {/* Content */}
-      <DoublePressable onDoublePress={toggleLiked}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: post.image,
-          }}
-        />
-      </DoublePressable>
+      {content}
 
       {/* Footer */}
       <View style={styles.footer}>
@@ -98,7 +102,7 @@ const FeedPost = ({post}: IFeedPost) => {
 
         {/* likes */}
         <Text style={styles.text}>
-          Liked by <Text style={styles.bold}>Simpiwe Mojozi</Text> and{' '}
+          Liked by <Text style={styles.bold}>{post.user.username}</Text> and{' '}
           <Text style={styles.bold}>{post.nofLikes}</Text>
         </Text>
 
@@ -113,7 +117,7 @@ const FeedPost = ({post}: IFeedPost) => {
 
         {/* Comments */}
         <Text>View all {post.nofComments} comments</Text>
-        {post.comments.map(comment => (
+        {post.comments.map((comment: IComment) => (
           <Comment key={comment.id} comment={comment} />
         ))}
 
