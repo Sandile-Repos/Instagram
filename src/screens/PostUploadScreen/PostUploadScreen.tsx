@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, SafeAreaView, Pressable} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Camera,
   CameraType,
@@ -29,6 +29,9 @@ const PostUploadScreen = () => {
   const [hasPermissions, setHasPermission] = useState<boolean | null>(null);
   const [cameraType, setCameraType] = useState(CameraType.back);
   const [flash, setFlash] = useState(FlashMode.off);
+  const [isCameraReady, setIsCameraReady] = useState(false);
+  const camera = useRef<Camera>(null);
+
   useEffect(() => {
     const getPermission = async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -43,19 +46,33 @@ const PostUploadScreen = () => {
   }, []);
 
   const flipCamera = () => {
-    setCameraType(currentCameraType => {
+    setCameraType(currentCameraType =>
       currentCameraType === CameraType.back
         ? CameraType.front
-        : CameraType.back;
-    });
+        : CameraType.back,
+    );
   };
 
-  const flipFlash = () => {
+  const flipFlash = async () => {
     const currentIndex = flashModes.indexOf(flash);
     const nextIndex =
       currentIndex === flashModes.length - 1 ? 0 : currentIndex + 1;
 
     setFlash(flashModes[nextIndex]);
+  };
+
+  const takePicture = async () => {
+    // const result = await camera.current?.takePictureAsync();
+    if (!isCameraReady || !camera.current) {
+      return;
+    }
+    const options: CameraPictureOptions = {
+      quality: 0.5, // 0 - very compresses & low size | 1 - compression for max quality
+      base64: false, // include base64 version of the image
+      skipProcessing: true, // on android, the 'processing' step messes the orientation on some devices
+    };
+    const result = await camera.current.takePictureAsync(options);
+    console.log(result);
   };
 
   if (hasPermissions === null) {
@@ -70,11 +87,14 @@ const PostUploadScreen = () => {
   return (
     <SafeAreaView style={styles.page}>
       <Camera
+        ref={camera}
         style={styles.camera}
         type={cameraType}
         ratio={'4:3'}
         flashMode={flash}
+        onCameraReady={() => setIsCameraReady(true)}
       />
+
       <View style={[styles.buttonsContainer, {top: 25}]}>
         <MaterialIcons name="close" size={30} color={colors.white} />
         <Pressable onPress={flipFlash}>
@@ -86,9 +106,14 @@ const PostUploadScreen = () => {
         </Pressable>
         <MaterialIcons name="settings" size={30} color={colors.white} />
       </View>
+
       <View style={[styles.buttonsContainer, {bottom: 25}]}>
         <MaterialIcons name="photo-library" size={30} color={colors.white} />
-        <View style={styles.circle} />
+        {isCameraReady && (
+          <Pressable onPress={takePicture}>
+            <View style={styles.circle} />
+          </Pressable>
+        )}
         <Pressable onPress={flipCamera}>
           <MaterialIcons
             name="flip-camera-ios"
