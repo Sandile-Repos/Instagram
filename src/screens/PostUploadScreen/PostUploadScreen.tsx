@@ -30,6 +30,7 @@ const PostUploadScreen = () => {
   const [cameraType, setCameraType] = useState(CameraType.back);
   const [flash, setFlash] = useState(FlashMode.off);
   const [isCameraReady, setIsCameraReady] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
   const camera = useRef<Camera>(null);
 
   useEffect(() => {
@@ -75,6 +76,36 @@ const PostUploadScreen = () => {
     console.log(result);
   };
 
+  const startRecording = async () => {
+    // console.warn('star recording');
+    if (!isCameraReady || !camera.current || isRecording) {
+      return;
+    }
+    const options: CameraRecordingOptions = {
+      quality: VideoQuality['480p'], //2160p, 1080p, 720p, 480p, 640*480
+      maxDuration: 60, //Maximum video duration in seconds
+      maxFileSize: 10 * 1024 * 1024, // Maximum video file size in bytes
+      mute: false,
+    };
+    setIsRecording(true);
+    try {
+      const result = await camera.current.recordAsync(options);
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+    setIsRecording(false);
+    //  const result = await camera.current.recordAsync(options);
+    // console.log(result);
+  };
+  const stopRecording = () => {
+    // console.warn('stop recording');
+    if (isRecording) {
+      camera.current?.stopRecording();
+      setIsRecording(false);
+    }
+  };
+
   if (hasPermissions === null) {
     return <Text>Loading...</Text>;
   }
@@ -110,8 +141,16 @@ const PostUploadScreen = () => {
       <View style={[styles.buttonsContainer, {bottom: 25}]}>
         <MaterialIcons name="photo-library" size={30} color={colors.white} />
         {isCameraReady && (
-          <Pressable onPress={takePicture}>
-            <View style={styles.circle} />
+          <Pressable
+            onPress={takePicture}
+            onLongPress={startRecording}
+            onPressOut={stopRecording}>
+            <View
+              style={[
+                styles.circle,
+                {backgroundColor: isRecording ? colors.accent : colors.white},
+              ]}
+            />
           </Pressable>
         )}
         <Pressable onPress={flipCamera}>
