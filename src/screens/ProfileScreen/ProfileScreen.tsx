@@ -18,6 +18,7 @@ const ProfileScreen = () => {
     UserProfileNavigationProp | MyProfileNavigationProp
   >();
   const userID = route.params?.userId;
+  console.warn('userId', userID);
 
   // navigation.setOptions({title: userID});
 
