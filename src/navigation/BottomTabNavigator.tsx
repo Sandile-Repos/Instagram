@@ -7,6 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import PostUploadScreen from '../screens/PostUploadScreen';
+import HomeStackNavigator from './HomeStackNavigator';
 import colors from '../theme/colors';
 
 const Tab = createBottomTabNavigator();
@@ -20,9 +21,10 @@ const BottomTabNavigator = () => {
         // tabBarInactiveTintColor: colors.accent,
       }}>
       <Tab.Screen
-        name="Feed"
-        component={HomeScreen}
+        name="HomeStack"
+        component={HomeStackNavigator}
         options={{
+          headerShown: false,
           tabBarIcon: ({color, size}) => (
             <MaterialIcons name="home-filled" size={size} color={color} />
           ),
