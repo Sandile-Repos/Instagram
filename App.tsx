@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import Navigation from './src/navigation';
 const App = () => {
   return (
-    <View style={styles.app}>
+    <SafeAreaView style={styles.app}>
       <Navigation />
-    </View>
+    </SafeAreaView>
   );
 };
 

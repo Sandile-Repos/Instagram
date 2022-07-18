@@ -54,3 +54,8 @@ export type MyProfileRouteProp = RouteProp<
   BottomTabNavigatorParamList,
   'MyProfile'
 >;
+
+export type SearchTabNavigatorParamList = {
+  Users: undefined;
+  Posts: undefined;
+};
