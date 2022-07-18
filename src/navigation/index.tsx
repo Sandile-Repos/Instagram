@@ -2,9 +2,8 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import HomeScreen from '../screens/HomeScreen/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
 import BottomTabNavigator from './BottomTabNavigator';
+import CommentsScreen from '../screens/CommentsScreen/CommentsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,11 +18,7 @@ const Navigation = () => {
           component={BottomTabNavigator}
           options={{headerShown: false}}
         />
-        {/* <Stack.Screen
-          name="UserProfile"
-          component={ProfileScreen}
-          options={{title: 'Profile'}}
-        /> */}
+        <Stack.Screen name="Comments" component={CommentsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

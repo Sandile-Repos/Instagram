@@ -6,12 +6,12 @@ import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import logo from '../assets/images/logo.png';
 
-const Tab = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const HomeStackNavigator = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen
+    <Stack.Navigator>
+      <Stack.Screen
         name="Feed"
         component={HomeScreen}
         options={{
@@ -19,14 +19,14 @@ const HomeStackNavigator = () => {
           headerTitleAlign: 'center',
         }}
       />
-      <Tab.Screen
+      <Stack.Screen
         name="UserProfile"
         component={ProfileScreen}
         options={{
           title: 'Profile',
         }}
       />
-    </Tab.Navigator>
+    </Stack.Navigator>
   );
 };
 const HeaderTitle = () => {

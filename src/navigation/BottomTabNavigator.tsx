@@ -9,6 +9,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import PostUploadScreen from '../screens/PostUploadScreen';
 import HomeStackNavigator from './HomeStackNavigator';
 import colors from '../theme/colors';
+import ProfileStackNavigator from './ProfileStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -68,8 +69,9 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="MyProfile"
-        component={ProfileScreen}
+        component={ProfileStackNavigator}
         options={{
+          headerShown: false,
           tabBarIcon: ({color, size}) => (
             <FontAwesome name="user-circle-o" size={size} color={color} />
           ),
