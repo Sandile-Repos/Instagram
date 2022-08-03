@@ -13,8 +13,9 @@ import Carousel from '../Carousel';
 import {IComment, IPost} from '../../types/models';
 import VideoPlayer from '../VideoPlayer';
 import {useNavigation} from '@react-navigation/native';
+import {FeedNavigationProp} from '../../navigation/types';
 
-import {FeedNavigationProp} from '../../types/models';
+// import {FeedNavigationProp} from '../../types/models';
 interface IFeedPost {
   post: IPost;
   isVisible: boolean;
@@ -29,7 +30,7 @@ const FeedPost = (props: IFeedPost) => {
   const navigation = useNavigation<FeedNavigationProp>();
 
   const navigateToUser = () => {
-    navigation.navigate('UserProfile', {userID: post.user.id});
+    navigation.navigate('UserProfile', {userId: post.user.id});
   };
 
   const navigateToComments = () => {

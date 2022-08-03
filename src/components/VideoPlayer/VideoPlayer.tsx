@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, StyleSheet, Pressable, Platform} from 'react-native';
 import Video from 'react-native-video';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../../theme/colors';
@@ -20,14 +20,18 @@ const VideoPlayer = ({uri, paused}: IVideoPlayer) => {
         repeat
         muted={muted}
         paused={paused}
+        controls={true}
       />
-      <Pressable onPress={() => setMuted(v => !v)} style={styles.muteButton}>
-        <Ionicons
-          name={muted ? 'volume-mute' : 'volume-medium'}
-          size={14}
-          color="white"
-        />
-      </Pressable>
+
+      {Platform.OS === 'android' && (
+        <Pressable onPress={() => setMuted(v => !v)} style={styles.muteButton}>
+          <Ionicons
+            name={muted ? 'volume-mute' : 'volume-medium'}
+            size={14}
+            color="white"
+          />
+        </Pressable>
+      )}
     </View>
   );
 };
