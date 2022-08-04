@@ -3,7 +3,9 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import Navigation from './src/navigation';
 import {Amplify} from 'aws-amplify';
 import config from './src/aws-exports';
-import {withAuthenticator} from 'aws-amplify-react-native';
+import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native';
+
+import colors from './src/theme/colors';
 Amplify.configure(config);
 const App = () => {
   return (
@@ -52,7 +54,24 @@ const signUpConfig = {
   ],
 };
 
-export default withAuthenticator(App, {signUpConfig}); // includeGreetings default signout included in every screen
+const customTheme = {
+  ...AmplifyTheme,
+  button: {
+    ...AmplifyTheme.button, // keeps all the default styles
+    backgroundColor: colors.primary,
+    borderRadius: 100,
+  },
+  buttonDisabled: {
+    ...AmplifyTheme.buttonDisabled, // keeps all the default styles
+    backgroundColor: '#5c78ff',
+    borderRadius: 100,
+  },
+  sectionFooterLink: {
+    ...AmplifyTheme.sectionFooterLink, // keeps all the default styles
+    color: colors.primary,
+  },
+};
+export default withAuthenticator(App, {signUpConfig, theme: customTheme}); // includeGreetings default signout included in every screen
 
 const styles = StyleSheet.create({
   app: {
