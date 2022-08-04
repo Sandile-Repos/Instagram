@@ -1,5 +1,6 @@
 import {Text, View, Image, ScrollView} from 'react-native';
 import React from 'react';
+import {Auth} from 'aws-amplify';
 
 import user from '../../assets/data/user.json';
 import styles from './styles';
@@ -34,7 +35,7 @@ const ProfileHeader = () => {
           text="Edit Profile"
           onPress={() => navigation.navigate('Edit Profile')}
         />
-        <Button text="Go Back" onPress={() => navigation.goBack()} />
+        <Button text="Sign Out" onPress={() => Auth.signOut()} />
       </View>
       {/* Grid view posts */}
     </ScrollView>

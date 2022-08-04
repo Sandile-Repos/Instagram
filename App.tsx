@@ -52,7 +52,7 @@ const signUpConfig = {
   ],
 };
 
-export default withAuthenticator(App, {signUpConfig, includeGreetings: true}); // includeGreetings default signout included in every screen
+export default withAuthenticator(App, {signUpConfig}); // includeGreetings default signout included in every screen
 
 const styles = StyleSheet.create({
   app: {
