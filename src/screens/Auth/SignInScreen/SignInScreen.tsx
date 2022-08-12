@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/react-in-jsx-scope */
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import {
   View,
   Image,
@@ -18,6 +18,7 @@ import FormInput from '../components/FormInput';
 import CustomButton from '../components/CustomButton';
 import SocialSignInButtons from '../components/SocialSignInButtons';
 import {SignInNavigationProp} from '../../../types/navigation';
+import {AuthContext} from '../../../contexts/AuthContext';
 
 type SignInData = {
   username: string;
@@ -28,6 +29,7 @@ const SignInScreen = () => {
   const {height} = useWindowDimensions();
   const navigation = useNavigation<SignInNavigationProp>();
   const [loading, setLoading] = useState(false);
+  const {setUser} = useContext(AuthContext);
 
   const {control, handleSubmit, reset} = useForm<SignInData>();
   const onSignInPressed = async ({username, password}: SignInData) => {
@@ -36,10 +38,8 @@ const SignInScreen = () => {
     }
     setLoading(true);
     try {
-      const response = await Auth.signIn(username, password);
-
-      // validate user
-      // navigation.navigate('Home');
+      const cognitoUser = await Auth.signIn(username, password);
+      setUser(cognitoUser);
     } catch (e) {
       if ((e as Error).name === 'UserNotConfirmedException') {
         navigation.navigate('Confirm email', {username});
