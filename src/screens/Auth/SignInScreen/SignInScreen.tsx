@@ -29,7 +29,7 @@ const SignInScreen = () => {
   const navigation = useNavigation<SignInNavigationProp>();
   const [loading, setLoading] = useState(false);
 
-  const {control, handleSubmit} = useForm<SignInData>();
+  const {control, handleSubmit, reset} = useForm<SignInData>();
   const onSignInPressed = async ({username, password}: SignInData) => {
     if (loading) {
       return;
@@ -47,6 +47,7 @@ const SignInScreen = () => {
       Alert.alert('Oopps', (e as Error).message);
     } finally {
       setLoading(false);
+      reset();
     }
   };
 
