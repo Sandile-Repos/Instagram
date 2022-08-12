@@ -13,7 +13,7 @@ import Carousel from '../Carousel';
 import {IComment, IPost} from '../../types/models';
 import VideoPlayer from '../VideoPlayer';
 import {useNavigation} from '@react-navigation/native';
-import {FeedNavigationProp} from '../../navigation/types';
+import {FeedNavigationProp} from '../../types/navigation';
 
 // import {FeedNavigationProp} from '../../types/models';
 interface IFeedPost {
