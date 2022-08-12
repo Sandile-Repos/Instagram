@@ -41,6 +41,9 @@ const SignInScreen = () => {
       // validate user
       // navigation.navigate('Home');
     } catch (e) {
+      if ((e as Error).name === 'UserNotConfirmedException') {
+        navigation.navigate('Confirm email', {username});
+      }
       Alert.alert('Oopps', (e as Error).message);
     } finally {
       setLoading(false);
