@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/react-in-jsx-scope */
-import {useState, useContext} from 'react';
+import {useState} from 'react';
 import {
   View,
   Image,
@@ -18,7 +18,7 @@ import FormInput from '../components/FormInput';
 import CustomButton from '../components/CustomButton';
 import SocialSignInButtons from '../components/SocialSignInButtons';
 import {SignInNavigationProp} from '../../../types/navigation';
-import {AuthContext} from '../../../contexts/AuthContext';
+import {useAuthContext} from '../../../contexts/AuthContext';
 
 type SignInData = {
   username: string;
@@ -29,7 +29,7 @@ const SignInScreen = () => {
   const {height} = useWindowDimensions();
   const navigation = useNavigation<SignInNavigationProp>();
   const [loading, setLoading] = useState(false);
-  const {setUser} = useContext(AuthContext);
+  const {setUser} = useAuthContext();
 
   const {control, handleSubmit, reset} = useForm<SignInData>();
   const onSignInPressed = async ({username, password}: SignInData) => {

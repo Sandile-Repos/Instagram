@@ -6,6 +6,7 @@ import BottomTabNavigator from './BottomTabNavigator';
 import CommentsScreen from '../screens/CommentsScreen/CommentsScreen';
 import {RootNavigatorParamList} from '../types/navigation';
 import AuthStackNavigator from './AuthStackNavigator';
+import {useAuthContext} from '../contexts/AuthContext';
 
 const Stack = createNativeStackNavigator<RootNavigatorParamList>();
 const linking: LinkingOptions<RootNavigatorParamList> = {
@@ -30,22 +31,26 @@ const linking: LinkingOptions<RootNavigatorParamList> = {
 };
 
 const Navigation = () => {
+  const {user} = useAuthContext();
   return (
     <NavigationContainer linking={linking}>
-      <Stack.Navigator
-        initialRouteName="Auth"
-        screenOptions={{headerShown: true}}>
-        <Stack.Screen
-          name="Auth"
-          component={AuthStackNavigator}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Home"
-          component={BottomTabNavigator}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen name="Comments" component={CommentsScreen} />
+      <Stack.Navigator screenOptions={{headerShown: true}}>
+        {!user ? (
+          <Stack.Screen
+            name="Auth"
+            component={AuthStackNavigator}
+            options={{headerShown: false}}
+          />
+        ) : (
+          <>
+            <Stack.Screen
+              name="Home"
+              component={BottomTabNavigator}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen name="Comments" component={CommentsScreen} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

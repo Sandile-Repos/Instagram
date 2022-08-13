@@ -1,5 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {CognitoUser} from 'amazon-cognito-identity-js';
+import {useContext} from 'react';
 import {
   createContext,
   ReactNode,
@@ -15,14 +16,12 @@ type AuthContextType = {
   setUser: React.Dispatch<React.SetStateAction<UserType>>;
 };
 
-// const AuthContext = createContext({user: undefined, setUser: () => {}});
-export const AuthContext = createContext<AuthContextType>({
+const AuthContext = createContext<AuthContextType>({
   user: undefined,
   setUser: () => {},
 });
 
 const AuthContextProvider = ({children}: {children: ReactNode}) => {
-  //   const [user, setUser] = useState<CognitoUser | null | undefined>(undefined);
   const [user, setUser] = useState<UserType>(undefined);
   console.log('user', user);
 
@@ -34,3 +33,4 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
 };
 
 export default AuthContextProvider;
+export const useAuthContext = () => useContext(AuthContext);
