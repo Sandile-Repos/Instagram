@@ -1,4 +1,4 @@
-package com.instagram;
+package com.memories.album;
 import android.os.Bundle;
 import expo.modules.ReactActivityDelegateWrapper;
 
@@ -14,7 +14,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "Instagram";
+    return "MemoriesAlbum";
   }
 
   /**
