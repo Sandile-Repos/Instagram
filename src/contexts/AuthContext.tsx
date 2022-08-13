@@ -1,6 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {CognitoUser} from 'amazon-cognito-identity-js';
-import {useContext} from 'react';
+import {Auth} from 'aws-amplify';
+import {useContext, useEffect} from 'react';
 import {
   createContext,
   ReactNode,
@@ -25,6 +26,19 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
   const [user, setUser] = useState<UserType>(undefined);
   console.log('user', user);
 
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const authUser = await Auth.currentAuthenticatedUser({
+          bypassCache: true,
+        });
+        setUser(authUser);
+      } catch (error) {
+        setUser(null);
+      }
+    };
+    checkUser();
+  }, []);
   return (
     <AuthContext.Provider value={{user, setUser}}>
       {children}

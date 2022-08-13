@@ -1,6 +1,7 @@
 import React from 'react';
 import {LinkingOptions, NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
 
 import BottomTabNavigator from './BottomTabNavigator';
 import CommentsScreen from '../screens/CommentsScreen/CommentsScreen';
@@ -32,6 +33,13 @@ const linking: LinkingOptions<RootNavigatorParamList> = {
 
 const Navigation = () => {
   const {user} = useAuthContext();
+  if (user === undefined) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color={'red'} />
+      </View>
+    );
+  }
   return (
     <NavigationContainer linking={linking}>
       <Stack.Navigator screenOptions={{headerShown: true}}>
@@ -57,3 +65,11 @@ const Navigation = () => {
 };
 
 export default Navigation;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
