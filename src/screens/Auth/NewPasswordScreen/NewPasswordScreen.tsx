@@ -2,14 +2,13 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
 import FormInput from '../components/FormInput';
 import CustomButton from '../components/CustomButton';
-import SocialSignInButtons from '../components/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
 import {NewPasswordNavigationProp} from '../../../types/navigation';
 import {Auth} from 'aws-amplify';
 
 type NewPasswordType = {
-  username: string;
+  email: string;
   code: string;
   password: string;
 };
@@ -20,17 +19,13 @@ const NewPasswordScreen = () => {
   const navigation = useNavigation<NewPasswordNavigationProp>();
   const [loading, setLoading] = useState(false);
 
-  const onSubmitPressed = async ({
-    username,
-    code,
-    password,
-  }: NewPasswordType) => {
+  const onSubmitPressed = async ({email, code, password}: NewPasswordType) => {
     if (loading) {
       return;
     }
     setLoading(true);
     try {
-      await Auth.forgotPasswordSubmit(username, code, password);
+      await Auth.forgotPasswordSubmit(email, code, password);
       navigation.navigate('Sign in');
     } catch (e) {
       Alert.alert('Oopps', (e as Error).message);
@@ -49,10 +44,10 @@ const NewPasswordScreen = () => {
         <Text style={styles.title}>Reset your password</Text>
 
         <FormInput
-          placeholder="Username"
-          name="username"
+          placeholder="Email"
+          name="email"
           control={control}
-          rules={{required: 'Username is required'}}
+          rules={{required: 'Email is required'}}
         />
 
         <FormInput
