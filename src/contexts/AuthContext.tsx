@@ -9,6 +9,8 @@ import {
   //   Dispatch,
   //   SetStateAction,
 } from 'react';
+import {Hub} from 'aws-amplify';
+import {HubCallback} from '@aws-amplify/core';
 
 type UserType = CognitoUser | null | undefined;
 
@@ -39,6 +41,19 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
     };
     checkUser();
   }, []);
+
+  //Listen to signout event with Hub when fired on amplify from anywhere in your app and remove
+  //authentication when component unmount(when you return a function on use effect), set it to null. This will open sign in screen
+  useEffect(() => {
+    const listener: HubCallback = data => {
+      const {event} = data.payload;
+      if (event === 'signOut') {
+        setUser(null);
+      }
+    };
+    Hub.listen('auth', listener);
+    return () => Hub.remove('auth', listener);
+  });
   return (
     <AuthContext.Provider value={{user, setUser}}>
       {children}
