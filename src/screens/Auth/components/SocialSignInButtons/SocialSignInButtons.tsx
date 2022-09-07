@@ -15,8 +15,14 @@ const SocialSignInButtons = () => {
     }
   };
 
-  const onSignInGoogle = () => {
-    console.warn('onSignInGoogle');
+  const onSignInGoogle = async () => {
+    try {
+      await Auth.federatedSignIn({
+        provider: CognitoHostedUIIdentityProvider.Google,
+      }); //federatedSignIn=>federatedSignInOptions=>
+    } catch (e) {
+      Alert.alert('Ops', (e as Error).message);
+    }
   };
 
   const onSignInApple = () => {
