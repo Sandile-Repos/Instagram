@@ -18,7 +18,7 @@ import FormInput from '../components/FormInput';
 import CustomButton from '../components/CustomButton';
 import SocialSignInButtons from '../components/SocialSignInButtons';
 import {SignInNavigationProp} from '../../../types/navigation';
-import {useAuthContext} from '../../../contexts/AuthContext';
+// import {useAuthContext} from '../../../contexts/AuthContext';
 
 type SignInData = {
   email: string;
@@ -29,7 +29,7 @@ const SignInScreen = () => {
   const {height} = useWindowDimensions();
   const navigation = useNavigation<SignInNavigationProp>();
   const [loading, setLoading] = useState(false);
-  const {setUser} = useAuthContext();
+  // const {setUser} = useAuthContext();
 
   const {control, handleSubmit, reset} = useForm<SignInData>();
   const onSignInPressed = async ({email, password}: SignInData) => {
@@ -38,8 +38,9 @@ const SignInScreen = () => {
     }
     setLoading(true);
     try {
-      const cognitoUser = await Auth.signIn(email, password);
-      setUser(cognitoUser);
+      // const cognitoUser = await Auth.signIn(email, password);
+      // setUser(cognitoUser);
+      await Auth.signIn(email, password);
     } catch (e) {
       if ((e as Error).name === 'UserNotConfirmedException') {
         navigation.navigate('Confirm email', {email});
