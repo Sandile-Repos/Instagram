@@ -73,7 +73,7 @@ const PostUploadScreen = () => {
       skipProcessing: true, // on android, the 'processing' step messes the orientation on some devices
     };
     const result = await camera.current.takePictureAsync(options);
-    console.log(result);
+    // console.log(result);
   };
 
   const startRecording = async () => {
@@ -90,7 +90,7 @@ const PostUploadScreen = () => {
     setIsRecording(true);
     try {
       const result = await camera.current.recordAsync(options);
-      console.log(result);
+      // console.log(result);
     } catch (e) {
       console.log(e);
     }

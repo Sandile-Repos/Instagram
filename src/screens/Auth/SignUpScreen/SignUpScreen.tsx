@@ -35,7 +35,7 @@ const SignUpScreen = () => {
     setLoading(true);
     try {
       await Auth.signUp({
-        username: email,
+        username: email, // note the key is still username
         password,
         attributes: {name, email},
       });
@@ -109,6 +109,7 @@ const SignUpScreen = () => {
           placeholder="Repeat Password"
           secureTextEntry
           rules={{
+            required: 'Please repeat password',
             validate: (value: string) =>
               value === pwd || 'Password do not match',
           }}

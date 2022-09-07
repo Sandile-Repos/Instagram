@@ -46,6 +46,8 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
   //authentication when component unmount(when you return a function on use effect), set it to null. This will open sign in screen
   useEffect(() => {
     const listener: HubCallback = data => {
+      // console.log(data);
+
       const {event} = data.payload;
       if (event === 'signOut') {
         setUser(null);

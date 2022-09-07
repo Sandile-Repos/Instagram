@@ -5,7 +5,18 @@ import {Amplify} from 'aws-amplify';
 import config from './src/aws-exports';
 import AuthContextProvider from './src/contexts/AuthContext';
 
+// Update specific fields on config if needed
+// const updatedConfig = {
+//   ...config,
+//   oauth: {
+//     ...config.oauth,
+//     redirectSignIn: 'instaphoto://',
+//     redirectSignOut: 'instaphoto://',
+//   },
+// };
+// Amplify.configure(updatedConfig);
 Amplify.configure(config);
+
 const App = () => {
   return (
     <SafeAreaView style={styles.app}>
