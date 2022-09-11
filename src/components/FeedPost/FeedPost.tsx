@@ -10,14 +10,15 @@ import colors from '../../theme/colors';
 import Comment from '../Comment';
 import DoublePressable from '../DoublePressable';
 import Carousel from '../Carousel';
-import {IComment, IPost} from '../../types/models';
 import VideoPlayer from '../VideoPlayer';
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
+import {Post} from '../../API';
+import {DEFAULT_USER_IMAGE} from '../../config';
 
 // import {FeedNavigationProp} from '../../types/models';
 interface IFeedPost {
-  post: IPost;
+  post: Post;
   isVisible: boolean;
 }
 
@@ -30,7 +31,9 @@ const FeedPost = (props: IFeedPost) => {
   const navigation = useNavigation<FeedNavigationProp>();
 
   const navigateToUser = () => {
-    navigation.navigate('UserProfile', {userId: post.user.id});
+    if (post.User) {
+      navigation.navigate('UserProfile', {userId: post.User.id});
+    }
   };
 
   const navigateToComments = () => {
@@ -78,11 +81,11 @@ const FeedPost = (props: IFeedPost) => {
           resizeMode="contain"
           style={styles.userAvatar}
           source={{
-            uri: post.user.image,
+            uri: post.User?.image || DEFAULT_USER_IMAGE,
           }}
         />
         <Text onPress={navigateToUser} style={styles.userName}>
-          {post.user.username}
+          {post.User?.username}
         </Text>
         <Entypo
           name="dots-three-horizontal"
@@ -128,13 +131,13 @@ const FeedPost = (props: IFeedPost) => {
 
         {/* likes */}
         <Text style={styles.text}>
-          Liked by <Text style={styles.bold}>{post.user.username}</Text> and{' '}
-          <Text style={styles.bold}>{post.nofLikes}</Text>
+          Liked by <Text style={styles.bold}>{post.User?.username}</Text> and{' '}
+          <Text style={styles.bold}>{post}</Text>
         </Text>
 
         {/* Post description */}
         <Text style={styles.text} numberOfLines={isDescriptionExpanded ? 0 : 2}>
-          <Text style={styles.bold}>{post.user.username} </Text>
+          <Text style={styles.bold}>{post.User?.username} </Text>
           {post.description}
         </Text>
         <Text onPress={toggleDescriptionExpanded}>
@@ -143,11 +146,11 @@ const FeedPost = (props: IFeedPost) => {
 
         {/* Comments */}
         <Text onPress={navigateToComments}>
-          View all {post.nofComments} comments
+          View all {post.noOfComments} comments
         </Text>
-        {post.comments.map((comment: IComment) => (
-          <Comment key={comment.id} comment={comment} />
-        ))}
+        {(post.Comments?.items || []).map(
+          comment => comment && <Comment key={comment.id} comment={comment} />,
+        )}
 
         {/* Posted date */}
         <Text>{post.createdAt}</Text>
