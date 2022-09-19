@@ -73,6 +73,7 @@ const FeedPost = (props: IFeedPost) => {
   return (
     <SafeAreaView style={styles.post}>
       {/* Header */}
+
       <View style={styles.header}>
         <Image
           resizeMode="contain"
@@ -90,7 +91,14 @@ const FeedPost = (props: IFeedPost) => {
           style={styles.threeDots}
         />
       </View>
-
+      {/* Post description */}
+      <Text style={styles.text} numberOfLines={isDescriptionExpanded ? 0 : 2}>
+        <Text style={styles.bold}>{post.user.username} </Text>
+        {post.description}
+      </Text>
+      <Text onPress={toggleDescriptionExpanded}>
+        {isDescriptionExpanded ? 'less' : 'more'}
+      </Text>
       {/* Content */}
       {content}
 
@@ -132,26 +140,31 @@ const FeedPost = (props: IFeedPost) => {
           <Text style={styles.bold}>{post.nofLikes}</Text>
         </Text>
 
-        {/* Post description */}
-        <Text style={styles.text} numberOfLines={isDescriptionExpanded ? 0 : 2}>
-          <Text style={styles.bold}>{post.user.username} </Text>
-          {post.description}
-        </Text>
-        <Text onPress={toggleDescriptionExpanded}>
-          {isDescriptionExpanded ? 'less' : 'more'}
-        </Text>
-
         {/* Comments */}
-        <Text onPress={navigateToComments}>
-          View all {post.nofComments} comments
-        </Text>
+
         {post.comments.map((comment: IComment) => (
           <Comment key={comment.id} comment={comment} />
         ))}
+        <Text style={styles.bold} onPress={navigateToComments}>
+          View all {post.nofComments} comments
+        </Text>
 
         {/* Posted date */}
-        <Text>{post.createdAt}</Text>
+        <Text
+          style={{
+            marginBottom: 10,
+            marginTop: 1,
+          }}>
+          {post.createdAt}
+        </Text>
       </View>
+      <View
+        style={{
+          width: '100%',
+          height: 0.5,
+          backgroundColor: 'grey',
+        }}
+      />
     </SafeAreaView>
   );
 };
