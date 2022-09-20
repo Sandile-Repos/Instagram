@@ -75,9 +75,12 @@ exports.handler = async (event, context) => {
   };
 
   //check if the user already exists - lambda function can be called more than once, so ensure that the user is not already there
-  if (!userExists(newUser.id)) {
+  if (!(await userExists(newUser.id))) {
     //If not, save the user to database
-    saveUser(newUser);
+    await saveUser(newUser);
+    console.log(`User ${newUser.id} has been saved to the database`);
+  } else {
+    console.log(`User ${newUser.id} already exists`);
   }
 
   return event;
