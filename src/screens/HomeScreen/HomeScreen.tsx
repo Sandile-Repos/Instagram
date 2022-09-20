@@ -50,21 +50,14 @@ export const listPosts = /* GraphQL */ `
 `;
 
 const HomeScreen = () => {
-  const [activePostId, setActivePostId] = useState<string | null>(null);
+  const [activePostId, setActivePostId] = useState<null | string>(null);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await API.graphql(graphqlOperation(listPosts));
-        // const response = (await API.graphql(graphqlOperation(listPosts))) as {
-        //   data: listPosts;
-        //   errors: any[];
-        // };
-        if (response) {
-          const item = response.data.listPosts.items;
-          setPosts(item);
-        }
+        setPosts(response.data.listPosts.items);
       } catch (error) {
         console.log(error);
       }
