@@ -8,7 +8,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 // const TableName = 'User-ra57t46changedid-staging'; //Tablename-AppsyncID-env
 
 const env = process.env.ENV;
-const AppsyncID = '';
+const AppsyncID = process.env.API_INSTAGRAM_GRAPHQLAPIIDOUTPUT;
 
 const TableName = `User-${AppsyncID}-${env}`; //Tablename-AppsyncID-env
 
@@ -25,7 +25,7 @@ const userExists = async id => {
   // });
   try {
     const response = await docClient.get(params).promise(); // await without callback function
-    return !!response; // return if value is truthy value
+    return !!response?.Item; // return if value is truthy value
   } catch (error) {
     return false;
   }
