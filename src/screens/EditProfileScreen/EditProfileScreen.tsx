@@ -1,12 +1,28 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View, Image, TextInput} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
 import {useForm, Controller, Control} from 'react-hook-form';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
-
-import user from '../../assets/data/user.json';
 import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
-import {User} from '../../API';
+import {
+  GetUserQuery,
+  GetUserQueryVariables,
+  UpdateUserMutation,
+  UpdateUserMutationVariables,
+  User,
+} from '../../API';
+import {getUser, updateUser} from './queries';
+import ApiErrorMessage from '../../components/ApiErrorMessage';
+import {useMutation, useQuery} from '@apollo/client';
+import {useAuthContext} from '../../contexts/AuthContext';
+import {useNavigation} from '@react-navigation/native';
 
 const URL_REGEX =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
@@ -62,16 +78,37 @@ const CustomInput = ({
 
 const EditProfileScreen = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<null | Asset>(null);
-  const {control, handleSubmit} = useForm<IEditableUser>({
-    defaultValues: {
-      name: user.name,
-      username: user.username,
-      website: user.website,
-      bio: user.bio,
-    },
-  });
-  const onSubmit = (data: IEditableUser) => {
+  //remove default setting of data in use form and set with setValue
+  const {control, handleSubmit, setValue} = useForm<IEditableUser>();
+  const {userId} = useAuthContext();
+  const navigation = useNavigation();
+
+  const {data, loading, error} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {variables: {id: userId}},
+  );
+
+  const user = data?.getUser;
+
+  //function needs to tricker mutation as it is not run onmount like useQuery but need to called on when ready to submit data
+  const [doUpdateUser, {loading: updateLoading, error: updateError}] =
+    useMutation<UpdateUserMutation, UpdateUserMutationVariables>(updateUser);
+
+  useEffect(() => {
+    if (user) {
+      setValue('name', user.name);
+      setValue('username', user.username);
+      setValue('bio', user.bio);
+      setValue('website', user.website);
+    }
+  }, [user, setValue]);
+
+  const onSubmit = (formData: IEditableUser) => {
     console.log('submit', data);
+    doUpdateUser({
+      variables: {input: {id: userId, ...formData, _version: user?._version}},
+    });
+    navigation.goBack();
   };
   // console.log(errors);
   const onChangePhoto = () => {
@@ -86,6 +123,17 @@ const EditProfileScreen = () => {
     );
   };
 
+  if (loading) {
+    return <ActivityIndicator size={'large'} />;
+  }
+  if (error || updateError) {
+    return (
+      <ApiErrorMessage
+        title="Error fetching or updating the user"
+        message={error?.message || updateError?.message}
+      />
+    );
+  }
   return (
     <View style={styles.page}>
       <Image
@@ -139,7 +187,7 @@ const EditProfileScreen = () => {
       />
 
       <Text onPress={handleSubmit(onSubmit)} style={styles.textButton}>
-        Submit
+        {updateLoading ? 'Submitting...' : 'submit'}
       </Text>
     </View>
   );
@@ -169,10 +217,7 @@ const styles = StyleSheet.create({
     width: 75,
   },
   input: {
-    // flex: 1,
-    // borderColor: colors.border,
     borderBottomWidth: 1,
-    // paddingVertical: 10,
-    // paddingHorizontal: 5,
+    minHeight: 50,
   },
 });
