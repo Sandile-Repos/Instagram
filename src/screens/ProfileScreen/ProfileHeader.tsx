@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {ProfileNavigationProp} from '../../types/navigation';
 import {User} from '../../API';
 import {DEFAULT_USER_IMAGE} from '../../config';
+import {useAuthContext} from '../../contexts/AuthContext';
 
 interface IProfileHeader {
   user: User;
@@ -15,6 +16,7 @@ interface IProfileHeader {
 
 const ProfileHeader = ({user}: IProfileHeader) => {
   const navigation = useNavigation<ProfileNavigationProp>();
+  const {userId} = useAuthContext();
   return (
     <ScrollView style={styles.root}>
       <View style={styles.headerRow}>
@@ -38,15 +40,20 @@ const ProfileHeader = ({user}: IProfileHeader) => {
       <Text style={styles.name}>{user.name}</Text>
       <Text>{user.bio}</Text>
       {/* {Buttons} */}
-      <View style={{flexDirection: 'row'}}>
-        <Button
-          text="Edit Profile"
-          onPress={() => navigation.navigate('Edit Profile')}
-          inline={true}
-        />
-        <Button text="Sign Out" onPress={() => Auth.signOut()} inline={true} />
-      </View>
-      {/* Grid view posts */}
+      {userId === user.id && (
+        <View style={{flexDirection: 'row'}}>
+          <Button
+            text="Edit Profile"
+            onPress={() => navigation.navigate('Edit Profile')}
+            inline={true}
+          />
+          <Button
+            text="Sign Out"
+            onPress={() => Auth.signOut()}
+            inline={true}
+          />
+        </View>
+      )}
     </ScrollView>
   );
 };
