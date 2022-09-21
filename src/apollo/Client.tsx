@@ -3,8 +3,6 @@ import {
   InMemoryCache,
   ApolloProvider,
   ApolloLink,
-  useQuery,
-  gql,
   createHttpLink,
 } from '@apollo/client';
 import {AuthOptions, createAuthLink, AUTH_TYPE} from 'aws-appsync-auth-link';
@@ -29,7 +27,6 @@ const link = ApolloLink.from([
 ]);
 
 const client = new ApolloClient({
-  //   uri: 'https://flyby-gateway.herokuapp.com/',
   link,
   cache: new InMemoryCache(), //cache all the data in the device memory
 });

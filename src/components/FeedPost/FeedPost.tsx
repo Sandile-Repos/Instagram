@@ -81,7 +81,7 @@ const FeedPost = (props: IFeedPost) => {
           resizeMode="contain"
           style={styles.userAvatar}
           source={{
-            uri: post.User?.image || DEFAULT_USER_IMAGE,
+            uri: post?.User?.image || DEFAULT_USER_IMAGE,
           }}
         />
         <Text onPress={navigateToUser} style={styles.userName}>
@@ -132,7 +132,7 @@ const FeedPost = (props: IFeedPost) => {
         {/* likes */}
         <Text style={styles.text}>
           Liked by <Text style={styles.bold}>{post.User?.username}</Text> and{' '}
-          <Text style={styles.bold}>{post}</Text>
+          <Text style={styles.bold}>{post.noOfLikes}</Text>
         </Text>
 
         {/* Post description */}

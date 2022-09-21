@@ -42,7 +42,7 @@ const saveUser = async user => {
     _lastChangedAt: timestamp,
     createdAt: dateStr,
     updatedAt: dateStr,
-    __version: 1,
+    _version: 1,
   };
 
   const params = {

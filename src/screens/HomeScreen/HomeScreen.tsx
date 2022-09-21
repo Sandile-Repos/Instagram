@@ -1,10 +1,18 @@
 import React, {useRef, useState, useEffect} from 'react';
-import {FlatList, ViewabilityConfig, ViewToken} from 'react-native';
-import {API, graphqlOperation} from 'aws-amplify';
+import {
+  ActivityIndicator,
+  FlatList,
+  Text,
+  ViewabilityConfig,
+  ViewToken,
+} from 'react-native';
+// import {API, graphqlOperation} from 'aws-amplify';
+import {useQuery, gql} from '@apollo/client';
+
 // import {listPosts} from '../../graphql/queries';
 import FeedPost from '../../components/FeedPost';
 
-export const listPosts = /* GraphQL */ `
+export const listPosts = gql`
   query ListPosts(
     $filter: ModelPostFilterInput
     $limit: Int
@@ -51,19 +59,20 @@ export const listPosts = /* GraphQL */ `
 
 const HomeScreen = () => {
   const [activePostId, setActivePostId] = useState<null | string>(null);
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
+  const {data, loading, error} = useQuery(listPosts);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await API.graphql(graphqlOperation(listPosts));
-        setPosts(response.data.listPosts.items);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchPosts();
-  }, []);
+  // const fetchPosts = async () => {
+  //   try {
+  //     const response = await API.graphql(graphqlOperation(listPosts));
+  //     setPosts(response.data.listPosts.items);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchPosts();
+  // }, []);
 
   const viewabilityConfig: ViewabilityConfig = {
     // itemVisibilePercentThreshold: 51, //not working for me
@@ -76,6 +85,16 @@ const HomeScreen = () => {
       }
     },
   );
+
+  if (loading) {
+    return <ActivityIndicator size={'large'} />;
+  }
+  if (error) {
+    return <Text>{error.message}</Text>;
+  }
+  // console.log(data);
+  const posts = data.listPosts.items;
+  console.log(posts);
   return (
     <FlatList
       data={posts}
