@@ -72,6 +72,9 @@ exports.handler = async (event, context) => {
     id: sub,
     name: name,
     email: email,
+    noOfPosts: 0,
+    noOfFollowers: 0,
+    noOfFollowing: 0,
   };
 
   //check if the user already exists - lambda function can be called more than once, so ensure that the user is not already there

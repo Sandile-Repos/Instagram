@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
-import {IPost} from '../../types/models';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
+import {Post} from '../../API';
 
-const FeedGridItem = ({post}: {post: IPost}) => {
+const FeedGridItem = ({post}: {post: Post}) => {
   return (
     <View style={{flex: 1, padding: 1, aspectRatio: 1, maxWidth: '33.33%'}}>
       <Image

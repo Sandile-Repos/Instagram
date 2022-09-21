@@ -1,34 +1,23 @@
 import React, {useState} from 'react';
-import {
-  Image,
-  FlatList,
-  Pressable,
-  Text,
-  View,
-  ActivityIndicator,
-} from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {Pressable, View, ActivityIndicator} from 'react-native';
 import ProfileHeader from './ProfileHeader';
 import FeedGridView from '../../components/FeedGridView';
-import {
-  UserProfileNavigationProp,
-  MyProfileNavigationProp,
-  UserProfileRouteProp,
-  MyProfileRouteProp,
-} from '../../types/navigation';
+import {UserProfileRouteProp, MyProfileRouteProp} from '../../types/navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useQuery} from '@apollo/client';
 import {getUser} from './queries';
 import {GetUserQuery, GetUserQueryVariables} from '../../API';
 import ApiErrorMessage from '../../components/ApiErrorMessage';
+import {useRoute} from '@react-navigation/native';
+import {useAuthContext} from '../../contexts/AuthContext';
 
 const ProfileScreen = () => {
   const [headerFixed, setHeaderFixed] = useState(true);
   const route = useRoute<UserProfileRouteProp | MyProfileRouteProp>();
-  const navigation = useNavigation<
-    UserProfileNavigationProp | MyProfileNavigationProp
-  >();
-  const userID = route.params?.userId;
+
+  const {userId: authUserId} = useAuthContext();
+
+  const userID = route.params?.userId || authUserId;
   console.warn('userId', userID);
 
   // Query the user with userID
@@ -36,10 +25,10 @@ const ProfileScreen = () => {
     getUser,
     {variables: {id: userID}},
   );
+  const user = data?.getUser;
   if (loading) {
     return <ActivityIndicator size={'large'} />;
   }
-  const user = data?.getUser;
   if (error || !user) {
     return (
       <ApiErrorMessage

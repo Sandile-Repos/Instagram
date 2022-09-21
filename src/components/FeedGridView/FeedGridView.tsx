@@ -1,10 +1,10 @@
 import React from 'react';
-import {Image, FlatList} from 'react-native';
-import {IPost} from '../../types/models';
+import {FlatList} from 'react-native';
+import {Post} from '../../API';
 import FeedGridItem from './FeedGridItem';
 
 interface IFeedGridView {
-  data: IPost[];
+  data: (Post | null)[];
   ListHeaderComponent?:
     | React.ComponentType<any>
     | React.ReactElement
@@ -16,7 +16,7 @@ const FeedGridView = ({data, ListHeaderComponent}: IFeedGridView) => {
   return (
     <FlatList
       data={data}
-      renderItem={({item}) => <FeedGridItem post={item} />}
+      renderItem={({item}) => item && <FeedGridItem post={item} />}
       numColumns={3}
       ListHeaderComponent={ListHeaderComponent} // scrollview /flatlist  doesn't work inside another scrollview if there in the same direction
       showsVerticalScrollIndicator={false}
