@@ -21,10 +21,10 @@ const ProfileScreen = () => {
   console.warn('userId', userID);
 
   // Query the user with userID
-  const {data, loading, error} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {variables: {id: userID}},
-  );
+  const {data, loading, error, refetch} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {variables: {id: userID}});
   const user = data?.getUser;
   if (loading) {
     return <ActivityIndicator size={'large'} />;
@@ -34,6 +34,7 @@ const ProfileScreen = () => {
       <ApiErrorMessage
         title="Error fetching the user"
         message={error?.message || 'User not'}
+        onRetry={() => refetch()}
       />
     );
   }
@@ -64,6 +65,8 @@ const ProfileScreen = () => {
         data={user?.Posts?.items || []}
         ListHeaderComponent={null}
         // ListHeaderComponent={() => <ProfileHeader user={user} />}
+        refetch={refetch}
+        loading={loading}
       />
     </View>
   );

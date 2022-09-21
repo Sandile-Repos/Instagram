@@ -63,7 +63,7 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
   console.log(user);
   return (
     //attributes does exist so we will leave it like this
-    <AuthContext.Provider value={{user, userId: user?.attributes.sub}}>
+    <AuthContext.Provider value={{user, userId: user?.attributes?.sub}}>
       {children}
     </AuthContext.Provider>
   );

@@ -10,9 +10,16 @@ interface IFeedGridView {
     | React.ReactElement
     | null
     | undefined;
+  refetch: () => void;
+  loading: boolean;
 }
 
-const FeedGridView = ({data, ListHeaderComponent}: IFeedGridView) => {
+const FeedGridView = ({
+  data,
+  ListHeaderComponent,
+  refetch,
+  loading,
+}: IFeedGridView) => {
   return (
     <FlatList
       data={data}
@@ -21,6 +28,8 @@ const FeedGridView = ({data, ListHeaderComponent}: IFeedGridView) => {
       ListHeaderComponent={ListHeaderComponent} // scrollview /flatlist  doesn't work inside another scrollview if there in the same direction
       showsVerticalScrollIndicator={false}
       style={{marginHorizontal: -1}}
+      onRefresh={refetch}
+      refreshing={loading}
     />
   );
 };
