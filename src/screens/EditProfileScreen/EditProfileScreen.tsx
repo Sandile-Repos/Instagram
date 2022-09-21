@@ -6,23 +6,27 @@ import {
   Image,
   TextInput,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {useForm, Controller, Control} from 'react-hook-form';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
 import {
+  DeleteUserMutation,
+  DeleteUserMutationVariables,
   GetUserQuery,
   GetUserQueryVariables,
   UpdateUserMutation,
   UpdateUserMutationVariables,
   User,
 } from '../../API';
-import {getUser, updateUser} from './queries';
+import {deleteUser, getUser, updateUser} from './queries';
 import ApiErrorMessage from '../../components/ApiErrorMessage';
 import {useMutation, useQuery} from '@apollo/client';
 import {useAuthContext} from '../../contexts/AuthContext';
 import {useNavigation} from '@react-navigation/native';
+import {Auth} from 'aws-amplify';
 
 const URL_REGEX =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
@@ -80,7 +84,7 @@ const EditProfileScreen = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<null | Asset>(null);
   //remove default setting of data in use form and set with setValue
   const {control, handleSubmit, setValue} = useForm<IEditableUser>();
-  const {userId} = useAuthContext();
+  const {userId, user: authUser} = useAuthContext();
   const navigation = useNavigation();
 
   const {data, loading, error} = useQuery<GetUserQuery, GetUserQueryVariables>(
@@ -93,6 +97,8 @@ const EditProfileScreen = () => {
   //function needs to tricker mutation as it is not run onmount like useQuery but need to called on when ready to submit data
   const [doUpdateUser, {loading: updateLoading, error: updateError}] =
     useMutation<UpdateUserMutation, UpdateUserMutationVariables>(updateUser);
+  const [doDeleteUser, {loading: deleteLoading, error: deleteError}] =
+    useMutation<DeleteUserMutation, DeleteUserMutationVariables>(deleteUser);
 
   useEffect(() => {
     if (user) {
@@ -110,7 +116,28 @@ const EditProfileScreen = () => {
     });
     navigation.goBack();
   };
-  // console.log(errors);
+
+  const confirmDelete = () => {
+    Alert.alert('Are you sure?', 'Deleting your user profile is permanent', [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'Yes, delete', style: 'destructive', onPress: startDeleting},
+    ]);
+  };
+
+  const startDeleting = async () => {
+    //delete from database
+    await doDeleteUser({
+      variables: {input: {id: userId, _version: user?._version}},
+    });
+    //delete user from cognito
+    authUser?.deleteUser(err => {
+      if (err) {
+        console.log(err);
+      }
+      Auth.signOut();
+    });
+  };
+
   const onChangePhoto = () => {
     launchImageLibrary(
       {mediaType: 'photo'},
@@ -126,11 +153,11 @@ const EditProfileScreen = () => {
   if (loading) {
     return <ActivityIndicator size={'large'} />;
   }
-  if (error || updateError) {
+  if (error || updateError || deleteError) {
     return (
       <ApiErrorMessage
         title="Error fetching or updating the user"
-        message={error?.message || updateError?.message}
+        message={error?.message || updateError?.message || deleteError?.message}
       />
     );
   }
@@ -187,7 +214,10 @@ const EditProfileScreen = () => {
       />
 
       <Text onPress={handleSubmit(onSubmit)} style={styles.textButton}>
-        {updateLoading ? 'Submitting...' : 'submit'}
+        {updateLoading ? 'Submitting...' : 'Submit'}
+      </Text>
+      <Text onPress={confirmDelete} style={styles.textButtonDanger}>
+        {deleteLoading ? 'Deleting...' : 'Delete User'}
       </Text>
     </View>
   );
@@ -203,6 +233,12 @@ const styles = StyleSheet.create({
   avatar: {width: '30%', aspectRatio: 1, borderRadius: 100},
   textButton: {
     color: colors.primary,
+    fontSize: fonts.size.md,
+    fontWeight: fonts.weight.semi,
+    margin: 10,
+  },
+  textButtonDanger: {
+    color: colors.error,
     fontSize: fonts.size.md,
     fontWeight: fonts.weight.semi,
     margin: 10,
