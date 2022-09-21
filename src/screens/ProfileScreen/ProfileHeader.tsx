@@ -34,8 +34,9 @@ const ProfileHeader = () => {
         <Button
           text="Edit Profile"
           onPress={() => navigation.navigate('Edit Profile')}
+          inline={true}
         />
-        <Button text="Sign Out" onPress={() => Auth.signOut()} />
+        <Button text="Sign Out" onPress={() => Auth.signOut()} inline={true} />
       </View>
       {/* Grid view posts */}
     </ScrollView>

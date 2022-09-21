@@ -2,7 +2,6 @@ import React, {useRef, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  Text,
   ViewabilityConfig,
   ViewToken,
 } from 'react-native';
@@ -11,13 +10,14 @@ import {useQuery} from '@apollo/client';
 import FeedPost from '../../components/FeedPost';
 import {listPosts} from './queries';
 import {ListPostsQuery, ListPostsQueryVariables} from '../../API';
+import ApiErrorMessage from '../../components/ApiErrorMessage';
 
 const HomeScreen = () => {
   const [activePostId, setActivePostId] = useState<null | string>(null);
   const {data, loading, error} = useQuery<
     ListPostsQuery,
     ListPostsQueryVariables
-  >(listPosts, {variables: {limit: 1}});
+  >(listPosts);
 
   const viewabilityConfig: ViewabilityConfig = {
     viewAreaCoveragePercentThreshold: 51,
@@ -34,7 +34,9 @@ const HomeScreen = () => {
     return <ActivityIndicator size={'large'} />;
   }
   if (error) {
-    return <Text>{error.message}</Text>;
+    return (
+      <ApiErrorMessage title="Error fetching posts" message={error.message} />
+    );
   }
   // console.log(data);
   const posts = data?.listPosts?.items || [];
