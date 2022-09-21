@@ -2,28 +2,36 @@ import {Text, View, Image, ScrollView} from 'react-native';
 import React from 'react';
 import {Auth} from 'aws-amplify';
 
-import user from '../../assets/data/user.json';
 import styles from './styles';
 import Button from '../../components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {ProfileNavigationProp} from '../../types/navigation';
+import {User} from '../../API';
+import {DEFAULT_USER_IMAGE} from '../../config';
 
-const ProfileHeader = () => {
+interface IProfileHeader {
+  user: User;
+}
+
+const ProfileHeader = ({user}: IProfileHeader) => {
   const navigation = useNavigation<ProfileNavigationProp>();
   return (
     <ScrollView style={styles.root}>
       <View style={styles.headerRow}>
-        <Image source={{uri: user.image}} style={styles.avatar} />
+        <Image
+          source={{uri: user.image || DEFAULT_USER_IMAGE}}
+          style={styles.avatar}
+        />
         <View style={styles.numberContainer}>
-          <Text style={styles.numberText}>98</Text>
+          <Text style={styles.numberText}>{user.noOfPosts}</Text>
           <Text>Posts</Text>
         </View>
         <View style={styles.numberContainer}>
-          <Text style={styles.numberText}>198</Text>
+          <Text style={styles.numberText}>{user.noOfFollowers}</Text>
           <Text>Followers</Text>
         </View>
         <View style={styles.numberContainer}>
-          <Text style={styles.numberText}>298</Text>
+          <Text style={styles.numberText}>{user.noOfFollowing}</Text>
           <Text>Following</Text>
         </View>
       </View>

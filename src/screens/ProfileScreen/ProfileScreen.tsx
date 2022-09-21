@@ -1,8 +1,13 @@
 import React, {useState} from 'react';
-import {Image, FlatList, Pressable, Text, View} from 'react-native';
+import {
+  Image,
+  FlatList,
+  Pressable,
+  Text,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
-
-import user from '../../assets/data/user.json';
 import ProfileHeader from './ProfileHeader';
 import FeedGridView from '../../components/FeedGridView';
 import {
@@ -12,6 +17,10 @@ import {
   MyProfileRouteProp,
 } from '../../types/navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useQuery} from '@apollo/client';
+import {getUser} from './queries';
+import {GetUserQuery, GetUserQueryVariables} from '../../API';
+import ApiErrorMessage from '../../components/ApiErrorMessage';
 
 const ProfileScreen = () => {
   const [headerFixed, setHeaderFixed] = useState(true);
@@ -22,7 +31,23 @@ const ProfileScreen = () => {
   const userID = route.params?.userId;
   console.warn('userId', userID);
 
-  // navigation.setOptions({title: userID});
+  // Query the user with userID
+  const {data, loading, error} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {variables: {id: userID}},
+  );
+  if (loading) {
+    return <ActivityIndicator size={'large'} />;
+  }
+  const user = data?.getUser;
+  if (error || !user) {
+    return (
+      <ApiErrorMessage
+        title="Error fetching the user"
+        message={error?.message || 'User not'}
+      />
+    );
+  }
 
   return (
     <View>
@@ -42,13 +67,14 @@ const ProfileScreen = () => {
       </Pressable>
       {headerFixed && (
         <View>
-          <ProfileHeader />
+          <ProfileHeader user={user} />
         </View>
       )}
 
       <FeedGridView
-        data={user.posts}
-        ListHeaderComponent={null} // scrollview /flatlist  doesn't work inside another scrollview if there in the same direction
+        data={user?.Posts?.items || []}
+        ListHeaderComponent={null}
+        // ListHeaderComponent={() => <ProfileHeader user={user} />}
       />
     </View>
   );
