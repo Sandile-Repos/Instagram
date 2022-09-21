@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -6,76 +6,20 @@ import {
   ViewabilityConfig,
   ViewToken,
 } from 'react-native';
-// import {API, graphqlOperation} from 'aws-amplify';
-import {useQuery, gql} from '@apollo/client';
+import {useQuery} from '@apollo/client';
 
-// import {listPosts} from '../../graphql/queries';
 import FeedPost from '../../components/FeedPost';
-
-export const listPosts = gql`
-  query ListPosts(
-    $filter: ModelPostFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        description
-        video
-        image
-        images
-        noOfComments
-        noOfLikes
-        userID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        User {
-          id
-          name
-          username
-          image
-        }
-        Comments {
-          items {
-            id
-            comment
-            User {
-              id
-              name
-              username
-            }
-          }
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
+import {listPosts} from './queries';
+import {ListPostsQuery, ListPostsQueryVariables} from '../../API';
 
 const HomeScreen = () => {
   const [activePostId, setActivePostId] = useState<null | string>(null);
-  // const [posts, setPosts] = useState([]);
-  const {data, loading, error} = useQuery(listPosts);
-
-  // const fetchPosts = async () => {
-  //   try {
-  //     const response = await API.graphql(graphqlOperation(listPosts));
-  //     setPosts(response.data.listPosts.items);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchPosts();
-  // }, []);
+  const {data, loading, error} = useQuery<
+    ListPostsQuery,
+    ListPostsQueryVariables
+  >(listPosts);
 
   const viewabilityConfig: ViewabilityConfig = {
-    // itemVisibilePercentThreshold: 51, //not working for me
     viewAreaCoveragePercentThreshold: 51,
   };
   const onViewableItemsChanged = useRef(
@@ -93,14 +37,14 @@ const HomeScreen = () => {
     return <Text>{error.message}</Text>;
   }
   // console.log(data);
-  const posts = data.listPosts.items;
+  const posts = data?.listPosts?.items || [];
   console.log(posts);
   return (
     <FlatList
       data={posts}
-      renderItem={({item}) => (
-        <FeedPost post={item} isVisible={activePostId === item.id} />
-      )}
+      renderItem={({item}) =>
+        item && <FeedPost post={item} isVisible={activePostId === item.id} />
+      }
       showsVerticalScrollIndicator={false}
       viewabilityConfig={viewabilityConfig}
       onViewableItemsChanged={onViewableItemsChanged.current}
