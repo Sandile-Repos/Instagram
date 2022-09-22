@@ -63,7 +63,9 @@ const EditProfileScreen = () => {
     doUpdateUser({
       variables: {input: {id: userId, ...formData, _version: user?._version}},
     });
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
   };
 
   const confirmDelete = () => {
