@@ -11,15 +11,20 @@ const UserSearchScreen = () => {
     ListUsersQuery,
     ListUsersQueryVariables
   >(listUsers);
-  const users = data?.listUsers?.items || [];
+
   if (loading) {
     return <ActivityIndicator size={'large'} />;
   }
+
+  const users = (data?.listUsers?.items || []).filter(
+    user => user && !user?._deleted,
+  );
+
   if (error || !users) {
     return (
       <ApiErrorMessage
         title="Error fetching users"
-        message={error?.message || 'User not'}
+        message={error?.message || 'User not found'}
         onRetry={() => refetch()}
       />
     );
