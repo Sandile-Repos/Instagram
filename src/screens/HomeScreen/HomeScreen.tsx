@@ -40,7 +40,7 @@ const HomeScreen = () => {
   }
   // console.log(data);
   const posts = data?.listPosts?.items || [];
-  console.log(posts);
+  // console.log(posts);
   return (
     <FlatList
       data={posts}

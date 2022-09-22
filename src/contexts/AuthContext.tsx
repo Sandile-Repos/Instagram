@@ -60,7 +60,7 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
     Hub.listen('auth', listener);
     return () => Hub.remove('auth', listener);
   });
-  console.log(user);
+  // console.log(user);
   return (
     //attributes does exist so we will leave it like this
     <AuthContext.Provider value={{user, userId: user?.attributes?.sub}}>

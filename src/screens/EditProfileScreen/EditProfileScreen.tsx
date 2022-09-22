@@ -1,17 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
-import {useForm, Controller, Control} from 'react-hook-form';
+import {Text, View, Image, ActivityIndicator, Alert} from 'react-native';
+import {useForm} from 'react-hook-form';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
-import colors from '../../theme/colors';
-import fonts from '../../theme/fonts';
 import {
   DeleteUserMutation,
   DeleteUserMutationVariables,
@@ -19,66 +9,21 @@ import {
   GetUserQueryVariables,
   UpdateUserMutation,
   UpdateUserMutationVariables,
-  User,
+  UserByUsernameQuery,
+  UserByUsernameQueryVariables,
 } from '../../API';
-import {deleteUser, getUser, updateUser} from './queries';
+import {deleteUser, getUser, updateUser, userByUsername} from './queries';
 import ApiErrorMessage from '../../components/ApiErrorMessage';
-import {useMutation, useQuery} from '@apollo/client';
+import {useMutation, useQuery, useLazyQuery} from '@apollo/client';
 import {useAuthContext} from '../../contexts/AuthContext';
 import {useNavigation} from '@react-navigation/native';
 import {Auth} from 'aws-amplify';
+import styles from './styles';
+import CustomInput, {IEditableUser} from './CustomInput';
+import {DEFAULT_USER_IMAGE} from '../../config';
 
 const URL_REGEX =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
-
-type IEditableUserField = 'name' | 'username' | 'website' | 'bio';
-type IEditableUser = Pick<User, IEditableUserField>;
-
-interface ICustomInput {
-  control: Control<IEditableUser, object>;
-  label: string;
-  name: IEditableUserField;
-  multiline?: boolean;
-  rules?: object;
-}
-
-const CustomInput = ({
-  control,
-  name,
-  label,
-  multiline = false,
-  rules = {},
-}: ICustomInput) => (
-  <Controller
-    control={control}
-    name={name}
-    rules={rules}
-    render={({field: {onChange, onBlur, value}, fieldState: {error}}) => {
-      return (
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>{label}</Text>
-          <View style={{flex: 1}}>
-            <TextInput
-              value={value || ''}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              placeholder={label}
-              multiline={multiline}
-              style={[
-                styles.input,
-                {borderColor: error ? colors.error : colors.border},
-              ]}
-              autoCapitalize="none"
-            />
-            {error && (
-              <Text style={{color: colors.error}}>{error.message}</Text>
-            )}
-          </View>
-        </View>
-      );
-    }}
-  />
-);
 
 const EditProfileScreen = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<null | Asset>(null);
@@ -99,6 +44,10 @@ const EditProfileScreen = () => {
     useMutation<UpdateUserMutation, UpdateUserMutationVariables>(updateUser);
   const [doDeleteUser, {loading: deleteLoading, error: deleteError}] =
     useMutation<DeleteUserMutation, DeleteUserMutationVariables>(deleteUser);
+  const [getUserByUsername] = useLazyQuery<
+    UserByUsernameQuery,
+    UserByUsernameQueryVariables
+  >(userByUsername);
 
   useEffect(() => {
     if (user) {
@@ -150,6 +99,30 @@ const EditProfileScreen = () => {
     );
   };
 
+  const validateUsername = async (username: string) => {
+    //query the database based on the usersByUsername
+    //username of type string is the variable required: see queries
+    try {
+      const response = await getUserByUsername({
+        variables: {username: username},
+      });
+      // console.log(response);
+      if (response.error) {
+        Alert.alert('Failed to fetch username');
+        return 'Failed';
+      }
+      const users = response.data?.userByUsername?.items;
+      if (users && users?.length > 0 && users?.[0]?.id !== userId) {
+        return 'Username already taken';
+      }
+    } catch (e) {
+      Alert.alert('Failed to fetch username');
+    }
+
+    //if there are any users with this username, then return error
+    return true;
+  };
+
   if (loading) {
     return <ActivityIndicator size={'large'} />;
   }
@@ -164,7 +137,7 @@ const EditProfileScreen = () => {
   return (
     <View style={styles.page}>
       <Image
-        source={{uri: selectedPhoto?.uri || user.image}} // ?mark after selectedPhoto is important since uri can be null
+        source={{uri: selectedPhoto?.uri || user?.image || DEFAULT_USER_IMAGE}} // ?mark after selectedPhoto is important since uri can be null
         style={styles.avatar}
       />
       <Text onPress={onChangePhoto} style={styles.textButton}>
@@ -187,6 +160,7 @@ const EditProfileScreen = () => {
             value: 3,
             message: 'UserName should be more than 3 characters',
           },
+          validate: validateUsername,
         }}
         control={control}
       />
@@ -224,36 +198,3 @@ const EditProfileScreen = () => {
 };
 
 export default EditProfileScreen;
-
-const styles = StyleSheet.create({
-  page: {
-    alignItems: 'center',
-    padding: 20,
-  },
-  avatar: {width: '30%', aspectRatio: 1, borderRadius: 100},
-  textButton: {
-    color: colors.primary,
-    fontSize: fonts.size.md,
-    fontWeight: fonts.weight.semi,
-    margin: 10,
-  },
-  textButtonDanger: {
-    color: colors.error,
-    fontSize: fonts.size.md,
-    fontWeight: fonts.weight.semi,
-    margin: 10,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    // paddingVertical: 10,
-  },
-  label: {
-    width: 75,
-  },
-  input: {
-    borderBottomWidth: 1,
-    minHeight: 50,
-  },
-});

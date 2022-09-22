@@ -33,7 +33,7 @@ type User @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String!
   email: String!
-  username: String
+  username: String @index(name: "userByUsername", queryField: "userByUsername")
   bio: String
   image: String
   website: AWSURL
