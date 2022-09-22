@@ -17,6 +17,8 @@ interface IProfileHeader {
 const ProfileHeader = ({user}: IProfileHeader) => {
   const navigation = useNavigation<ProfileNavigationProp>();
   const {userId} = useAuthContext();
+
+  navigation.setOptions({title: user?.username || 'Profile}'});
   return (
     <ScrollView style={styles.root}>
       <View style={styles.headerRow}>
