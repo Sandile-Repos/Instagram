@@ -10,6 +10,8 @@ import {
 } from 'expo-camera';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
+import {useNavigation} from '@react-navigation/native';
+import {CameraNavigationProp} from '../../types/navigation';
 
 const flashModes = [
   FlashMode.off,
@@ -32,6 +34,7 @@ const PostUploadScreen = () => {
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const camera = useRef<Camera>(null);
+  const navigation = useNavigation<CameraNavigationProp>();
 
   useEffect(() => {
     const getPermission = async () => {
@@ -113,7 +116,12 @@ const PostUploadScreen = () => {
     return <Text>No access to the camera</Text>;
   }
 
-  console.warn(flash);
+  // console.warn(flash);
+  const navigateToCreateScreen = () => {
+    navigation.navigate('Create', {
+      image: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/4.jpg',
+    });
+  };
 
   return (
     <SafeAreaView style={styles.page}>
@@ -156,6 +164,13 @@ const PostUploadScreen = () => {
         <Pressable onPress={flipCamera}>
           <MaterialIcons
             name="flip-camera-ios"
+            size={30}
+            color={colors.white}
+          />
+        </Pressable>
+        <Pressable onPress={navigateToCreateScreen}>
+          <MaterialIcons
+            name="arrow-forward-ios"
             size={30}
             color={colors.white}
           />

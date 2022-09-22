@@ -27,6 +27,28 @@ export type ProfileStackNavigatorParamList = {
   'Edit Profile': undefined;
 };
 
+export type SearchTabNavigatorParamList = {
+  Users: undefined;
+  Posts: undefined;
+};
+
+export type AuthStackNavigatorParamList = {
+  'Sign in': undefined;
+  'Sign up': undefined;
+  'Confirm email': {email?: string};
+  'Forgot password': undefined;
+  'New password': undefined;
+};
+
+export type UploadStackNavigatorParamList = {
+  Camera: undefined;
+  Create: {
+    image?: string;
+    images?: string;
+    video?: string;
+  };
+};
+
 export type FeedNavigationProp = NativeStackNavigationProp<
   HomeStackNavigatorParamList,
   'Feed'
@@ -57,19 +79,6 @@ export type MyProfileRouteProp = RouteProp<
   'MyProfile'
 >;
 
-export type SearchTabNavigatorParamList = {
-  Users: undefined;
-  Posts: undefined;
-};
-
-export type AuthStackNavigatorParamList = {
-  'Sign in': undefined;
-  'Sign up': undefined;
-  'Confirm email': {email?: string};
-  'Forgot password': undefined;
-  'New password': undefined;
-};
-
 export type SignInNavigationProp = NativeStackNavigationProp<
   AuthStackNavigatorParamList,
   'Sign in'
@@ -97,4 +106,19 @@ export type ForgotPasswordNavigationProp = NativeStackNavigationProp<
 export type NewPasswordNavigationProp = NativeStackNavigationProp<
   AuthStackNavigatorParamList,
   'New password'
+>;
+
+export type CameraNavigationProp = NativeStackNavigationProp<
+  UploadStackNavigatorParamList,
+  'Camera'
+>;
+
+export type CreateNavigationProp = NativeStackNavigationProp<
+  UploadStackNavigatorParamList,
+  'Create'
+>;
+
+export type CreateRouteProp = RouteProp<
+  UploadStackNavigatorParamList,
+  'Create'
 >;
