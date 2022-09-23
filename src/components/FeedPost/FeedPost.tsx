@@ -12,9 +12,12 @@ import Carousel from '../Carousel';
 import VideoPlayer from '../VideoPlayer';
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
-import {Post} from '../../API';
+import {CreateLikeMutation, CreateLikeMutationVariables, Post} from '../../API';
 import {DEFAULT_USER_IMAGE} from '../../config';
 import PostMenu from './PostMenu';
+import {createLike} from './queries';
+import {useAuthContext} from '../../contexts/AuthContext';
+import {useMutation} from '@apollo/client';
 
 // import {FeedNavigationProp} from '../../types/models';
 interface IFeedPost {
@@ -24,9 +27,15 @@ interface IFeedPost {
 
 const FeedPost = (props: IFeedPost) => {
   const {post, isVisible = false} = props;
+  const {userId} = useAuthContext();
 
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+
+  const [doCreateLike] = useMutation<
+    CreateLikeMutation,
+    CreateLikeMutationVariables
+  >(createLike, {variables: {input: {userID: userId, postID: post.id}}});
 
   const navigation = useNavigation<FeedNavigationProp>();
 
@@ -46,9 +55,7 @@ const FeedPost = (props: IFeedPost) => {
     });
   };
   const toggleLiked = () => {
-    setIsLiked(like => {
-      return !like;
-    });
+    doCreateLike();
   };
 
   let content = null;
