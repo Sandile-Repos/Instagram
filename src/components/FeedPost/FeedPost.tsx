@@ -12,14 +12,21 @@ import Carousel from '../Carousel';
 import VideoPlayer from '../VideoPlayer';
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
-import {CreateLikeMutation, CreateLikeMutationVariables, Post} from '../../API';
+import {
+  CreateLikeMutation,
+  CreateLikeMutationVariables,
+  DeleteLikeMutation,
+  DeleteLikeMutationVariables,
+  LikesForPostByUserQuery,
+  LikesForPostByUserQueryVariables,
+  Post,
+} from '../../API';
 import {DEFAULT_USER_IMAGE} from '../../config';
 import PostMenu from './PostMenu';
-import {createLike} from './queries';
+import {createLike, deleteLike, likesForPostByUser} from './queries';
 import {useAuthContext} from '../../contexts/AuthContext';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 
-// import {FeedNavigationProp} from '../../types/models';
 interface IFeedPost {
   post: Post;
   isVisible: boolean;
@@ -35,7 +42,25 @@ const FeedPost = (props: IFeedPost) => {
   const [doCreateLike] = useMutation<
     CreateLikeMutation,
     CreateLikeMutationVariables
-  >(createLike, {variables: {input: {userID: userId, postID: post.id}}});
+  >(createLike, {
+    variables: {input: {userID: userId, postID: post.id}},
+    refetchQueries: ['LikesForPostByUser'],
+  });
+
+  const [doDeleteLike] = useMutation<
+    DeleteLikeMutation,
+    DeleteLikeMutationVariables
+  >(deleteLike);
+
+  const {data: usersLikeData} = useQuery<
+    LikesForPostByUserQuery,
+    LikesForPostByUserQueryVariables
+  >(likesForPostByUser, {variables: {postID: post.id, userID: {eq: userId}}});
+  // console.log(usersLikeData);
+  // const userLike = usersLikeData?.LikesForPostByUser?.items?.[0];
+  const userLike = (usersLikeData?.LikesForPostByUser?.items || []).filter(
+    like => !like?._deleted,
+  )?.[0];
 
   const navigation = useNavigation<FeedNavigationProp>();
 
@@ -55,7 +80,13 @@ const FeedPost = (props: IFeedPost) => {
     });
   };
   const toggleLiked = () => {
-    doCreateLike();
+    if (userLike) {
+      doDeleteLike({
+        variables: {input: {id: userLike.id, _version: userLike._version}},
+      });
+    } else {
+      doCreateLike();
+    }
   };
 
   let content = null;
@@ -106,10 +137,10 @@ const FeedPost = (props: IFeedPost) => {
         <View style={styles.iconContainer}>
           <Pressable onPress={toggleLiked}>
             <AntDesign
-              name={isLiked ? 'heart' : 'hearto'}
+              name={userLike ? 'heart' : 'hearto'}
               size={24}
               style={styles.icon}
-              color={isLiked ? colors.accent : colors.black}
+              color={userLike ? colors.accent : colors.black}
             />
           </Pressable>
           <Ionicons

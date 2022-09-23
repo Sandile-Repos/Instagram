@@ -199,6 +199,70 @@ export const syncLikes = /* GraphQL */ `
     }
   }
 `;
+export const likesForPostByUser = /* GraphQL */ `
+  query LikesForPostByUser(
+    $postID: ID!
+    $userID: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelLikeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    LikesForPostByUser(
+      postID: $postID
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        postID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        Post {
+          id
+          description
+          video
+          image
+          images
+          noOfComments
+          noOfLikes
+          userID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getComment = /* GraphQL */ `
   query GetComment($id: ID!) {
     getComment(id: $id) {
