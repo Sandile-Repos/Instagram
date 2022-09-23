@@ -20,10 +20,17 @@ import {
   LikesForPostByUserQuery,
   LikesForPostByUserQueryVariables,
   Post,
+  UpdatePostMutation,
+  UpdatePostMutationVariables,
 } from '../../API';
 import {DEFAULT_USER_IMAGE} from '../../config';
 import PostMenu from './PostMenu';
-import {createLike, deleteLike, likesForPostByUser} from './queries';
+import {
+  createLike,
+  deleteLike,
+  likesForPostByUser,
+  updatePost,
+} from './queries';
 import {useAuthContext} from '../../contexts/AuthContext';
 import {useMutation, useQuery} from '@apollo/client';
 
@@ -52,6 +59,11 @@ const FeedPost = (props: IFeedPost) => {
     DeleteLikeMutationVariables
   >(deleteLike);
 
+  const [doUpdatePost] = useMutation<
+    UpdatePostMutation,
+    UpdatePostMutationVariables
+  >(updatePost);
+
   const {data: usersLikeData} = useQuery<
     LikesForPostByUserQuery,
     LikesForPostByUserQueryVariables
@@ -63,6 +75,18 @@ const FeedPost = (props: IFeedPost) => {
   )?.[0];
 
   const navigation = useNavigation<FeedNavigationProp>();
+
+  const incrementNoLikes = (amount: 1 | -1) => {
+    doUpdatePost({
+      variables: {
+        input: {
+          id: post.id,
+          _version: post._version,
+          noOfLikes: post.noOfLikes + amount,
+        },
+      },
+    });
+  };
 
   const navigateToUser = () => {
     if (post.User) {
@@ -87,8 +111,10 @@ const FeedPost = (props: IFeedPost) => {
       doDeleteLike({
         variables: {input: {id: userLike.id, _version: userLike._version}},
       });
+      incrementNoLikes(-1);
     } else {
       doCreateLike();
+      incrementNoLikes(1);
     }
   };
 
@@ -168,10 +194,14 @@ const FeedPost = (props: IFeedPost) => {
         </View>
 
         {/* likes */}
-        <Text style={styles.text} onPress={navigateToLikes}>
-          Liked by <Text style={styles.bold}>{post.User?.username}</Text> and{' '}
-          <Text style={styles.bold}>{post.noOfLikes}</Text>
-        </Text>
+        {post.noOfLikes <= 0 ? (
+          <Text>Be the first to like the post</Text>
+        ) : (
+          <Text style={styles.text} onPress={navigateToLikes}>
+            Liked by <Text style={styles.bold}>{post.User?.username}</Text> and{' '}
+            <Text style={styles.bold}>{post.noOfLikes}</Text>
+          </Text>
+        )}
 
         {/* Post description */}
         <Text style={styles.text} numberOfLines={isDescriptionExpanded ? 0 : 2}>
