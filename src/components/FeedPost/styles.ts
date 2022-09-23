@@ -25,9 +25,6 @@ export default StyleSheet.create({
     fontWeight: fonts.weight.bold,
     color: colors.black,
   },
-  threeDots: {
-    marginLeft: 'auto',
-  },
   footer: {
     padding: 10,
   },
