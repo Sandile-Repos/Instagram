@@ -11,6 +11,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useMutation} from '@apollo/client';
 import {deletePost} from './queries';
 import {DeletePostMutation, DeletePostMutationVariables, Post} from '../../API';
+import {useAuthContext} from '../../contexts/AuthContext';
 
 interface IPost {
   post: Post;
@@ -20,6 +21,9 @@ const PostMenu = ({post}: IPost) => {
     DeletePostMutation,
     DeletePostMutationVariables
   >(deletePost, {variables: {input: {id: post.id, _version: post._version}}});
+  const {userId} = useAuthContext();
+  const isMyPost = userId === post.userID;
+
   const startDeletingPost = async () => {
     const response = await doDeletePost();
     console.log(response);
@@ -47,13 +51,16 @@ const PostMenu = ({post}: IPost) => {
         <MenuOption onSelect={() => Alert.alert('Reporting')}>
           <Text style={styles.optionText}>Reporting</Text>
         </MenuOption>
-
-        <MenuOption onSelect={onDeleteOptionPressed}>
-          <Text style={[styles.optionText, {color: 'red'}]}>Delete</Text>
-        </MenuOption>
-        <MenuOption onSelect={onEditOptionPressed}>
-          <Text style={styles.optionText}>Edit</Text>
-        </MenuOption>
+        {isMyPost && (
+          <>
+            <MenuOption onSelect={onDeleteOptionPressed}>
+              <Text style={[styles.optionText, {color: 'red'}]}>Delete</Text>
+            </MenuOption>
+            <MenuOption onSelect={onEditOptionPressed}>
+              <Text style={styles.optionText}>Edit</Text>
+            </MenuOption>
+          </>
+        )}
       </MenuOptions>
     </Menu>
   );
