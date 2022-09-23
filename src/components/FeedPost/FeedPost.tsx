@@ -73,6 +73,9 @@ const FeedPost = (props: IFeedPost) => {
   const navigateToComments = () => {
     navigation.navigate('Comments', {postId: post.id});
   };
+  const navigateToLikes = () => {
+    navigation.navigate('PostLikes', {id: post.id});
+  };
 
   const toggleDescriptionExpanded = () => {
     setIsDescriptionExpanded(existingValue => {
@@ -165,7 +168,7 @@ const FeedPost = (props: IFeedPost) => {
         </View>
 
         {/* likes */}
-        <Text style={styles.text}>
+        <Text style={styles.text} onPress={navigateToLikes}>
           Liked by <Text style={styles.bold}>{post.User?.username}</Text> and{' '}
           <Text style={styles.bold}>{post.noOfLikes}</Text>
         </Text>
