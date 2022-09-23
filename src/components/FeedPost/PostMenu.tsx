@@ -12,15 +12,21 @@ import {useMutation} from '@apollo/client';
 import {deletePost} from './queries';
 import {DeletePostMutation, DeletePostMutationVariables, Post} from '../../API';
 import {useAuthContext} from '../../contexts/AuthContext';
+import {useNavigation} from '@react-navigation/native';
+import {FeedNavigationProp} from '../../types/navigation';
 
 interface IPost {
   post: Post;
 }
 const PostMenu = ({post}: IPost) => {
+  //navigating from Feed of HomeStackNavigation
+  const navigation = useNavigation<FeedNavigationProp>();
+
   const [doDeletePost] = useMutation<
     DeletePostMutation,
     DeletePostMutationVariables
   >(deletePost, {variables: {input: {id: post.id, _version: post._version}}});
+
   const {userId} = useAuthContext();
   const isMyPost = userId === post.userID;
 
@@ -28,6 +34,7 @@ const PostMenu = ({post}: IPost) => {
     const response = await doDeletePost();
     console.log(response);
   };
+
   const onDeleteOptionPressed = () => {
     Alert.alert('Are you sure?', 'Deleting a post is permanent', [
       {
@@ -41,7 +48,10 @@ const PostMenu = ({post}: IPost) => {
       },
     ]);
   };
-  const onEditOptionPressed = () => {};
+
+  const onEditOptionPressed = () => {
+    navigation.navigate('UpdatePost', {id: post.id});
+  };
   return (
     <Menu renderer={renderers.Popover} style={styles.threeDots}>
       <MenuTrigger>

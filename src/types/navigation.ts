@@ -20,6 +20,7 @@ export type BottomTabNavigatorParamList = {
 export type HomeStackNavigatorParamList = {
   Feed: undefined;
   UserProfile: {userId: string};
+  UpdatePost: {id: string};
 };
 
 export type ProfileStackNavigatorParamList = {
@@ -121,4 +122,9 @@ export type CreateNavigationProp = NativeStackNavigationProp<
 export type CreateRouteProp = RouteProp<
   UploadStackNavigatorParamList,
   'Create'
+>;
+
+export type UpdatePostRouteProp = RouteProp<
+  HomeStackNavigatorParamList,
+  'UpdatePost'
 >;

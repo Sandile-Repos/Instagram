@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import logo from '../assets/images/logo.png';
 import {HomeStackNavigatorParamList} from '../types/navigation';
+import UpdatePostScreen from '../screens/UpdatePostScreen';
 
 const Stack = createNativeStackNavigator<HomeStackNavigatorParamList>();
 
@@ -24,6 +25,13 @@ const HomeStackNavigator = () => {
         component={ProfileScreen}
         options={{
           title: 'Profile',
+        }}
+      />
+      <Stack.Screen
+        name="UpdatePost"
+        component={UpdatePostScreen}
+        options={{
+          title: 'Update Post',
         }}
       />
     </Stack.Navigator>
