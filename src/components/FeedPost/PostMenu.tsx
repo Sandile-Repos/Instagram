@@ -28,7 +28,7 @@ const PostMenu = ({post}: IPost) => {
   >(deletePost, {variables: {input: {id: post.id, _version: post._version}}});
 
   const {userId} = useAuthContext();
-  const isMyPost = userId === post.userID;
+  const isMyPost = userId === post.userID; //A more secured method with authendicated users later
 
   const startDeletingPost = async () => {
     const response = await doDeletePost();

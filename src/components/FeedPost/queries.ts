@@ -58,6 +58,22 @@ export const likesForPostByUser = gql`
         _version
         _deleted
         _lastChangedAt
+        Post {
+          id
+          noOfLikes
+          Likes {
+            items {
+              id
+              _deleted
+              _version
+            }
+            nextToken
+            startedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+        }
       }
       nextToken
       startedAt

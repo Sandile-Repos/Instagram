@@ -9,7 +9,7 @@ import UserSearchScreen from '../screens/UserSearchScreen';
 const Tab = createMaterialTopTabNavigator<SearchTabNavigatorParamList>();
 
 const SearchTabNavigator = () => {
-  const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets(); //dynamically adding padding to the ios notch
   return (
     <Tab.Navigator
       screenOptions={{

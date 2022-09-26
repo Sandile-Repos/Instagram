@@ -11,7 +11,7 @@ export type IEditableUser = Pick<User, IEditableUserField>;
 interface ICustomInput {
   control: Control<IEditableUser, object>;
   label: string;
-  name: IEditableUserField;
+  name: IEditableUserField; // or name: keyof IEditableUser;
   multiline?: boolean;
   rules?: object;
 }

@@ -74,6 +74,8 @@ const FeedPost = (props: IFeedPost) => {
     like => !like?._deleted,
   )?.[0];
 
+  const postLikes = post.Likes?.items.filter(like => !like?._deleted) || [];
+
   const navigation = useNavigation<FeedNavigationProp>();
 
   const incrementNoLikes = (amount: 1 | -1) => {
@@ -139,6 +141,7 @@ const FeedPost = (props: IFeedPost) => {
       </DoublePressable>
     );
   }
+  console.log(post);
 
   return (
     <SafeAreaView style={styles.post}>
@@ -194,12 +197,18 @@ const FeedPost = (props: IFeedPost) => {
         </View>
 
         {/* likes */}
-        {post.noOfLikes <= 0 ? (
+        {postLikes.length === 0 ? (
           <Text>Be the first to like the post</Text>
         ) : (
           <Text style={styles.text} onPress={navigateToLikes}>
-            Liked by <Text style={styles.bold}>{post.User?.username}</Text> and{' '}
-            <Text style={styles.bold}>{post.noOfLikes}</Text>
+            Liked by{' '}
+            <Text style={styles.bold}>{postLikes[0]?.User?.username}</Text>
+            {postLikes.length > 1 && (
+              <>
+                {' '}
+                and <Text style={styles.bold}>{post.noOfLikes - 1} others</Text>
+              </>
+            )}
           </Text>
         )}
 
