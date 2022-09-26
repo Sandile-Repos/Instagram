@@ -12,27 +12,10 @@ import Carousel from '../Carousel';
 import VideoPlayer from '../VideoPlayer';
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
-import {
-  CreateLikeMutation,
-  CreateLikeMutationVariables,
-  DeleteLikeMutation,
-  DeleteLikeMutationVariables,
-  LikesForPostByUserQuery,
-  LikesForPostByUserQueryVariables,
-  Post,
-  UpdatePostMutation,
-  UpdatePostMutationVariables,
-} from '../../API';
+import {Post} from '../../API';
 import {DEFAULT_USER_IMAGE} from '../../config';
 import PostMenu from './PostMenu';
-import {
-  createLike,
-  deleteLike,
-  likesForPostByUser,
-  updatePost,
-} from './queries';
-import {useAuthContext} from '../../contexts/AuthContext';
-import {useMutation, useQuery} from '@apollo/client';
+import useLikeService from '../../services/LikeService';
 
 interface IFeedPost {
   post: Post;
@@ -41,54 +24,13 @@ interface IFeedPost {
 
 const FeedPost = (props: IFeedPost) => {
   const {post, isVisible = false} = props;
-  const {userId} = useAuthContext();
+  const {toggleLike, isLiked} = useLikeService(post);
 
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-
-  const [doCreateLike] = useMutation<
-    CreateLikeMutation,
-    CreateLikeMutationVariables
-  >(createLike, {
-    variables: {input: {userID: userId, postID: post.id}},
-    refetchQueries: ['LikesForPostByUser'],
-  });
-
-  const [doDeleteLike] = useMutation<
-    DeleteLikeMutation,
-    DeleteLikeMutationVariables
-  >(deleteLike);
-
-  const [doUpdatePost] = useMutation<
-    UpdatePostMutation,
-    UpdatePostMutationVariables
-  >(updatePost);
-
-  const {data: usersLikeData} = useQuery<
-    LikesForPostByUserQuery,
-    LikesForPostByUserQueryVariables
-  >(likesForPostByUser, {variables: {postID: post.id, userID: {eq: userId}}});
-  // console.log(usersLikeData);
-  // const userLike = usersLikeData?.LikesForPostByUser?.items?.[0];
-  const userLike = (usersLikeData?.LikesForPostByUser?.items || []).filter(
-    like => !like?._deleted,
-  )?.[0];
 
   const postLikes = post.Likes?.items.filter(like => !like?._deleted) || [];
 
   const navigation = useNavigation<FeedNavigationProp>();
-
-  const incrementNoLikes = (amount: 1 | -1) => {
-    doUpdatePost({
-      variables: {
-        input: {
-          id: post.id,
-          _version: post._version,
-          noOfLikes: post.noOfLikes + amount,
-        },
-      },
-    });
-  };
 
   const navigateToUser = () => {
     if (post.User) {
@@ -108,22 +50,11 @@ const FeedPost = (props: IFeedPost) => {
       return !existingValue;
     });
   };
-  const toggleLiked = () => {
-    if (userLike) {
-      doDeleteLike({
-        variables: {input: {id: userLike.id, _version: userLike._version}},
-      });
-      incrementNoLikes(-1);
-    } else {
-      doCreateLike();
-      incrementNoLikes(1);
-    }
-  };
 
   let content = null;
   if (post.image) {
     content = (
-      <DoublePressable onDoublePress={toggleLiked}>
+      <DoublePressable onDoublePress={toggleLike}>
         <Image
           style={styles.image}
           source={{
@@ -133,10 +64,10 @@ const FeedPost = (props: IFeedPost) => {
       </DoublePressable>
     );
   } else if (post.images) {
-    content = <Carousel images={post.images} onDoublePress={toggleLiked} />;
+    content = <Carousel images={post.images} onDoublePress={toggleLike} />;
   } else if (post.video) {
     content = (
-      <DoublePressable onDoublePress={toggleLiked}>
+      <DoublePressable onDoublePress={toggleLike}>
         <VideoPlayer uri={post.video} paused={!isVisible} />
       </DoublePressable>
     );
@@ -167,12 +98,12 @@ const FeedPost = (props: IFeedPost) => {
       {/* Footer */}
       <View style={styles.footer}>
         <View style={styles.iconContainer}>
-          <Pressable onPress={toggleLiked}>
+          <Pressable onPress={toggleLike}>
             <AntDesign
-              name={userLike ? 'heart' : 'hearto'}
+              name={isLiked ? 'heart' : 'hearto'}
               size={24}
               style={styles.icon}
-              color={userLike ? colors.accent : colors.black}
+              color={isLiked ? colors.accent : colors.black}
             />
           </Pressable>
           <Ionicons
@@ -206,7 +137,10 @@ const FeedPost = (props: IFeedPost) => {
             {postLikes.length > 1 && (
               <>
                 {' '}
-                and <Text style={styles.bold}>{post.noOfLikes - 1} others</Text>
+                and{' '}
+                <Text style={styles.bold}>
+                  {post.noOfLikes} {postLikes.length > 2 ? 'others' : 'other'}
+                </Text>
               </>
             )}
           </Text>
