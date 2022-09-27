@@ -5,6 +5,8 @@ import {ActivityIndicator, FlatList, Text, View} from 'react-native';
 import {CommentsByPostQuery, CommentsByPostQueryVariables} from '../../API';
 import Comment from '../../components//Comment';
 import ApiErrorMessage from '../../components/ApiErrorMessage';
+import colors from '../../theme/colors';
+import fonts from '../../theme/fonts';
 import {CommentsRouteProp} from '../../types/navigation';
 import Input from './Input';
 import {commentsByPost} from './queries';
@@ -41,6 +43,23 @@ const CommentsScreen = () => {
         renderItem={({item}) => <Comment comment={item} includeDetails />}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{padding: 10}}
+        ListEmptyComponent={() => (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 300,
+            }}>
+            <Text
+              style={{
+                color: colors.primary,
+                fontWeight: fonts.weight.bold,
+                fontSize: fonts.size.default,
+              }}>
+              No comments. Be the first to comment
+            </Text>
+          </View>
+        )} //The user will see this message if there are no comments
       />
       <Input postId={postId} />
     </View>

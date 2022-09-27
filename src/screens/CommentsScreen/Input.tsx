@@ -7,6 +7,7 @@ import {commentsByPost, createComment} from './queries';
 import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
 import {useAuthContext} from '../../contexts/AuthContext';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface IInput {
   postId: string;
@@ -15,6 +16,9 @@ interface IInput {
 const Input = ({postId}: IInput) => {
   const [newComment, setNewComment] = useState('');
   const {userId} = useAuthContext();
+
+  const insects = useSafeAreaInsets();
+
   const [doCreateComment] = useMutation<
     CreateCommentMutation,
     CreateCommentMutationVariables
@@ -43,7 +47,7 @@ const Input = ({postId}: IInput) => {
   };
 
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, {paddingBottom: insects.bottom}]}>
       <Image
         source={{
           uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/2.jpg',
@@ -58,7 +62,10 @@ const Input = ({postId}: IInput) => {
         style={styles.input}
         multiline
       />
-      <Text onPress={onPost} style={styles.button}>
+      <Text
+        onPress={onPost}
+        //button is in absolute position, therefore the need to adjust it if there is an insects bottom now
+        style={[styles.button, {bottom: insects.bottom + 7}]}>
         POST
       </Text>
     </View>
