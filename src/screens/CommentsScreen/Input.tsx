@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useMutation} from '@apollo/client';
 import {StyleSheet, Text, View, TextInput, Image, Alert} from 'react-native';
 import {CreateCommentMutation, CreateCommentMutationVariables} from '../../API';
-import {createComment} from './queries';
+import {commentsByPost, createComment} from './queries';
 
 import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
@@ -18,7 +18,7 @@ const Input = ({postId}: IInput) => {
   const [doCreateComment] = useMutation<
     CreateCommentMutation,
     CreateCommentMutationVariables
-  >(createComment);
+  >(createComment, {refetchQueries: ['CommentsByPost']});
 
   const onPost = async () => {
     try {
