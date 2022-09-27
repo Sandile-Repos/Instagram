@@ -159,7 +159,7 @@ const FeedPost = (props: IFeedPost) => {
         <Text onPress={navigateToComments}>
           View all {post.noOfComments} comments
         </Text>
-        {(post.Comments?.items || []).map(
+        {(post.Comments?.items.slice(0, 3) || []).map(
           comment => comment && <Comment key={comment.id} comment={comment} />,
         )}
 

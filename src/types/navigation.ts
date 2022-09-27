@@ -134,3 +134,5 @@ export type PostLikesRouteProp = RouteProp<
   HomeStackNavigatorParamList,
   'PostLikes'
 >;
+
+export type CommentsRouteProp = RouteProp<RootNavigatorParamList, 'Comments'>;
