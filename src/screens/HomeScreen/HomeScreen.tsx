@@ -8,16 +8,22 @@ import {
 import {useQuery} from '@apollo/client';
 
 import FeedPost from '../../components/FeedPost';
-import {listPosts} from './queries';
-import {ListPostsQuery, ListPostsQueryVariables} from '../../API';
+import {postsByDate} from './queries';
+import {
+  PostsByDateQuery,
+  PostsByDateQueryVariables,
+  ModelSortDirection,
+} from '../../API';
 import ApiErrorMessage from '../../components/ApiErrorMessage';
 
 const HomeScreen = () => {
   const [activePostId, setActivePostId] = useState<null | string>(null);
   const {data, loading, error, refetch} = useQuery<
-    ListPostsQuery,
-    ListPostsQueryVariables
-  >(listPosts);
+    PostsByDateQuery,
+    PostsByDateQueryVariables
+  >(postsByDate, {
+    variables: {type: 'POST', sortDirection: ModelSortDirection.DESC},
+  });
 
   const viewabilityConfig: ViewabilityConfig = {
     viewAreaCoveragePercentThreshold: 51,
@@ -39,7 +45,9 @@ const HomeScreen = () => {
     );
   }
   // console.log(data);
-  const posts = (data?.listPosts?.items || []).filter(post => !post?._deleted);
+  const posts = (data?.postsByDate?.items || []).filter(
+    post => !post?._deleted,
+  );
   // console.log(posts);
   return (
     <FlatList

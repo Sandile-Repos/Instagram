@@ -2,7 +2,11 @@ import {useQuery} from '@apollo/client';
 import {useRoute} from '@react-navigation/native';
 import React from 'react';
 import {ActivityIndicator, FlatList, Text, View} from 'react-native';
-import {CommentsByPostQuery, CommentsByPostQueryVariables} from '../../API';
+import {
+  CommentsByPostQuery,
+  CommentsByPostQueryVariables,
+  ModelSortDirection,
+} from '../../API';
 import Comment from '../../components//Comment';
 import ApiErrorMessage from '../../components/ApiErrorMessage';
 import colors from '../../theme/colors';
@@ -18,7 +22,9 @@ const CommentsScreen = () => {
   const {data, loading, error} = useQuery<
     CommentsByPostQuery,
     CommentsByPostQueryVariables
-  >(commentsByPost, {variables: {postID: postId}});
+  >(commentsByPost, {
+    variables: {postID: postId, sortDirection: ModelSortDirection.DESC},
+  });
 
   const comments = data?.commentsByPost?.items.filter(
     comment => !comment?._deleted,
@@ -43,6 +49,7 @@ const CommentsScreen = () => {
         renderItem={({item}) => <Comment comment={item} includeDetails />}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{padding: 10}}
+        inverted
         ListEmptyComponent={() => (
           <View
             style={{
