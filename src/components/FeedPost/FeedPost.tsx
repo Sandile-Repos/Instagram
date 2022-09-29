@@ -16,6 +16,7 @@ import {Post} from '../../API';
 import {DEFAULT_USER_IMAGE} from '../../config';
 import PostMenu from './PostMenu';
 import useLikeService from '../../services/LikeService';
+import dayjs from 'dayjs';
 
 interface IFeedPost {
   post: Post;
@@ -164,7 +165,7 @@ const FeedPost = (props: IFeedPost) => {
         )}
 
         {/* Posted date */}
-        <Text>{post.createdAt}</Text>
+        <Text>{dayjs(post.createdAt).fromNow()}</Text>
       </View>
     </SafeAreaView>
   );

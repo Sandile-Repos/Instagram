@@ -256,6 +256,7 @@ export const onCreateComment = /* GraphQL */ `
     onCreateComment(filter: $filter) {
       id
       comment
+      createdAt
       userID
       postID
       User {
@@ -327,7 +328,6 @@ export const onCreateComment = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -340,6 +340,7 @@ export const onUpdateComment = /* GraphQL */ `
     onUpdateComment(filter: $filter) {
       id
       comment
+      createdAt
       userID
       postID
       User {
@@ -411,7 +412,6 @@ export const onUpdateComment = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -424,6 +424,7 @@ export const onDeleteComment = /* GraphQL */ `
     onDeleteComment(filter: $filter) {
       id
       comment
+      createdAt
       userID
       postID
       User {
@@ -495,7 +496,6 @@ export const onDeleteComment = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -547,9 +547,9 @@ export const onCreatePost = /* GraphQL */ `
         items {
           id
           comment
+          createdAt
           userID
           postID
-          createdAt
           updatedAt
           _version
           _deleted
@@ -624,9 +624,9 @@ export const onUpdatePost = /* GraphQL */ `
         items {
           id
           comment
+          createdAt
           userID
           postID
-          createdAt
           updatedAt
           _version
           _deleted
@@ -701,9 +701,9 @@ export const onDeletePost = /* GraphQL */ `
         items {
           id
           comment
+          createdAt
           userID
           postID
-          createdAt
           updatedAt
           _version
           _deleted
@@ -770,9 +770,9 @@ export const onCreateUser = /* GraphQL */ `
         items {
           id
           comment
+          createdAt
           userID
           postID
-          createdAt
           updatedAt
           _version
           _deleted
@@ -839,9 +839,9 @@ export const onUpdateUser = /* GraphQL */ `
         items {
           id
           comment
+          createdAt
           userID
           postID
-          createdAt
           updatedAt
           _version
           _deleted
@@ -908,9 +908,9 @@ export const onDeleteUser = /* GraphQL */ `
         items {
           id
           comment
+          createdAt
           userID
           postID
-          createdAt
           updatedAt
           _version
           _deleted

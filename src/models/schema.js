@@ -427,6 +427,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "User": {
                     "name": "User",
                     "isArray": false,
@@ -452,14 +459,6 @@ export const schema = {
                         "connectionType": "BELONGS_TO",
                         "targetName": "postID"
                     }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
                 },
                 "updatedAt": {
                     "name": "updatedAt",
@@ -492,7 +491,8 @@ export const schema = {
                         "name": "byPost",
                         "queryField": "commentsByPost",
                         "fields": [
-                            "postID"
+                            "postID",
+                            "createdAt"
                         ]
                     }
                 },
@@ -517,5 +517,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "ef24ff98056a1f13db05c9ba12e09436"
+    "version": "38081aa48ee64cbb5e22859894bca399"
 };

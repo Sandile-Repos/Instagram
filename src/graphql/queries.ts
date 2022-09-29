@@ -268,6 +268,7 @@ export const getComment = /* GraphQL */ `
     getComment(id: $id) {
       id
       comment
+      createdAt
       userID
       postID
       User {
@@ -339,7 +340,6 @@ export const getComment = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      createdAt
       updatedAt
       _version
       _deleted
@@ -357,6 +357,7 @@ export const listComments = /* GraphQL */ `
       items {
         id
         comment
+        createdAt
         userID
         postID
         User {
@@ -391,7 +392,6 @@ export const listComments = /* GraphQL */ `
           _deleted
           _lastChangedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted
@@ -418,6 +418,7 @@ export const syncComments = /* GraphQL */ `
       items {
         id
         comment
+        createdAt
         userID
         postID
         User {
@@ -452,7 +453,6 @@ export const syncComments = /* GraphQL */ `
           _deleted
           _lastChangedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted
@@ -466,6 +466,7 @@ export const syncComments = /* GraphQL */ `
 export const commentsByPost = /* GraphQL */ `
   query CommentsByPost(
     $postID: ID!
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelCommentFilterInput
     $limit: Int
@@ -473,6 +474,7 @@ export const commentsByPost = /* GraphQL */ `
   ) {
     commentsByPost(
       postID: $postID
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -481,6 +483,7 @@ export const commentsByPost = /* GraphQL */ `
       items {
         id
         comment
+        createdAt
         userID
         postID
         User {
@@ -515,7 +518,6 @@ export const commentsByPost = /* GraphQL */ `
           _deleted
           _lastChangedAt
         }
-        createdAt
         updatedAt
         _version
         _deleted
@@ -570,9 +572,9 @@ export const getPost = /* GraphQL */ `
         items {
           id
           comment
+          createdAt
           userID
           postID
-          createdAt
           updatedAt
           _version
           _deleted
@@ -749,9 +751,9 @@ export const getUser = /* GraphQL */ `
         items {
           id
           comment
+          createdAt
           userID
           postID
-          createdAt
           updatedAt
           _version
           _deleted
