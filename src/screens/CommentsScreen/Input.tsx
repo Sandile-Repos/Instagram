@@ -1,13 +1,10 @@
 import React, {useState} from 'react';
-import {useMutation} from '@apollo/client';
-import {StyleSheet, Text, View, TextInput, Image, Alert} from 'react-native';
-import {CreateCommentMutation, CreateCommentMutationVariables} from '../../API';
-import {commentsByPost, createComment} from './queries';
+import {StyleSheet, Text, View, TextInput, Image} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
-import {useAuthContext} from '../../contexts/AuthContext';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import useCommentsService from '../../services/CommentsService';
 
 interface IInput {
   postId: string;
@@ -15,34 +12,13 @@ interface IInput {
 
 const Input = ({postId}: IInput) => {
   const [newComment, setNewComment] = useState('');
-  const {userId} = useAuthContext();
+
+  const {onCreateComment} = useCommentsService(postId);
 
   const insects = useSafeAreaInsets();
 
-  const [doCreateComment] = useMutation<
-    CreateCommentMutation,
-    CreateCommentMutationVariables
-  >(createComment, {refetchQueries: ['CommentsByPost']});
-
-  const onPost = async () => {
-    try {
-      if (newComment === '') {
-        Alert.alert('Please right a comment before posting');
-        return;
-      }
-      await doCreateComment({
-        variables: {
-          input: {
-            comment: newComment,
-            userID: userId,
-            postID: postId,
-          },
-        },
-      });
-    } catch (e) {
-      Alert.alert('Error submitting the comment', (e as Error).message);
-    }
-
+  const onPost = () => {
+    onCreateComment(newComment);
     setNewComment('');
   };
 
@@ -64,7 +40,7 @@ const Input = ({postId}: IInput) => {
       />
       <Text
         onPress={onPost}
-        //button is in absolute position, therefore the need to adjust it if there is an insects bottom now
+        //button is in absolute position, therefore the need to adjust it if there is an insects bottom
         style={[styles.button, {bottom: insects.bottom + 7}]}>
         POST
       </Text>

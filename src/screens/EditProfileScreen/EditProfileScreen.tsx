@@ -59,7 +59,7 @@ const EditProfileScreen = () => {
   }, [user, setValue]);
 
   const onSubmit = (formData: IEditableUser) => {
-    console.log('submit', data);
+    // console.log('submit', data);
     doUpdateUser({
       variables: {input: {id: userId, ...formData, _version: user?._version}},
     });

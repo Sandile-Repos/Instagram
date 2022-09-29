@@ -5,6 +5,7 @@ import CommentsScreen from '../screens/CommentsScreen/CommentsScreen';
 import colors from '../theme/colors';
 import {SearchTabNavigatorParamList} from '../types/navigation';
 import UserSearchScreen from '../screens/UserSearchScreen';
+import HomeScreen from '../screens/HomeScreen/HomeScreen';
 
 const Tab = createMaterialTopTabNavigator<SearchTabNavigatorParamList>();
 
@@ -17,7 +18,7 @@ const SearchTabNavigator = () => {
         tabBarIndicatorStyle: {backgroundColor: colors.primary},
       }}>
       <Tab.Screen name="Users" component={UserSearchScreen} />
-      <Tab.Screen name="Posts" component={CommentsScreen} />
+      <Tab.Screen name="Posts" component={HomeScreen} />
     </Tab.Navigator>
   );
 };
