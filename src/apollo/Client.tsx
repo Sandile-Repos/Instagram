@@ -28,18 +28,24 @@ const link = ApolloLink.from([
   createSubscriptionHandshakeLink({url, region, auth}, httpLink),
 ]);
 
+const mergeLists = (existing = {items: []}, incoming = {items: []}) => {
+  return {
+    ...existing,
+    ...incoming,
+    items: [...(existing?.items || []), ...incoming.items],
+  };
+};
+
 const typePolicies: TypePolicies = {
   Query: {
     fields: {
       commentsByPost: {
         keyArgs: ['postID', 'filter', 'createdAt', 'sortDirection'],
-        merge(existing = {}, incoming) {
-          return {
-            ...existing,
-            ...incoming,
-            items: [...(existing?.items || []), ...incoming.items],
-          };
-        },
+        merge: mergeLists,
+      },
+      postsByDate: {
+        keyArgs: ['type', 'postID', 'filter', 'createdAt', 'sortDirection'],
+        merge: mergeLists,
       },
     },
   },

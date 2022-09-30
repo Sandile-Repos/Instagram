@@ -26,11 +26,11 @@ const CommentsScreen = () => {
     variables: {
       postID: postId,
       sortDirection: ModelSortDirection.DESC,
-      limit: 3,
+      limit: 20,
     },
   });
 
-  const [isFetchingMore, setFetchingMore] = useState(false);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   const comments = data?.commentsByPost?.items.filter(
     comment => !comment?._deleted,
@@ -41,9 +41,9 @@ const CommentsScreen = () => {
       return;
     }
 
-    setFetchingMore(true); // to prevent fetching more if we already fetching and awaiting
+    setIsFetchingMore(true); // to prevent fetching more if we already fetching and awaiting
     await fetchMore({variables: {nextToken}});
-    setFetchingMore(false);
+    setIsFetchingMore(false);
   };
   if (loading) {
     return <ActivityIndicator />;
