@@ -73,7 +73,7 @@ const FeedPost = (props: IFeedPost) => {
       </DoublePressable>
     );
   }
-  console.log(post);
+  // console.log(post);
 
   return (
     <SafeAreaView style={styles.post}>

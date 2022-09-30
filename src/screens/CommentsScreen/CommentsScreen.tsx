@@ -1,6 +1,6 @@
 import {useQuery} from '@apollo/client';
 import {useRoute} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {ActivityIndicator, FlatList, Text, View} from 'react-native';
 import {
   CommentsByPostQuery,
@@ -19,17 +19,32 @@ const CommentsScreen = () => {
   const route = useRoute<CommentsRouteProp>();
   const {postId} = route.params;
 
-  const {data, loading, error} = useQuery<
+  const {data, loading, error, fetchMore} = useQuery<
     CommentsByPostQuery,
     CommentsByPostQueryVariables
   >(commentsByPost, {
-    variables: {postID: postId, sortDirection: ModelSortDirection.DESC},
+    variables: {
+      postID: postId,
+      sortDirection: ModelSortDirection.DESC,
+      limit: 3,
+    },
   });
+
+  const [isFetchingMore, setFetchingMore] = useState(false);
 
   const comments = data?.commentsByPost?.items.filter(
     comment => !comment?._deleted,
   );
+  const nextToken = data?.commentsByPost?.nextToken;
+  const loadMore = async () => {
+    if (!nextToken || isFetchingMore) {
+      return;
+    }
 
+    setFetchingMore(true); // to prevent fetching more if we already fetching and awaiting
+    await fetchMore({variables: {nextToken}});
+    setFetchingMore(false);
+  };
   if (loading) {
     return <ActivityIndicator />;
   }
@@ -67,6 +82,11 @@ const CommentsScreen = () => {
             </Text>
           </View>
         )} //The user will see this message if there are no comments
+        ListFooterComponent={() => (
+          <Text onPress={loadMore} style={{padding: 10}}>
+            Load More
+          </Text>
+        )}
       />
       <Input postId={postId} />
     </View>

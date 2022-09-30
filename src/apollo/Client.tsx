@@ -1,9 +1,11 @@
+import React from 'react';
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   ApolloLink,
   createHttpLink,
+  TypePolicies,
 } from '@apollo/client';
 import {AuthOptions, createAuthLink, AUTH_TYPE} from 'aws-appsync-auth-link';
 import {createSubscriptionHandshakeLink} from 'aws-appsync-subscription-link';
@@ -26,9 +28,26 @@ const link = ApolloLink.from([
   createSubscriptionHandshakeLink({url, region, auth}, httpLink),
 ]);
 
+const typePolicies: TypePolicies = {
+  Query: {
+    fields: {
+      commentsByPost: {
+        keyArgs: ['postID', 'filter', 'createdAt', 'sortDirection'],
+        merge(existing = {}, incoming) {
+          return {
+            ...existing,
+            ...incoming,
+            items: [...(existing?.items || []), ...incoming.items],
+          };
+        },
+      },
+    },
+  },
+};
+
 const client = new ApolloClient({
   link,
-  cache: new InMemoryCache(), //cache all the data in the device memory
+  cache: new InMemoryCache({typePolicies}), //cache all the data in the device memory
 });
 
 const Client = ({children}: IClient) => {

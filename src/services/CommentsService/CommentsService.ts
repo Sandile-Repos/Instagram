@@ -55,7 +55,7 @@ const useCommentsService = (postId: string) => {
         return;
       }
       if (newComment === '') {
-        Alert.alert('Please right a comment before posting');
+        Alert.alert('Please write a comment before posting');
         return;
       }
       await doCreateComment({
