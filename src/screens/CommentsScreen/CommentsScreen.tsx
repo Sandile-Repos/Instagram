@@ -82,12 +82,9 @@ const CommentsScreen = () => {
             </Text>
           </View>
         )} //The user will see this message if there are no comments
-        ListFooterComponent={() => (
-          <Text onPress={loadMore} style={{padding: 10}}>
-            Load More
-          </Text>
-        )}
+        onEndReached={() => loadMore()}
       />
+
       <Input postId={postId} />
     </View>
   );
