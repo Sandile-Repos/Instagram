@@ -65,6 +65,10 @@ const CommentsScreen = () => {
     setIsFetchingMore(false);
   };
 
+  const isNewComment = (comment: CommentType) => {
+    return newComments.some(c => c.id === comment.id); // does the newComment array have id comment equal to the one we searching for
+  };
+
   if (loading) {
     return <ActivityIndicator />;
   }
@@ -81,7 +85,11 @@ const CommentsScreen = () => {
     <View style={{flex: 1}}>
       <FlatList
         data={[...newComments, ...comments]}
-        renderItem={({item}) => <Comment comment={item} includeDetails />}
+        renderItem={({item}) =>
+          item && (
+            <Comment comment={item} includeDetails isNew={isNewComment(item)} />
+          )
+        }
         // eslint-disable-next-line react-native/no-inline-styles
         style={{padding: 10}}
         inverted
