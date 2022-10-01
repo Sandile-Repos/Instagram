@@ -2,6 +2,91 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateCommentByPostId = /* GraphQL */ `
+  subscription OnCreateCommentByPostId($postID: ID!) {
+    onCreateCommentByPostId(postID: $postID) {
+      id
+      comment
+      createdAt
+      userID
+      postID
+      User {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      Post {
+        id
+        createdAt
+        type
+        description
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const onCreateLike = /* GraphQL */ `
   subscription OnCreateLike($filter: ModelSubscriptionLikeFilterInput) {
     onCreateLike(filter: $filter) {
