@@ -8,6 +8,7 @@ import {
   CameraPictureOptions,
   VideoQuality,
 } from 'expo-camera';
+import {launchImageLibrary} from 'react-native-image-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import {useNavigation} from '@react-navigation/native';
@@ -116,15 +117,20 @@ const PostUploadScreen = () => {
     return <Text>No access to the camera</Text>;
   }
 
-  // console.warn(flash);
-  const navigateToCreateScreen = () => {
-    navigation.navigate('Create', {
-      images: [
-        'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/4.jpg',
-        'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg',
-        'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/3.jpg',
-      ],
-    });
+  const openImageGallery = () => {
+    launchImageLibrary(
+      {mediaType: 'photo'},
+      ({didCancel, errorCode, assets}) => {
+        if (!didCancel && !errorCode && assets && assets.length > 0) {
+          // console.log(assets);
+          if (assets.length === 1) {
+            navigation.navigate('Create', {
+              image: assets[0].uri,
+            });
+          }
+        }
+      },
+    );
   };
 
   return (
@@ -151,7 +157,9 @@ const PostUploadScreen = () => {
       </View>
 
       <View style={[styles.buttonsContainer, {bottom: 25}]}>
-        <MaterialIcons name="photo-library" size={30} color={colors.white} />
+        <Pressable onPress={openImageGallery}>
+          <MaterialIcons name="photo-library" size={30} color={colors.white} />
+        </Pressable>
         {isCameraReady && (
           <Pressable
             onPress={takePicture}
@@ -168,13 +176,6 @@ const PostUploadScreen = () => {
         <Pressable onPress={flipCamera}>
           <MaterialIcons
             name="flip-camera-ios"
-            size={30}
-            color={colors.white}
-          />
-        </Pressable>
-        <Pressable onPress={navigateToCreateScreen}>
-          <MaterialIcons
-            name="arrow-forward-ios"
             size={30}
             color={colors.white}
           />
