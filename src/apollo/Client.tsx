@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {
   ApolloClient,
   InMemoryCache,
@@ -46,23 +46,25 @@ const typePolicies: TypePolicies = {
 const Client = ({children}: IClient) => {
   const {user} = useAuthContext();
   // console.log(user);
-  const jwtToken =
-    user?.getSignInUserSession()?.getAccessToken().getJwtToken() || '';
-  const auth: AuthOptions = {
-    type: config.aws_appsync_authenticationType as AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
-    // jwtToken: () => {
-    //   return token;
-    // },
-    jwtToken,
-  };
-  const link = ApolloLink.from([
-    createAuthLink({url, region, auth}),
-    createSubscriptionHandshakeLink({url, region, auth}, httpLink),
-  ]);
-  const client = new ApolloClient({
-    link,
-    cache: new InMemoryCache({typePolicies}), //cache all the data in the device memory
-  });
+
+  const client = useMemo(() => {
+    const jwtToken =
+      user?.getSignInUserSession()?.getAccessToken().getJwtToken() || '';
+    const auth: AuthOptions = {
+      type: config.aws_appsync_authenticationType as AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
+      jwtToken,
+    };
+
+    const link = ApolloLink.from([
+      createAuthLink({url, region, auth}),
+      createSubscriptionHandshakeLink({url, region, auth}, httpLink),
+    ]);
+
+    return new ApolloClient({
+      link,
+      cache: new InMemoryCache({typePolicies}), //cache all the data in the device memory
+    });
+  }, [user]);
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };

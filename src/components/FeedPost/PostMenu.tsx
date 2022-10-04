@@ -29,10 +29,15 @@ const PostMenu = ({post}: IPost) => {
 
   const {userId} = useAuthContext();
   const isMyPost = userId === post.userID; //A more secured method with authendicated users later
+  // const isMyPost = true;
 
   const startDeletingPost = async () => {
-    const response = await doDeletePost();
-    console.log(response);
+    try {
+      await doDeletePost();
+      // console.log(response);
+    } catch (e) {
+      Alert.alert('Failed to delete post', (e as Error).message);
+    }
   };
 
   const onDeleteOptionPressed = () => {
