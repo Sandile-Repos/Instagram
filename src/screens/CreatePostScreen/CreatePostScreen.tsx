@@ -15,6 +15,7 @@ import {useAuthContext} from '../../contexts/AuthContext';
 import Carousel from '../../components/Carousel';
 import VideoPlayer from '../../components/VideoPlayer';
 import {Storage} from 'aws-amplify';
+import {v4 as uuidV4} from 'uuid';
 
 const CreatePostScreen = () => {
   const [description, setDescription] = useState('');
@@ -87,9 +88,11 @@ const CreatePostScreen = () => {
       //get the blob of the file from uri
       const response = await fetch(uri);
       const blob = await response.blob();
+      const uriParts = uri.split('.');
+      const extension = uriParts[uriParts.length - 1];
 
       //upload the file (blob) to s3
-      const s3Response = await Storage.put('image.png', blob);
+      const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
       // console.log(s3Response);
       return s3Response.key;
     } catch (error) {}

@@ -15,7 +15,6 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   userAvatar: {
-    backgroundColor: 'red',
     width: 50,
     height: 50,
     borderRadius: 25,
