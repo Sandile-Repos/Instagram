@@ -16,6 +16,10 @@ import Carousel from '../../components/Carousel';
 import VideoPlayer from '../../components/VideoPlayer';
 import {Storage} from 'aws-amplify';
 import {v4 as uuidV4} from 'uuid';
+import {
+  KeyboardAwareScrollView,
+  keyboardAwareScrollView,
+} from 'react-native-keyboard-aware-scroll-view';
 
 const CreatePostScreen = () => {
   const [description, setDescription] = useState('');
@@ -99,7 +103,7 @@ const CreatePostScreen = () => {
   };
 
   return (
-    <View style={styles.root}>
+    <KeyboardAwareScrollView contentContainerStyle={styles.root}>
       <View style={styles.content}>{content}</View>
       <TextInput
         value={description}
@@ -113,7 +117,7 @@ const CreatePostScreen = () => {
         text={isSubmitting ? 'Submitting...' : 'Submit'}
         onPress={submit}
       />
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 

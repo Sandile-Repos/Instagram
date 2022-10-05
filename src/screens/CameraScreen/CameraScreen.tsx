@@ -13,6 +13,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import {useNavigation} from '@react-navigation/native';
 import {CameraNavigationProp} from '../../types/navigation';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const flashModes = [
   FlashMode.off,
@@ -34,6 +35,9 @@ const PostUploadScreen = () => {
   const [flash, setFlash] = useState(FlashMode.off);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+
+  const insect = useSafeAreaInsets();
+
   const camera = useRef<Camera>(null);
   const navigation = useNavigation<CameraNavigationProp>();
 
@@ -77,7 +81,9 @@ const PostUploadScreen = () => {
       skipProcessing: true, // on android, the 'processing' step messes the orientation on some devices
     };
     const result = await camera.current.takePictureAsync(options);
-    // console.log(result);
+    navigation.navigate('Create', {
+      image: result.uri,
+    });
   };
 
   const startRecording = async () => {
@@ -134,7 +140,7 @@ const PostUploadScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.page}>
+    <View style={styles.page}>
       <Camera
         ref={camera}
         style={styles.camera}
@@ -144,7 +150,7 @@ const PostUploadScreen = () => {
         onCameraReady={() => setIsCameraReady(true)}
       />
 
-      <View style={[styles.buttonsContainer, {top: 25}]}>
+      <View style={[styles.buttonsContainer, {top: insect.top + 25}]}>
         <MaterialIcons name="close" size={30} color={colors.white} />
         <Pressable onPress={flipFlash}>
           <MaterialIcons
@@ -181,7 +187,7 @@ const PostUploadScreen = () => {
           />
         </Pressable>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
