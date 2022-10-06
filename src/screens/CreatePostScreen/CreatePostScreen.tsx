@@ -1,4 +1,4 @@
-import {View, Image, StyleSheet, TextInput, Alert} from 'react-native';
+import {View, Image, StyleSheet, TextInput, Alert, Text} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {CreateNavigationProp, CreateRouteProp} from '../../types/navigation';
@@ -22,6 +22,8 @@ const CreatePostScreen = () => {
   const [description, setDescription] = useState('');
   const {userId} = useAuthContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [progress, setProgress] = useState(0);
+
   const navigation = useNavigation<CreateNavigationProp>(); //CreateNavigationProp removes error on popToTop
 
   const route = useRoute<CreateRouteProp>();
@@ -98,7 +100,11 @@ const CreatePostScreen = () => {
       const extension = uriParts[uriParts.length - 1];
 
       //upload the file (blob) to s3
-      const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
+      const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob, {
+        progressCallback(newProgress) {
+          setProgress(newProgress.loaded / newProgress.total);
+        },
+      });
       // console.log(s3Response);
       return s3Response.key;
     } catch (error) {}
@@ -119,6 +125,12 @@ const CreatePostScreen = () => {
         text={isSubmitting ? 'Submitting...' : 'Submit'}
         onPress={submit}
       />
+      {isSubmitting && (
+        <View style={styles.progressContainer}>
+          <View style={[styles.progress, {width: `${progress * 100}%`}]} />
+          <Text>Uploading {Math.floor(progress * 100)}%</Text>
+        </View>
+      )}
     </KeyboardAwareScrollView>
   );
 };
@@ -141,6 +153,22 @@ const styles = StyleSheet.create({
   content: {
     width: '100%',
     aspectRatio: 1,
+  },
+  progressContainer: {
+    backgroundColor: colors.lightgrey,
+    width: '100%',
+    height: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 25,
+    marginVertical: 10,
+  },
+  progress: {
+    backgroundColor: colors.primary,
+    position: 'absolute',
+    height: '100%',
+    alignSelf: 'flex-start',
+    borderRadius: 25,
   },
 });
 export default CreatePostScreen;
