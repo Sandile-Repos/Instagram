@@ -28,6 +28,7 @@ const Content = ({post, isVisible}: IContent) => {
     return (
       <Image
         style={styles.image}
+        resizeMode="contain"
         source={{
           uri: imageUri,
           //   uri: post.image?.startsWith('http') ? post.image : imageUri,

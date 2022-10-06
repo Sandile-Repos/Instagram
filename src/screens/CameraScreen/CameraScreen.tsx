@@ -80,10 +80,14 @@ const PostUploadScreen = () => {
       base64: false, // include base64 version of the image
       skipProcessing: true, // on android, the 'processing' step messes the orientation on some devices
     };
-    const result = await camera.current.takePictureAsync(options);
-    navigation.navigate('Create', {
-      image: result.uri,
-    });
+    try {
+      const result = await camera.current.takePictureAsync(options);
+      navigation.navigate('Create', {
+        image: result.uri,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const startRecording = async () => {
@@ -99,7 +103,7 @@ const PostUploadScreen = () => {
     };
     setIsRecording(true);
     try {
-      const result = await camera.current.recordAsync(options);
+      await camera.current.recordAsync(options);
       // console.log(result);
     } catch (e) {
       console.log(e);
