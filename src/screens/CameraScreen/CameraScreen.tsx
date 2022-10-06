@@ -11,7 +11,7 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {CameraNavigationProp} from '../../types/navigation';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
@@ -35,6 +35,7 @@ const PostUploadScreen = () => {
   const [flash, setFlash] = useState(FlashMode.off);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const isFocused = useIsFocused();
 
   const insect = useSafeAreaInsets();
 
@@ -145,14 +146,16 @@ const PostUploadScreen = () => {
 
   return (
     <View style={styles.page}>
-      <Camera
-        ref={camera}
-        style={styles.camera}
-        type={cameraType}
-        ratio={'4:3'}
-        flashMode={flash}
-        onCameraReady={() => setIsCameraReady(true)}
-      />
+      {isFocused && (
+        <Camera
+          ref={camera}
+          style={styles.camera}
+          type={cameraType}
+          ratio={'4:3'}
+          flashMode={flash}
+          onCameraReady={() => setIsCameraReady(true)}
+        />
+      )}
 
       <View style={[styles.buttonsContainer, {top: insect.top + 25}]}>
         <MaterialIcons name="close" size={30} color={colors.white} />
