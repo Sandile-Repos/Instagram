@@ -42,7 +42,7 @@ const ProfileScreen = () => {
   return (
     <View>
       <Pressable
-        style={{position: 'absolute', right: 5, color: 'red', zIndex: 100}}
+        style={{position: 'absolute', right: 5, zIndex: 100}}
         onPress={() => setHeaderFixed(v => !v)}>
         <Ionicons
           name={headerFixed ? 'lock-closed-outline' : 'md-open-outline'}

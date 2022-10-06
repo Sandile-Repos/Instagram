@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, SafeAreaView, Pressable} from 'react-native';
+import {StyleSheet, Text, View, Pressable} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Camera,
@@ -130,13 +130,17 @@ const PostUploadScreen = () => {
 
   const openImageGallery = () => {
     launchImageLibrary(
-      {mediaType: 'photo'},
+      {mediaType: 'photo', selectionLimit: 3},
       ({didCancel, errorCode, assets}) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
           // console.log(assets);
           if (assets.length === 1) {
             navigation.navigate('Create', {
               image: assets[0].uri,
+            });
+          } else if (assets.length > 1) {
+            navigation.navigate('Create', {
+              images: assets.map(asset => asset.uri as string),
             });
           }
         }

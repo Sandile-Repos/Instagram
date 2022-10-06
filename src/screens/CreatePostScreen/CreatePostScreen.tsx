@@ -16,10 +16,7 @@ import Carousel from '../../components/Carousel';
 import VideoPlayer from '../../components/VideoPlayer';
 import {Storage} from 'aws-amplify';
 import {v4 as uuidV4} from 'uuid';
-import {
-  KeyboardAwareScrollView,
-  keyboardAwareScrollView,
-} from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const CreatePostScreen = () => {
   const [description, setDescription] = useState('');
@@ -74,6 +71,10 @@ const CreatePostScreen = () => {
     if (image) {
       const imageKey = await uploadMedia(image);
       input.image = imageKey;
+    } else if (images) {
+      // wait for every image to be uploaded before getting the results
+      const imageKeys = await Promise.all(images.map(img => uploadMedia(img)));
+      input.images = imageKeys.filter(key => key) as string[]; //filter out the undefined key and cast to a string array
     }
     try {
       await doCreatePost({variables: {input}});

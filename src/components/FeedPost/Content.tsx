@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Image, ActivityIndicator} from 'react-native';
-import {Storage} from 'aws-amplify';
+import {oAuthSignInButton, Storage} from 'aws-amplify';
 import {useEffect, useState} from 'react';
 
 import Carousel from '../Carousel';
@@ -15,6 +15,7 @@ interface IContent {
 
 const Content = ({post, isVisible}: IContent) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
+  const [imagesUri, setImagesUri] = useState<string[] | null>(null);
   useEffect(() => {
     downloadMedia();
   }, []);
@@ -22,6 +23,9 @@ const Content = ({post, isVisible}: IContent) => {
     if (post.image) {
       const uri = await Storage.get(post.image);
       setImageUri(uri);
+    } else if (post.images) {
+      const uri = await Promise.all(post.images.map(img => Storage.get(img)));
+      setImagesUri(uri);
     }
   };
   if (imageUri) {
@@ -31,12 +35,11 @@ const Content = ({post, isVisible}: IContent) => {
         resizeMode="contain"
         source={{
           uri: imageUri,
-          //   uri: post.image?.startsWith('http') ? post.image : imageUri,
         }}
       />
     );
-  } else if (post.images) {
-    return <Carousel images={post.images} />;
+  } else if (imagesUri) {
+    return <Carousel images={imagesUri} />;
   } else if (post.video) {
     return <VideoPlayer uri={post.video} paused={!isVisible} />;
   }
