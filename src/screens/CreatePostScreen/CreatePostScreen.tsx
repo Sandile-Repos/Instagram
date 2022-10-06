@@ -69,12 +69,13 @@ const CreatePostScreen = () => {
 
     //upload the media file to s3 bucket and get the key
     if (image) {
-      const imageKey = await uploadMedia(image);
-      input.image = imageKey;
+      input.image = await uploadMedia(image);
     } else if (images) {
       // wait for every image to be uploaded before getting the results
       const imageKeys = await Promise.all(images.map(img => uploadMedia(img)));
       input.images = imageKeys.filter(key => key) as string[]; //filter out the undefined key and cast to a string array
+    } else if (video) {
+      input.video = await uploadMedia(video);
     }
     try {
       await doCreatePost({variables: {input}});

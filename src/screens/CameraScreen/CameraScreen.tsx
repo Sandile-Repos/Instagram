@@ -110,8 +110,11 @@ const PostUploadScreen = () => {
       console.log(e);
     }
     setIsRecording(false);
-    //  const result = await camera.current.recordAsync(options);
+    const result = await camera.current.recordAsync(options);
     // console.log(result);
+    navigation.navigate('Create', {
+      video: result.uri,
+    });
   };
   const stopRecording = () => {
     // console.warn('stop recording');
@@ -130,19 +133,21 @@ const PostUploadScreen = () => {
 
   const openImageGallery = () => {
     launchImageLibrary(
-      {mediaType: 'photo', selectionLimit: 3},
+      {mediaType: 'mixed', selectionLimit: 3},
       ({didCancel, errorCode, assets}) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
           // console.log(assets);
+          const params: {image?: string; images?: string[]; video?: string} =
+            {};
           if (assets.length === 1) {
-            navigation.navigate('Create', {
-              image: assets[0].uri,
-            });
+            const field = assets[0].type?.startsWith('video')
+              ? 'video'
+              : 'image';
+            params[field] = assets[0].uri;
           } else if (assets.length > 1) {
-            navigation.navigate('Create', {
-              images: assets.map(asset => asset.uri as string),
-            });
+            params.images = assets.map(asset => asset.uri) as string[];
           }
+          navigation.navigate('Create', params);
         }
       },
     );
