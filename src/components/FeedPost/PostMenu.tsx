@@ -14,6 +14,7 @@ import {DeletePostMutation, DeletePostMutationVariables, Post} from '../../API';
 import {useAuthContext} from '../../contexts/AuthContext';
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
+import {Storage} from 'aws-amplify';
 
 interface IPost {
   post: Post;
@@ -32,6 +33,15 @@ const PostMenu = ({post}: IPost) => {
   // const isMyPost = true;
 
   const startDeletingPost = async () => {
+    if (post.image) {
+      await Storage.remove(post.image);
+    }
+    if (post.images) {
+      await Promise.all(post.images.map(img => Storage.remove(img)));
+    }
+    if (post.video) {
+      await Storage.remove(post.video);
+    }
     try {
       await doDeletePost();
       // console.log(response);
