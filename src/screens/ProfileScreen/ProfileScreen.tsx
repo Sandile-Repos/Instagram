@@ -55,16 +55,9 @@ const ProfileScreen = () => {
           }}
         />
       </Pressable>
-      {headerFixed && (
-        <View>
-          <ProfileHeader user={user} />
-        </View>
-      )}
-
       <FeedGridView
         data={user?.Posts?.items || []}
-        ListHeaderComponent={null}
-        // ListHeaderComponent={() => <ProfileHeader user={user} />}
+        ListHeaderComponent={() => <ProfileHeader user={user} />}
         refetch={refetch}
         loading={loading}
       />
