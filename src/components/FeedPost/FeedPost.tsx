@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, View, SafeAreaView, Text, Pressable} from 'react-native';
+import {View, SafeAreaView, Text, Pressable} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,12 +11,11 @@ import DoublePressable from '../DoublePressable';
 import {useNavigation} from '@react-navigation/native';
 import {FeedNavigationProp} from '../../types/navigation';
 import {Post} from '../../API';
-import {DEFAULT_USER_IMAGE} from '../../config';
 import PostMenu from './PostMenu';
 import useLikeService from '../../services/LikeService';
 import dayjs from 'dayjs';
 import Content from './Content';
-
+import UserImage from '../UserImage';
 interface IFeedPost {
   post: Post;
   isVisible: boolean;
@@ -55,17 +54,10 @@ const FeedPost = (props: IFeedPost) => {
     <SafeAreaView style={styles.post}>
       {/* Header */}
       <View style={styles.header}>
-        <Image
-          resizeMode="contain"
-          style={styles.userAvatar}
-          source={{
-            uri: post?.User?.image || DEFAULT_USER_IMAGE,
-          }}
-        />
+        <UserImage imageKey={post.User?.image || undefined} />
         <Text onPress={navigateToUser} style={styles.userName}>
           {post.User?.username}
         </Text>
-
         <PostMenu post={post} />
       </View>
 

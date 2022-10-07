@@ -7,6 +7,7 @@ import {
   DeleteUserMutationVariables,
   GetUserQuery,
   GetUserQueryVariables,
+  UpdateUserInput,
   UpdateUserMutation,
   UpdateUserMutationVariables,
   UserByUsernameQuery,
@@ -17,10 +18,11 @@ import ApiErrorMessage from '../../components/ApiErrorMessage';
 import {useMutation, useQuery, useLazyQuery} from '@apollo/client';
 import {useAuthContext} from '../../contexts/AuthContext';
 import {useNavigation} from '@react-navigation/native';
-import {Auth} from 'aws-amplify';
+import {Auth, Storage} from 'aws-amplify';
 import styles from './styles';
 import CustomInput, {IEditableUser} from './CustomInput';
 import {DEFAULT_USER_IMAGE} from '../../config';
+import {v4 as uuidV4} from 'uuid';
 
 const URL_REGEX =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
@@ -30,6 +32,8 @@ const EditProfileScreen = () => {
   //remove default setting of data in use form and set with setValue
   const {control, handleSubmit, setValue} = useForm<IEditableUser>();
   const {userId, user: authUser} = useAuthContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [progress, setProgress] = useState(0);
   const navigation = useNavigation();
 
   const {data, loading, error} = useQuery<GetUserQuery, GetUserQueryVariables>(
@@ -58,11 +62,29 @@ const EditProfileScreen = () => {
     }
   }, [user, setValue]);
 
-  const onSubmit = (formData: IEditableUser) => {
-    // console.log('submit', data);
-    doUpdateUser({
-      variables: {input: {id: userId, ...formData, _version: user?._version}},
-    });
+  const onSubmit = async (formData: IEditableUser) => {
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    const input: UpdateUserInput = {
+      id: userId,
+      ...formData,
+      _version: user?._version,
+    };
+    if (selectedPhoto?.uri) {
+      input.image = await uploadMedia(selectedPhoto.uri);
+    }
+    try {
+      doUpdateUser({
+        variables: {input},
+      });
+      setIsSubmitting(false);
+    } catch (e) {
+      Alert.alert('Error uploading the profile', (e as Error).message);
+      setIsSubmitting(false);
+    }
     if (navigation.canGoBack()) {
       navigation.goBack();
     }
@@ -136,6 +158,26 @@ const EditProfileScreen = () => {
       />
     );
   }
+  const uploadMedia = async (uri: string) => {
+    try {
+      //get the blob of the file from uri
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const uriParts = uri.split('.');
+      const extension = uriParts[uriParts.length - 1];
+
+      //upload the file (blob) to s3
+      const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob, {
+        progressCallback(newProgress) {
+          setProgress(newProgress.loaded / newProgress.total);
+        },
+      });
+      // console.log(s3Response);
+      return s3Response.key;
+    } catch (e) {
+      Alert.alert('Error uploading the file');
+    }
+  };
   return (
     <View style={styles.page}>
       <Image
@@ -195,6 +237,12 @@ const EditProfileScreen = () => {
       <Text onPress={confirmDelete} style={styles.textButtonDanger}>
         {deleteLoading ? 'Deleting...' : 'Delete User'}
       </Text>
+      {isSubmitting && (
+        <View style={styles.progressContainer}>
+          <View style={[styles.progress, {width: `${progress * 100}%`}]} />
+          <Text>Uploading {Math.floor(progress * 100)}%</Text>
+        </View>
+      )}
     </View>
   );
 };

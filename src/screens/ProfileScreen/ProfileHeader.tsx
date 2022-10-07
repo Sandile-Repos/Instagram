@@ -1,4 +1,4 @@
-import {Text, View, Image, ScrollView} from 'react-native';
+import {Text, View, ScrollView} from 'react-native';
 import React from 'react';
 import {Auth} from 'aws-amplify';
 
@@ -7,8 +7,8 @@ import Button from '../../components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {ProfileNavigationProp} from '../../types/navigation';
 import {User} from '../../API';
-import {DEFAULT_USER_IMAGE} from '../../config';
 import {useAuthContext} from '../../contexts/AuthContext';
+import UserImage from '../../components/UserImage';
 
 interface IProfileHeader {
   user: User;
@@ -22,10 +22,7 @@ const ProfileHeader = ({user}: IProfileHeader) => {
   return (
     <ScrollView style={styles.root}>
       <View style={styles.headerRow}>
-        <Image
-          source={{uri: user.image || DEFAULT_USER_IMAGE}}
-          style={styles.avatar}
-        />
+        <UserImage imageKey={user.image} width={100} />
         <View style={styles.numberContainer}>
           <Text style={styles.numberText}>{user.noOfPosts}</Text>
           <Text>Posts</Text>

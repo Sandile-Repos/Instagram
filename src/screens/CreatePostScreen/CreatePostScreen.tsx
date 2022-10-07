@@ -107,7 +107,9 @@ const CreatePostScreen = () => {
       });
       // console.log(s3Response);
       return s3Response.key;
-    } catch (error) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
