@@ -26,5 +26,12 @@
         }
       }
     }
+  },
+  "staging": {
+    "categories": {
+      "auth": {
+        "Instagram": {}
+      }
+    }
   }
 }
