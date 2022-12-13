@@ -31,6 +31,9 @@
     "categories": {
       "auth": {
         "Instagram": {}
+      },
+      "function": {
+        "InstagramPostConfirmation": {}
       }
     }
   }
