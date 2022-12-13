@@ -1,5 +1,5 @@
 import {Text, View, ScrollView} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Auth} from 'aws-amplify';
 
 import styles from './styles';
@@ -18,7 +18,10 @@ const ProfileHeader = ({user}: IProfileHeader) => {
   const navigation = useNavigation<ProfileNavigationProp>();
   const {userId} = useAuthContext();
 
-  navigation.setOptions({title: user?.username || 'Profile}'});
+  useEffect(() => {
+    navigation.setOptions({title: user?.username || 'Profile}'});
+  }, [navigation, user]);
+
   return (
     <ScrollView style={styles.root}>
       <View style={styles.headerRow}>
