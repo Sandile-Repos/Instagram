@@ -99,6 +99,7 @@ const CommentsScreen = () => {
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: 300,
+              transform: [{scaleY: -1}],
             }}>
             <Text
               style={{
