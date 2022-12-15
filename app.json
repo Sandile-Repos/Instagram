@@ -1,4 +1,9 @@
 {
   "name": "MemoriesAlbum",
-  "displayName": "Memories Album"
+  "displayName": "Memories Album",
+  "extra": {
+    "eas": {
+      "projectId": "94d5fb21-0ec2-43ab-8779-aeda66c2ccf4"
+    }
+  }
 }
