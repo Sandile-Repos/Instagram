@@ -3,7 +3,6 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - staging
       - dev # TODO Remove when we are done
 jobs:
   build:
