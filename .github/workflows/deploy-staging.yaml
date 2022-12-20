@@ -15,7 +15,7 @@ jobs:
     secrets: inherit # pass all secrets from deploy to eas build
     with:
       PLATFORM: android
-      PROFILE: preview
+      PROFILE: development
 
   build-ios:
     name: Install and build ios app (Preview)
@@ -23,4 +23,4 @@ jobs:
     secrets: inherit # pass all secrets from deploy to eas build
     with:
       PLATFORM: ios
-      PROFILE: preview
+      PROFILE: development
