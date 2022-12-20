@@ -34,4 +34,4 @@ jobs:
         run: npm ci
 
       - name: Build on EAS
-        run: eas build --profile ${{ inputs.PROFILE }} --platform {{ inputs.PLATFORM }} --non-interactive # Note the profile is dynamically called from the inputs now
+        run: eas build --profile ${{ inputs.PROFILE }} --platform ${{ inputs.PLATFORM }} --non-interactive # Note the profile is dynamically called from the inputs now
