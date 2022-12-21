@@ -30,8 +30,7 @@ jobs:
 
       # Install and configure AWS cli
       - name: Install AWS cli
-        run:
-          | #pipe represent running multiple commands. Note that we added --update at the end
+        run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip awscliv2.zip
           sudo ./aws/install --update
