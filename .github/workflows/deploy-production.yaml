@@ -32,8 +32,8 @@ jobs:
         run: npm ci
 
       - run: |
-          git configure user.email "GITHUB_ACTOR@users.noreply.github.com"
-          git configure user.name  "GITHUB_ACTOR"
+          git config user.email "GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name  "GITHUB_ACTOR"
 
       - name: Patch # above github configuration required because github needs to know who is the author when patching
         run: npm version patch
