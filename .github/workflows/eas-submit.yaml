@@ -31,4 +31,4 @@ jobs:
         run: echo $GOOGLE_SERVICE_ACCOUNT_BASE64 | base64 --decode > service_account.json # printout google service account env variable than pass it to base64 to decode it and write back to the file
 
       - name: Submit to EAS
-        run: eas build --profile ${{ inputs.PROFILE }} --platform ${{ inputs.PLATFORM }} --latest --non-interactive # Note the profile is dynamically called from the inputs now
+        run: eas submit --profile ${{ inputs.PROFILE }} --platform ${{ inputs.PLATFORM }} --latest --non-interactive # Note the profile is dynamically called from the inputs now
