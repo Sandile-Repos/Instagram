@@ -31,13 +31,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-        run: |
+      - run: |
           git configure user.email "GITHUB_ACTOR@users.noreply.github.com"
           git configure user.name  "GITHUB_ACTOR"
 
       - name: Patch # above github configuration required because github needs to know who is the author when patching
         run: npm version patch
-        
+
       #Commit and push changes to github
       - uses: stefanzweifel/git-auto-commit-action@v4
 
@@ -58,7 +58,7 @@ jobs:
     with:
       PLATFORM: ios
       PROFILE: production #PROFILE: production or empty(leave out whole line) because its production profile
-  
+
   submit-android:
     name: Submit android app to Play Store
     needs: build-android
@@ -74,4 +74,4 @@ jobs:
     secrets: inherit
     with:
       PLATFORM: ios # can skip profile since it production
-    
+
