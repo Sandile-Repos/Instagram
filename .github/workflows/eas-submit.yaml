@@ -1,0 +1,36 @@
+name: EAS Submit
+
+on:
+  workflow_call: #triggered when called and not manual or pushed
+    inputs:
+      PLATFORM:
+        required: true
+        type: string
+      PROFILE:
+        required: false
+        type: string
+        default: production # if we not sending the profile input variables(required: false) it would default to "production"
+
+jobs:
+  submit:
+    name: Submit the app using EAS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: 5.x
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Decode and write the service_account.json
+        env: GOOGLE_SERVICE_ACCOUNT_BASE64: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+        run: echo $GOOGLE_SERVICE_ACCOUNT_BASE64 | base64 --decode > service_account.json # printout google service account env variable than pass it to base64 to decode it and write back to the file
+
+      - name: Submit to EAS
+        run: eas build --profile ${{ inputs.PROFILE }} --platform ${{ inputs.PLATFORM }} --latest --non-interactive # Note the profile is dynamically called from the inputs now
