@@ -55,9 +55,14 @@ const FeedPost = (props: IFeedPost) => {
       {/* Header */}
       <View style={styles.header}>
         <UserImage imageKey={post.User?.image || undefined} />
-        <Text onPress={navigateToUser} style={styles.userName}>
-          {post.User?.username}
-        </Text>
+        <View>
+          <Text onPress={navigateToUser} style={styles.userName}>
+            {post.User?.username}
+          </Text>
+          {post.location && (
+            <Text style={styles.location}>{post.location}</Text>
+          )}
+        </View>
         <PostMenu post={post} />
       </View>
 

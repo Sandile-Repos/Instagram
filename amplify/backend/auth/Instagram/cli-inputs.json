@@ -92,4 +92,4 @@
     "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"InstagramPostConfirmation\"\n  }\n]",
     "permissions": []
   }
-} 
+}  

@@ -21,6 +21,12 @@
           "deploymentBucketName": "amplify-instagram-staging-203838-deployment",
           "s3Key": "amplify-builds/InstagramPostConfirmation-2b354c4c796f4b584b48-build.zip"
         }
+      },
+      "api": {
+        "Instagram": {}
+      },
+      "storage": {
+        "storage": {}
       }
     }
   },
@@ -46,6 +52,12 @@
           "deploymentBucketName": "amplify-instagram-dev-223658-deployment",
           "s3Key": "amplify-builds/InstagramPostConfirmation-2b354c4c796f4b584b48-build.zip"
         }
+      },
+      "api": {
+        "Instagram": {}
+      },
+      "storage": {
+        "storage": {}
       }
     }
   },
@@ -102,6 +114,12 @@
           "deploymentBucketName": "amplify-instagram-prod-231444-deployment",
           "s3Key": "amplify-builds/InstagramPostConfirmation-2b354c4c796f4b584b48-build.zip"
         }
+      },
+      "api": {
+        "Instagram": {}
+      },
+      "storage": {
+        "storage": {}
       }
     }
   }

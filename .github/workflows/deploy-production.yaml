@@ -1,0 +1,77 @@
+name: Build and Deploy application to production environment
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-backend: #deploy amplify back end
+    name: Deploy backend to production environment
+    uses: ./.github/workflows/amplify-init.yaml
+    secrets: inherit
+    with:
+      AMPLIFY_ENV_NAME: prod # we named the environment variable prod on amplify
+
+  patch-version: #We want to increase the app version before deployment
+    name: Patch the version of the app
+    needs: deploy-backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: git pull origin ${{ github.ref_name }}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - run: |
+          git config user.email "GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name  "GITHUB_ACTOR"
+
+      - name: Patch # above github configuration required because github needs to know who is the author when patching
+        run: npm version patch
+
+      #Commit and push changes to github
+      - uses: stefanzweifel/git-auto-commit-action@v4
+
+  build-android:
+    name: Install and build android app (Production)
+    needs: patch-version
+    uses: ./.github/workflows/eas-build.yaml # navigate to root github than specific workflow
+    secrets: inherit # pass all secrets from deploy to eas build
+    with:
+      PLATFORM: android
+      PROFILE: production #PROFILE: production or empty(leave out whole line) because its production profile
+
+  build-ios:
+    name: Install and build ios app (Production)
+    needs: patch-version
+    uses: ./.github/workflows/eas-build.yaml # navigate to root github than specific workflow
+    secrets: inherit # pass all secrets from deploy to eas build
+    with:
+      PLATFORM: ios
+      PROFILE: production #PROFILE: production or empty(leave out whole line) because its production profile
+
+  submit-android:
+    name: Submit android app to Play Store
+    needs: build-android
+    uses: ./.github/workflows/eas-submit.yaml
+    secrets: inherit
+    with:
+      PLATFORM: android # can skip profile since it production
+
+  submit-ios:
+    name: Submit ios app to AppStore
+    needs: build-android
+    uses: ./.github/workflows/eas-submit.yaml
+    secrets: inherit
+    with:
+      PLATFORM: ios # can skip profile since it production
+
