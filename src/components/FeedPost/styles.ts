@@ -24,6 +24,9 @@ export default StyleSheet.create({
     fontWeight: fonts.weight.bold,
     color: colors.black,
   },
+  location: {
+    color: colors.grey,
+  },
   footer: {
     padding: 10,
   },
