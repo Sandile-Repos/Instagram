@@ -31,4 +31,4 @@ jobs:
     secrets: inherit # pass all secrets from deploy to eas build
     with:
       PLATFORM: ios
-      PROFILE: preview
+      PROFILE: development
