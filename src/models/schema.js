@@ -320,6 +320,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "location": {
+                    "name": "location",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "video": {
                     "name": "video",
                     "isArray": false,
@@ -570,6 +577,6 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "codegenVersion": "3.3.2",
-    "version": "5b27c5a3fff6bb266d4d1c78c71b83cb"
+    "codegenVersion": "3.2.0",
+    "version": "88a5e9ad50082925b527004e00b97b03"
 };

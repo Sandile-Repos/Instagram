@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - main
-      - dev # TODO Remove when we are done
 
 jobs:
   deploy-backend: #deploy amplify back end
