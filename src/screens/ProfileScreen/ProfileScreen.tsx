@@ -18,7 +18,6 @@ const ProfileScreen = () => {
   const {userId: authUserId} = useAuthContext();
 
   const userID = route.params?.userId || authUserId;
-  console.warn('userId', userID);
 
   // Query the user with userID
   const {data, loading, error, refetch} = useQuery<

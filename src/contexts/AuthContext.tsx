@@ -1,8 +1,9 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {CognitoUser} from 'amazon-cognito-identity-js';
 import {Auth} from 'aws-amplify';
-import {useContext, useEffect} from 'react';
 import {
+  useContext,
+  useEffect,
   createContext,
   ReactNode,
   useState,
@@ -59,7 +60,7 @@ const AuthContextProvider = ({children}: {children: ReactNode}) => {
     };
     Hub.listen('auth', listener);
     return () => Hub.remove('auth', listener);
-  });
+  }, []);
   // console.log(user);
   return (
     //attributes does exist so we will leave it like this

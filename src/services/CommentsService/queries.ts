@@ -25,6 +25,11 @@ export const createComment = gql`
         image
         username
         name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       createdAt
       updatedAt

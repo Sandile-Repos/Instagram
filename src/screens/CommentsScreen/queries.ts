@@ -26,6 +26,8 @@ export const commentsByPost = gql`
           name
           image
           username
+          updatedAt
+          createdAt
           _version
           _deleted
           _lastChangedAt
@@ -63,6 +65,12 @@ export const onCreateCommentByPostId = gql`
         id
         image
         username
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       createdAt
       updatedAt

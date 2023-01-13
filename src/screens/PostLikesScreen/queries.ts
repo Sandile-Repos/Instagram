@@ -30,6 +30,7 @@ export const likesForPostByUser = gql`
           id
           image
           name
+          username
         }
       }
       nextToken

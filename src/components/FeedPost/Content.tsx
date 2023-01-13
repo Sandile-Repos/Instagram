@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {View, Image, ActivityIndicator} from 'react-native';
 import {Storage} from 'aws-amplify';
 import {useEffect, useState} from 'react';
@@ -17,21 +17,27 @@ const Content = ({post, isVisible}: IContent) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [imagesUri, setImagesUri] = useState<string[] | null>(null);
   const [videoUri, setVideoUri] = useState<string | null>(null);
+
+  const downloadMedia = useCallback(async () => {
+    if (post) {
+      if (post.image) {
+        const uri = await Storage.get(post.image);
+        setImageUri(uri);
+      } else if (post.images) {
+        const uri = await Promise.all(post.images.map(img => Storage.get(img)));
+        setImagesUri(uri);
+      } else if (post.video) {
+        const uri = await Storage.get(post.video);
+        setVideoUri(uri);
+      }
+    }
+    return;
+  }, [post]);
+
   useEffect(() => {
     downloadMedia();
-  }, []);
-  const downloadMedia = async () => {
-    if (post.image) {
-      const uri = await Storage.get(post.image);
-      setImageUri(uri);
-    } else if (post.images) {
-      const uri = await Promise.all(post.images.map(img => Storage.get(img)));
-      setImagesUri(uri);
-    } else if (post.video) {
-      const uri = await Storage.get(post.video);
-      setVideoUri(uri);
-    }
-  };
+  }, [downloadMedia]);
+
   if (imageUri) {
     return (
       <Image

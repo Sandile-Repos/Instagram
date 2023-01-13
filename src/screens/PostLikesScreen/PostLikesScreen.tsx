@@ -1,4 +1,4 @@
-import {View, Text, ActivityIndicator, FlatList} from 'react-native';
+import {ActivityIndicator, FlatList} from 'react-native';
 import React from 'react';
 import {useQuery} from '@apollo/client';
 import {likesForPostByUser} from './queries';
@@ -26,7 +26,11 @@ const PostLikesScreen = () => {
 
   if (error) {
     return (
-      <ApiErrorMessage title="Error fectching likes" message={error?.message} />
+      <ApiErrorMessage
+        title="Error fectching likes"
+        message={error?.message}
+        onRetry={() => refetch()}
+      />
     );
   }
 

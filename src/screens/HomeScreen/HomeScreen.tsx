@@ -46,7 +46,11 @@ const HomeScreen = () => {
   }
   if (error) {
     return (
-      <ApiErrorMessage title="Error fetching posts" message={error.message} />
+      <ApiErrorMessage
+        title="Error fetching posts"
+        message={error.message}
+        onRetry={() => refetch()}
+      />
     );
   }
   // console.log(data);
@@ -60,8 +64,12 @@ const HomeScreen = () => {
       return;
     }
     setIsFetchingMore(true);
-    await fetchMore({variables: {nextToken}});
-    setIsFetchingMore(false);
+    try {
+      await fetchMore({variables: {nextToken}});
+      setIsFetchingMore(false);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
