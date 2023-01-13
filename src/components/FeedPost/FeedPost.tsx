@@ -54,7 +54,10 @@ const FeedPost = (props: IFeedPost) => {
     <SafeAreaView style={styles.post}>
       {/* Header */}
       <View style={styles.header}>
-        <UserImage imageKey={post.User?.image || undefined} />
+        <UserImage
+          imageKey={post.User?.image || undefined}
+          imageContainer={true}
+        />
         <View>
           <Text onPress={navigateToUser} style={styles.userName}>
             {post.User?.username}
@@ -108,16 +111,13 @@ const FeedPost = (props: IFeedPost) => {
         ) : (
           <Text style={styles.text} onPress={navigateToLikes}>
             Liked by{' '}
-            <Text style={styles.bold}>{postLikes[0]?.User?.username}</Text>
-            {postLikes.length > 1 && (
-              <>
-                {' '}
-                and{' '}
-                <Text style={styles.bold}>
-                  {post.noOfLikes} {postLikes.length > 2 ? 'others' : 'other'}
-                </Text>
-              </>
-            )}
+            <Text style={styles.bold}>{postLikes[0]?.User?.username}</Text> and{' '}
+            <Text style={styles.bold}>
+              {post.noOfLikes - 1}{' '}
+              {postLikes.length > 2 || postLikes.length < 2
+                ? 'others'
+                : 'other'}
+            </Text>
           </Text>
         )}
 

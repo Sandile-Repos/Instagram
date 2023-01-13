@@ -96,7 +96,7 @@ const CreatePostScreen = () => {
 
   const uploadMedia = async (uri: string) => {
     try {
-      //get the blob of the file from uri
+      //get the blob of the file from uri - fetch is not imported from anyway
       const response = await fetch(uri);
       const blob = await response.blob();
       const uriParts = uri.split('.');
@@ -111,7 +111,7 @@ const CreatePostScreen = () => {
       // console.log(s3Response);
       return s3Response.key;
     } catch (e) {
-      console.log(e);
+      Alert.alert('Error uploading the file');
     }
   };
 

@@ -1,4 +1,4 @@
-import {Image, StyleSheet} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {DEFAULT_USER_IMAGE} from '../../config';
 import {Storage} from 'aws-amplify';
@@ -6,9 +6,14 @@ import {Storage} from 'aws-amplify';
 interface IUserImage {
   imageKey?: string | null;
   width?: number;
+  imageContainer?: boolean;
 }
 
-const UserImage = ({imageKey, width = 50}: IUserImage) => {
+const UserImage = ({
+  imageKey,
+  width = 50,
+  imageContainer = false,
+}: IUserImage) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   useEffect(() => {
     if (imageKey) {
@@ -16,9 +21,19 @@ const UserImage = ({imageKey, width = 50}: IUserImage) => {
     }
   }, [imageKey]);
 
+  if (imageContainer) {
+    return (
+      <View style={styles.container}>
+        <Image
+          source={{uri: imageUri || DEFAULT_USER_IMAGE}} // ?mark after selectedPhoto is important since uri can be null
+          style={[styles.userAvatar, {width}]}
+        />
+      </View>
+    );
+  }
+
   return (
     <Image
-      resizeMode="contain"
       source={{uri: imageUri || DEFAULT_USER_IMAGE}} // ?mark after selectedPhoto is important since uri can be null
       style={[styles.userAvatar, {width}]}
     />
@@ -31,6 +46,17 @@ const styles = StyleSheet.create({
   userAvatar: {
     aspectRatio: 1,
     borderRadius: 250,
-    marginRight: 10,
+    // marginRight: 10,
+  },
+  container: {
+    height: 58,
+    width: 58,
+    margin: 10,
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: '#ae22e0',
+    marginLeft: -5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

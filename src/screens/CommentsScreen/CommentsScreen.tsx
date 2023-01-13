@@ -23,7 +23,7 @@ const CommentsScreen = () => {
   const {postId} = route.params;
   const [newComments, setNewComments] = useState<CommentType[]>([]);
 
-  const {data, loading, error, fetchMore} = useQuery<
+  const {data, loading, error, fetchMore, refetch, subscribeToMore} = useQuery<
     CommentsByPostQuery,
     CommentsByPostQueryVariables
   >(commentsByPost, {
@@ -56,6 +56,47 @@ const CommentsScreen = () => {
     }
   }, [newCommentsData]);
 
+  // useEffect(() => {
+  //   if (!subscribeToMore) {
+  //     return;
+  //   }
+  //   subscribeToMore({
+  //     document: onCreateCommentByPostId,
+  //     variables: {postID: postId},
+  //     updateQuery: (prev, {subscriptionData}) => {
+  //       if (!subscriptionData.data) {
+  //         return prev;
+  //       }
+  //       const newFeedItem = subscriptionData.data.onCreateCommentByPostId;
+  //       return Object.assign({}, prev, {
+  //         commentsByPost: {
+  //           items: [newFeedItem],
+  //         },
+  //       });
+  //     },
+  //     //   updateQuery: (
+  //     //     prev = {
+  //     //       onCreateCommentByPostId: undefined,
+  //     //     },
+  //     //     {subscriptionData},
+  //     //   ) => {
+  //     //     if (!subscriptionData.data) {
+  //     //       return prev;
+  //     //     }
+  //     //     console.log('hello prev', prev);
+  //     //     return {
+  //     //       commentsByPost: {
+  //     //         // ...prev?.commentsByPost,
+  //     //         items: [
+  //     //           ...[prev?.commentsByPost],
+  //     //           subscriptionData.data.onCreateCommentByPostId,
+  //     //         ],
+  //     //       },
+  //     //     };
+  //     //   },
+  //   });
+  // }, [subscribeToMore, postId]);
+
   const loadMore = async () => {
     if (!nextToken || isFetchingMore) {
       return;
@@ -77,6 +118,7 @@ const CommentsScreen = () => {
       <ApiErrorMessage
         title="Fetching comments failed"
         message={error.message}
+        onRetry={() => refetch()}
       />
     );
   }
