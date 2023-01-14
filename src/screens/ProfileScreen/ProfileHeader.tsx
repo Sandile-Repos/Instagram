@@ -1,6 +1,6 @@
 import {Text, View, ScrollView, Alert} from 'react-native';
 import React, {useEffect} from 'react';
-import {Auth} from 'aws-amplify';
+import {Auth, input} from 'aws-amplify';
 
 import styles from './styles';
 import Button from '../../components/Button';
@@ -9,12 +9,16 @@ import {ProfileNavigationProp} from '../../types/navigation';
 import {
   CreateUserFollowMutation,
   CreateUserFollowMutationVariables,
+  DeleteUserFollowMutation,
+  DeleteUserFollowMutationVariables,
   User,
+  UserFollowingsQuery,
+  UserFollowingsQueryVariables,
 } from '../../API';
 import {useAuthContext} from '../../contexts/AuthContext';
 import UserImage from '../../components/UserImage';
-import {createUserFollow} from './queries';
-import {useMutation} from '@apollo/client';
+import {createUserFollow, userFollowings, deleteUserFollow} from './queries';
+import {useMutation, useQuery} from '@apollo/client';
 
 interface IProfileHeader {
   user: User;
@@ -23,22 +27,58 @@ interface IProfileHeader {
 const ProfileHeader = ({user}: IProfileHeader) => {
   const navigation = useNavigation<ProfileNavigationProp>();
   const {userId} = useAuthContext();
+
+  const {data: userFollowingsData} = useQuery<
+    UserFollowingsQuery,
+    UserFollowingsQueryVariables
+  >(userFollowings, {
+    variables: {followerID: userId, followeeID: {eq: user.id}},
+  });
+
   const [doFollow] = useMutation<
     CreateUserFollowMutation,
     CreateUserFollowMutationVariables
   >(createUserFollow, {
     variables: {input: {followeeID: user.id, followerID: userId}},
+    refetchQueries: ['UserFollowings'],
   });
+
+  const [doUnFollow] = useMutation<
+    DeleteUserFollowMutation,
+    DeleteUserFollowMutationVariables
+  >(deleteUserFollow);
 
   useEffect(() => {
     navigation.setOptions({title: user?.username || 'Profile}'});
   }, [navigation, user]);
 
+  console.log(userFollowingsData);
+  const userFollowObject = userFollowingsData?.userFollowings?.items?.filter(
+    items => !items?._deleted,
+  )[0];
+
   const onFollowPress = async () => {
-    try {
-      await doFollow();
-    } catch (error) {
-      Alert.alert('Failed to follow the user', (error as Error).message);
+    if (userFollowObject) {
+      try {
+        // Delete it
+        await doUnFollow({
+          variables: {
+            input: {
+              id: userFollowObject.id,
+              _version: userFollowObject._version,
+            },
+          },
+        });
+      } catch (error) {
+        Alert.alert('Failed to unFollow the user', (error as Error).message);
+      }
+    } else {
+      try {
+        // Create it
+        await doFollow();
+      } catch (error) {
+        Alert.alert('Failed to follow the user', (error as Error).message);
+      }
     }
   };
 
@@ -76,7 +116,11 @@ const ProfileHeader = ({user}: IProfileHeader) => {
           />
         </View>
       ) : (
-        <Button text="Follow" onPress={onFollowPress} inline />
+        <Button
+          text={userFollowObject ? 'UnFollow' : 'Follow'}
+          onPress={onFollowPress}
+          inline
+        />
       )}
     </ScrollView>
   );
