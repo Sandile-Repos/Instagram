@@ -18,6 +18,10 @@ type LikeMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+type UserFollowMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type EagerComment = {
   readonly id: string;
   readonly comment: string;
@@ -56,6 +60,8 @@ type EagerUser = {
   readonly Posts?: (Post | null)[] | null;
   readonly Comments?: (Comment | null)[] | null;
   readonly Likes?: (Like | null)[] | null;
+  readonly Followers?: (UserFollow | null)[] | null;
+  readonly Followings?: (UserFollow | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -74,6 +80,8 @@ type LazyUser = {
   readonly Posts: AsyncCollection<Post>;
   readonly Comments: AsyncCollection<Comment>;
   readonly Likes: AsyncCollection<Like>;
+  readonly Followers: AsyncCollection<UserFollow>;
+  readonly Followings: AsyncCollection<UserFollow>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -144,4 +152,26 @@ export declare type Like = LazyLoading extends LazyLoadingDisabled ? EagerLike :
 
 export declare const Like: (new (init: ModelInit<Like, LikeMetaData>) => Like) & {
   copyOf(source: Like, mutator: (draft: MutableModel<Like, LikeMetaData>) => MutableModel<Like, LikeMetaData> | void): Like;
+}
+
+type EagerUserFollow = {
+  readonly id: string;
+  readonly FollowerID?: User | null;
+  readonly FolloweeID?: User | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyUserFollow = {
+  readonly id: string;
+  readonly FollowerID: AsyncItem<User | undefined>;
+  readonly FolloweeID: AsyncItem<User | undefined>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type UserFollow = LazyLoading extends LazyLoadingDisabled ? EagerUserFollow : LazyUserFollow
+
+export declare const UserFollow: (new (init: ModelInit<UserFollow, UserFollowMetaData>) => UserFollow) & {
+  copyOf(source: UserFollow, mutator: (draft: MutableModel<UserFollow, UserFollowMetaData>) => MutableModel<UserFollow, UserFollowMetaData> | void): UserFollow;
 }

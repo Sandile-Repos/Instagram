@@ -1,4 +1,4 @@
-import {Text, View, ScrollView} from 'react-native';
+import {Text, View, ScrollView, Alert} from 'react-native';
 import React, {useEffect} from 'react';
 import {Auth} from 'aws-amplify';
 
@@ -6,9 +6,15 @@ import styles from './styles';
 import Button from '../../components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {ProfileNavigationProp} from '../../types/navigation';
-import {User} from '../../API';
+import {
+  CreateUserFollowMutation,
+  CreateUserFollowMutationVariables,
+  User,
+} from '../../API';
 import {useAuthContext} from '../../contexts/AuthContext';
 import UserImage from '../../components/UserImage';
+import {createUserFollow} from './queries';
+import {useMutation} from '@apollo/client';
 
 interface IProfileHeader {
   user: User;
@@ -17,10 +23,24 @@ interface IProfileHeader {
 const ProfileHeader = ({user}: IProfileHeader) => {
   const navigation = useNavigation<ProfileNavigationProp>();
   const {userId} = useAuthContext();
+  const [doFollow] = useMutation<
+    CreateUserFollowMutation,
+    CreateUserFollowMutationVariables
+  >(createUserFollow, {
+    variables: {input: {followeeID: user.id, followerID: userId}},
+  });
 
   useEffect(() => {
     navigation.setOptions({title: user?.username || 'Profile}'});
   }, [navigation, user]);
+
+  const onFollowPress = async () => {
+    try {
+      await doFollow();
+    } catch (error) {
+      Alert.alert('Failed to follow the user', (error as Error).message);
+    }
+  };
 
   return (
     <ScrollView style={styles.root}>
@@ -42,7 +62,7 @@ const ProfileHeader = ({user}: IProfileHeader) => {
       <Text style={styles.name}>{user.name}</Text>
       <Text>{user.bio}</Text>
       {/* {Buttons} */}
-      {userId === user.id && (
+      {userId === user.id ? (
         <View style={{flexDirection: 'row'}}>
           <Button
             text="Edit Profile"
@@ -55,6 +75,8 @@ const ProfileHeader = ({user}: IProfileHeader) => {
             inline={true}
           />
         </View>
+      ) : (
+        <Button text="Follow" onPress={onFollowPress} inline />
       )}
     </ScrollView>
   );

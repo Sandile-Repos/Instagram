@@ -30,3 +30,22 @@ export const getUser = gql`
     }
   }
 `;
+
+export const createUserFollow = gql`
+  mutation CreateUserFollow(
+    $input: CreateUserFollowInput!
+    $condition: ModelUserFollowConditionInput
+  ) {
+    createUserFollow(input: $input, condition: $condition) {
+      id
+      followerID
+      followeeID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
