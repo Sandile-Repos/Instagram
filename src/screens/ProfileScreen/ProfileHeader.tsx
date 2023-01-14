@@ -28,14 +28,14 @@ const ProfileHeader = ({user}: IProfileHeader) => {
   const navigation = useNavigation<ProfileNavigationProp>();
   const {userId} = useAuthContext();
 
-  const {data: userFollowingsData} = useQuery<
+  const {data: userFollowingsData, loading: userFollowingsLoading} = useQuery<
     UserFollowingsQuery,
     UserFollowingsQueryVariables
   >(userFollowings, {
     variables: {followerID: userId, followeeID: {eq: user.id}},
   });
 
-  const [doFollow] = useMutation<
+  const [doFollow, {loading: followingLoading}] = useMutation<
     CreateUserFollowMutation,
     CreateUserFollowMutationVariables
   >(createUserFollow, {
@@ -43,7 +43,7 @@ const ProfileHeader = ({user}: IProfileHeader) => {
     refetchQueries: ['UserFollowings'],
   });
 
-  const [doUnFollow] = useMutation<
+  const [doUnFollow, {loading: unfollowingLoading}] = useMutation<
     DeleteUserFollowMutation,
     DeleteUserFollowMutationVariables
   >(deleteUserFollow);
@@ -119,6 +119,9 @@ const ProfileHeader = ({user}: IProfileHeader) => {
         <Button
           text={userFollowObject ? 'UnFollow' : 'Follow'}
           onPress={onFollowPress}
+          disabled={
+            userFollowingsLoading || followingLoading || unfollowingLoading
+          }
           inline
         />
       )}
