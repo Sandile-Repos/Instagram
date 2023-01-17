@@ -156,16 +156,16 @@ export declare const Like: (new (init: ModelInit<Like, LikeMetaData>) => Like) &
 
 type EagerUserFollow = {
   readonly id: string;
-  readonly FollowerID?: User | null;
-  readonly FolloweeID?: User | null;
+  readonly Follower?: User | null;
+  readonly Followee?: User | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
 type LazyUserFollow = {
   readonly id: string;
-  readonly FollowerID: AsyncItem<User | undefined>;
-  readonly FolloweeID: AsyncItem<User | undefined>;
+  readonly Follower: AsyncItem<User | undefined>;
+  readonly Followee: AsyncItem<User | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

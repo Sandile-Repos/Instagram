@@ -169,8 +169,8 @@ export type UserFollow = {
   id: string,
   followerID: string,
   followeeID: string,
-  FollowerID?: User | null,
-  FolloweeID?: User | null,
+  Follower?: User | null,
+  Followee?: User | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -1936,7 +1936,7 @@ export type CreateUserFollowMutation = {
     id: string,
     followerID: string,
     followeeID: string,
-    FollowerID?:  {
+    Follower?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -1980,7 +1980,7 @@ export type CreateUserFollowMutation = {
       _lastChangedAt: number,
       owner?: string | null,
     } | null,
-    FolloweeID?:  {
+    Followee?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -2044,7 +2044,7 @@ export type UpdateUserFollowMutation = {
     id: string,
     followerID: string,
     followeeID: string,
-    FollowerID?:  {
+    Follower?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -2088,7 +2088,7 @@ export type UpdateUserFollowMutation = {
       _lastChangedAt: number,
       owner?: string | null,
     } | null,
-    FolloweeID?:  {
+    Followee?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -2152,7 +2152,7 @@ export type DeleteUserFollowMutation = {
     id: string,
     followerID: string,
     followeeID: string,
-    FollowerID?:  {
+    Follower?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -2196,7 +2196,7 @@ export type DeleteUserFollowMutation = {
       _lastChangedAt: number,
       owner?: string | null,
     } | null,
-    FolloweeID?:  {
+    Followee?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -3468,7 +3468,7 @@ export type GetUserFollowQuery = {
     id: string,
     followerID: string,
     followeeID: string,
-    FollowerID?:  {
+    Follower?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -3512,7 +3512,7 @@ export type GetUserFollowQuery = {
       _lastChangedAt: number,
       owner?: string | null,
     } | null,
-    FolloweeID?:  {
+    Followee?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -3579,7 +3579,7 @@ export type ListUserFollowsQuery = {
       id: string,
       followerID: string,
       followeeID: string,
-      FollowerID?:  {
+      Follower?:  {
         __typename: "User",
         id: string,
         name: string,
@@ -3598,7 +3598,7 @@ export type ListUserFollowsQuery = {
         _lastChangedAt: number,
         owner?: string | null,
       } | null,
-      FolloweeID?:  {
+      Followee?:  {
         __typename: "User",
         id: string,
         name: string,
@@ -3644,7 +3644,7 @@ export type SyncUserFollowsQuery = {
       id: string,
       followerID: string,
       followeeID: string,
-      FollowerID?:  {
+      Follower?:  {
         __typename: "User",
         id: string,
         name: string,
@@ -3663,7 +3663,7 @@ export type SyncUserFollowsQuery = {
         _lastChangedAt: number,
         owner?: string | null,
       } | null,
-      FolloweeID?:  {
+      Followee?:  {
         __typename: "User",
         id: string,
         name: string,
@@ -3711,7 +3711,7 @@ export type UserFollowingsQuery = {
       id: string,
       followerID: string,
       followeeID: string,
-      FollowerID?:  {
+      Follower?:  {
         __typename: "User",
         id: string,
         name: string,
@@ -3730,7 +3730,7 @@ export type UserFollowingsQuery = {
         _lastChangedAt: number,
         owner?: string | null,
       } | null,
-      FolloweeID?:  {
+      Followee?:  {
         __typename: "User",
         id: string,
         name: string,
@@ -3778,7 +3778,7 @@ export type UserFollowersQuery = {
       id: string,
       followerID: string,
       followeeID: string,
-      FollowerID?:  {
+      Follower?:  {
         __typename: "User",
         id: string,
         name: string,
@@ -3797,7 +3797,7 @@ export type UserFollowersQuery = {
         _lastChangedAt: number,
         owner?: string | null,
       } | null,
-      FolloweeID?:  {
+      Followee?:  {
         __typename: "User",
         id: string,
         name: string,
@@ -5304,7 +5304,7 @@ export type OnCreateUserFollowSubscription = {
     id: string,
     followerID: string,
     followeeID: string,
-    FollowerID?:  {
+    Follower?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -5348,7 +5348,7 @@ export type OnCreateUserFollowSubscription = {
       _lastChangedAt: number,
       owner?: string | null,
     } | null,
-    FolloweeID?:  {
+    Followee?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -5412,7 +5412,7 @@ export type OnUpdateUserFollowSubscription = {
     id: string,
     followerID: string,
     followeeID: string,
-    FollowerID?:  {
+    Follower?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -5456,7 +5456,7 @@ export type OnUpdateUserFollowSubscription = {
       _lastChangedAt: number,
       owner?: string | null,
     } | null,
-    FolloweeID?:  {
+    Followee?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -5520,7 +5520,7 @@ export type OnDeleteUserFollowSubscription = {
     id: string,
     followerID: string,
     followeeID: string,
-    FollowerID?:  {
+    Follower?:  {
       __typename: "User",
       id: string,
       name: string,
@@ -5564,7 +5564,7 @@ export type OnDeleteUserFollowSubscription = {
       _lastChangedAt: number,
       owner?: string | null,
     } | null,
-    FolloweeID?:  {
+    Followee?:  {
       __typename: "User",
       id: string,
       name: string,

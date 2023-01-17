@@ -1,4 +1,4 @@
-import {Text, View, ScrollView, Alert} from 'react-native';
+import {Text, View, ScrollView, Alert, Pressable} from 'react-native';
 import React, {useEffect} from 'react';
 import {Auth, input} from 'aws-amplify';
 
@@ -52,7 +52,7 @@ const ProfileHeader = ({user}: IProfileHeader) => {
     navigation.setOptions({title: user?.username || 'Profile}'});
   }, [navigation, user]);
 
-  console.log(userFollowingsData);
+  // console.log(userFollowingsData);
   const userFollowObject = userFollowingsData?.userFollowings?.items?.filter(
     items => !items?._deleted,
   )[0];
@@ -90,14 +90,28 @@ const ProfileHeader = ({user}: IProfileHeader) => {
           <Text style={styles.numberText}>{user.noOfPosts}</Text>
           <Text>Posts</Text>
         </View>
-        <View style={styles.numberContainer}>
+        <Pressable
+          style={styles.numberContainer}
+          onPress={() =>
+            navigation.navigate('UserFollow', {
+              id: user.id,
+              screen: 'Followers',
+            })
+          }>
           <Text style={styles.numberText}>{user.noOfFollowers}</Text>
           <Text>Followers</Text>
-        </View>
-        <View style={styles.numberContainer}>
+        </Pressable>
+        <Pressable
+          style={styles.numberContainer}
+          onPress={() =>
+            navigation.navigate('UserFollow', {
+              id: user.id,
+              screen: 'Followings',
+            })
+          }>
           <Text style={styles.numberText}>{user.noOfFollowing}</Text>
           <Text>Following</Text>
-        </View>
+        </Pressable>
       </View>
       <Text style={styles.name}>{user.name}</Text>
       <Text>{user.bio}</Text>

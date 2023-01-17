@@ -239,7 +239,7 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "FolloweeID"
+                        "associatedWith": "Followee"
                     }
                 },
                 "Followings": {
@@ -253,7 +253,7 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "FollowerID"
+                        "associatedWith": "Follower"
                     }
                 },
                 "createdAt": {
@@ -612,8 +612,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "FollowerID": {
-                    "name": "FollowerID",
+                "Follower": {
+                    "name": "Follower",
                     "isArray": false,
                     "type": {
                         "model": "User"
@@ -625,8 +625,8 @@ export const schema = {
                         "targetName": "followerID"
                     }
                 },
-                "FolloweeID": {
-                    "name": "FolloweeID",
+                "Followee": {
+                    "name": "Followee",
                     "isArray": false,
                     "type": {
                         "model": "User"
@@ -715,5 +715,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.4",
-    "version": "4b7f384d09c9a264d1f77e3509a76457"
+    "version": "5a9c2f669959040ee715217ae8e0ee4f"
 };

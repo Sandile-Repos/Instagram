@@ -1136,7 +1136,7 @@ export const getUserFollow = /* GraphQL */ `
       id
       followerID
       followeeID
-      FollowerID {
+      Follower {
         id
         name
         email
@@ -1174,7 +1174,7 @@ export const getUserFollow = /* GraphQL */ `
         _lastChangedAt
         owner
       }
-      FolloweeID {
+      Followee {
         id
         name
         email
@@ -1232,7 +1232,7 @@ export const listUserFollows = /* GraphQL */ `
         id
         followerID
         followeeID
-        FollowerID {
+        Follower {
           id
           name
           email
@@ -1250,7 +1250,7 @@ export const listUserFollows = /* GraphQL */ `
           _lastChangedAt
           owner
         }
-        FolloweeID {
+        Followee {
           id
           name
           email
@@ -1297,7 +1297,7 @@ export const syncUserFollows = /* GraphQL */ `
         id
         followerID
         followeeID
-        FollowerID {
+        Follower {
           id
           name
           email
@@ -1315,7 +1315,7 @@ export const syncUserFollows = /* GraphQL */ `
           _lastChangedAt
           owner
         }
-        FolloweeID {
+        Followee {
           id
           name
           email
@@ -1366,7 +1366,7 @@ export const userFollowings = /* GraphQL */ `
         id
         followerID
         followeeID
-        FollowerID {
+        Follower {
           id
           name
           email
@@ -1384,7 +1384,7 @@ export const userFollowings = /* GraphQL */ `
           _lastChangedAt
           owner
         }
-        FolloweeID {
+        Followee {
           id
           name
           email
@@ -1435,7 +1435,7 @@ export const userFollowers = /* GraphQL */ `
         id
         followerID
         followeeID
-        FollowerID {
+        Follower {
           id
           name
           email
@@ -1453,7 +1453,7 @@ export const userFollowers = /* GraphQL */ `
           _lastChangedAt
           owner
         }
-        FolloweeID {
+        Followee {
           id
           name
           email

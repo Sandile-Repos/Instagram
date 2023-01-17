@@ -1220,7 +1220,7 @@ export const createUserFollow = /* GraphQL */ `
       id
       followerID
       followeeID
-      FollowerID {
+      Follower {
         id
         name
         email
@@ -1258,7 +1258,7 @@ export const createUserFollow = /* GraphQL */ `
         _lastChangedAt
         owner
       }
-      FolloweeID {
+      Followee {
         id
         name
         email
@@ -1314,7 +1314,7 @@ export const updateUserFollow = /* GraphQL */ `
       id
       followerID
       followeeID
-      FollowerID {
+      Follower {
         id
         name
         email
@@ -1352,7 +1352,7 @@ export const updateUserFollow = /* GraphQL */ `
         _lastChangedAt
         owner
       }
-      FolloweeID {
+      Followee {
         id
         name
         email
@@ -1408,7 +1408,7 @@ export const deleteUserFollow = /* GraphQL */ `
       id
       followerID
       followeeID
-      FollowerID {
+      Follower {
         id
         name
         email
@@ -1446,7 +1446,7 @@ export const deleteUserFollow = /* GraphQL */ `
         _lastChangedAt
         owner
       }
-      FolloweeID {
+      Followee {
         id
         name
         email
