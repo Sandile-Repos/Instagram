@@ -22,13 +22,15 @@ export type BottomTabNavigatorParamList = {
 
 export type HomeStackNavigatorParamList = {
   Feed: undefined;
-  UserProfile: {userId: string};
+  // UserProfile: {userId: string};
+  UserProfile: NavigatorScreenParams<ProfileStackNavigatorParamList>;
   UpdatePost: {id: string};
   PostLikes: {id: string};
 };
 
 export type ProfileStackNavigatorParamList = {
-  Profile: undefined;
+  // Profile: undefined;
+  Profile: {userId: string};
   'Edit Profile': undefined;
   UserFollow: {
     id: string;

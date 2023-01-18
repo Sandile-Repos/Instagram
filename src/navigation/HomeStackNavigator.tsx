@@ -2,11 +2,12 @@ import React from 'react';
 import {Image} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+// import ProfileScreen from '../screens/ProfileScreen';
 import logo from '../assets/images/logo.png';
 import {HomeStackNavigatorParamList} from '../types/navigation';
 import UpdatePostScreen from '../screens/UpdatePostScreen';
 import PostLikesScreen from '../screens/PostLikesScreen';
+import ProfileStackNavigator from './ProfileStackNavigator';
 
 const Stack = createNativeStackNavigator<HomeStackNavigatorParamList>();
 
@@ -23,9 +24,10 @@ const HomeStackNavigator = () => {
       />
       <Stack.Screen
         name="UserProfile"
-        component={ProfileScreen}
+        component={ProfileStackNavigator}
         options={{
-          title: 'Profile',
+          // title: 'Profile',
+          headerShown: false,
         }}
       />
       <Stack.Screen
