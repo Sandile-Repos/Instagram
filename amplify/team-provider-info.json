@@ -51,6 +51,10 @@
         "InstagramPostConfirmation": {
           "deploymentBucketName": "amplify-instagram-dev-223658-deployment",
           "s3Key": "amplify-builds/InstagramPostConfirmation-2b354c4c796f4b584b48-build.zip"
+        },
+        "UserFollowTrigger": {
+          "deploymentBucketName": "amplify-instagram-dev-223658-deployment",
+          "s3Key": "amplify-builds/UserFollowTrigger-4235516445756f563533-build.zip"
         }
       },
       "api": {
