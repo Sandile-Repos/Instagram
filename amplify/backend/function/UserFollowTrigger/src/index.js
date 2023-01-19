@@ -35,11 +35,7 @@ const handleEvent = async ({eventID, eventName, dynamodb}) => {
     await increaseUserField(dynamodb.NewImage.followeeID.S, 'noOfFollowers', 1); // noOfFollowers is field from User Model
 
     //increase for the user that is following
-    await increaseUserField(
-      dynamodb.NewImage.followerID.S,
-      'noOfFollowings',
-      1,
-    ); // noOfFollowings is field from User Model
+    await increaseUserField(dynamodb.NewImage.followerID.S, 'noOfFollowing', 1); // noOfFollowings is field from User Model
   } else if (
     eventName === 'MODIFY' &&
     !dynamodb.OldImage._delete?.BOOL && // where oldImage doesn't have deleted ie is false. not deleted
@@ -55,7 +51,7 @@ const handleEvent = async ({eventID, eventName, dynamodb}) => {
     //decrease for the user that is following
     await increaseUserField(
       dynamodb.NewImage.followerID.S,
-      'noOfFollowings',
+      'noOfFollowing',
       -1,
     ); // noOfFollowings is field from User Model
   }
@@ -65,12 +61,10 @@ const handleEvent = async ({eventID, eventName, dynamodb}) => {
 const increaseUserField = async (userId, field, value) => {
   const params = {
     TableName: UserTableName,
-    key: {id: userId},
-    // UpdateExpression: 'ADD noOfFlowers'
-    UpdateExpression: 'ADD #field :inc, #version: version_inc', //dynamically insert field
-    //UpdateExpression: 'ADD #field :inc, version 1', //we wouldn't have used the attribute values and names but like this, if we version was not _version(underscoreVersion)
+    Key: {id: userId},
+    UpdateExpression: 'ADD #field :inc, #version :version_inc',
     ExpressionAttributeValues: {':inc': value, ':version_inc': 1},
-    ExpressionAttributeName: {':field': field, '#version': '_version'},
+    ExpressionAttributeNames: {'#field': field, '#version': '_version'},
   };
   try {
     await docClient.update(params).promise();
