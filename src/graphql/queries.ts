@@ -1130,6 +1130,212 @@ export const userByUsername = /* GraphQL */ `
     }
   }
 `;
+export const getUserFeedPost = /* GraphQL */ `
+  query GetUserFeedPost($id: ID!) {
+    getUserFeedPost(id: $id) {
+      id
+      userID
+      postID
+      postCreatedAt
+      postOwnerID
+      Post {
+        id
+        createdAt
+        type
+        description
+        location
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const listUserFeedPosts = /* GraphQL */ `
+  query ListUserFeedPosts(
+    $filter: ModelUserFeedPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserFeedPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        postID
+        postCreatedAt
+        postOwnerID
+        Post {
+          id
+          createdAt
+          type
+          description
+          location
+          video
+          image
+          images
+          noOfComments
+          noOfLikes
+          userID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncUserFeedPosts = /* GraphQL */ `
+  query SyncUserFeedPosts(
+    $filter: ModelUserFeedPostFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncUserFeedPosts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        userID
+        postID
+        postCreatedAt
+        postOwnerID
+        Post {
+          id
+          createdAt
+          type
+          description
+          location
+          video
+          image
+          images
+          noOfComments
+          noOfLikes
+          userID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const userFeed = /* GraphQL */ `
+  query UserFeed(
+    $userID: ID!
+    $postCreatedAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFeedPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userFeed(
+      userID: $userID
+      postCreatedAt: $postCreatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        postID
+        postCreatedAt
+        postOwnerID
+        Post {
+          id
+          createdAt
+          type
+          description
+          location
+          video
+          image
+          images
+          noOfComments
+          noOfLikes
+          userID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getUserFollow = /* GraphQL */ `
   query GetUserFollow($id: ID!) {
     getUserFollow(id: $id) {

@@ -1,4 +1,4 @@
-import {View, Text, ActivityIndicator, FlatList} from 'react-native';
+import {ActivityIndicator, FlatList} from 'react-native';
 import React from 'react';
 import {useQuery} from '@apollo/client';
 import {UserFollowersQuery, UserFollowersQueryVariables} from '../../API';

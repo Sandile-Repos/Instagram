@@ -6,7 +6,7 @@ type Like
   postID: ID!
     @index(
       name: "byPost"
-      queryField: "LikesForPostByUser"
+      queryField: "LikesForPostByUser" #likesForPostByUser
       sortKeyFields: ["userID"]
     )
 
@@ -40,7 +40,7 @@ type Post
     @index(
       name: "postsByDate"
       queryField: "postsByDate"
-      sortKeyFields: "createdAt"
+      sortKeyFields: ["createdAt"]
     )
   description: String
   location: String
@@ -74,6 +74,23 @@ type User
 
   Followers: [UserFollow] @hasMany(indexName: "byFollowee", fields: ["id"])
   Followings: [UserFollow] @hasMany(indexName: "byFollower", fields: ["id"])
+}
+
+type UserFeedPost @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+
+  userID: ID!
+    @index(
+      name: "byUser"
+      sortKeyFields: ["postCreatedAt"]
+      queryField: "userFeed"
+    )
+  postID: ID! @index(name: "byPost")
+
+  postCreatedAt: AWSDateTime!
+  postOwnerID: ID! @index(name: "byPostOwner")
+
+  Post: Post @hasOne(fields: ["postID"])
 }
 
 type UserFollow

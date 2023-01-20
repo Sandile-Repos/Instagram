@@ -1211,6 +1211,198 @@ export const deleteUser = /* GraphQL */ `
     }
   }
 `;
+export const createUserFeedPost = /* GraphQL */ `
+  mutation CreateUserFeedPost(
+    $input: CreateUserFeedPostInput!
+    $condition: ModelUserFeedPostConditionInput
+  ) {
+    createUserFeedPost(input: $input, condition: $condition) {
+      id
+      userID
+      postID
+      postCreatedAt
+      postOwnerID
+      Post {
+        id
+        createdAt
+        type
+        description
+        location
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const updateUserFeedPost = /* GraphQL */ `
+  mutation UpdateUserFeedPost(
+    $input: UpdateUserFeedPostInput!
+    $condition: ModelUserFeedPostConditionInput
+  ) {
+    updateUserFeedPost(input: $input, condition: $condition) {
+      id
+      userID
+      postID
+      postCreatedAt
+      postOwnerID
+      Post {
+        id
+        createdAt
+        type
+        description
+        location
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const deleteUserFeedPost = /* GraphQL */ `
+  mutation DeleteUserFeedPost(
+    $input: DeleteUserFeedPostInput!
+    $condition: ModelUserFeedPostConditionInput
+  ) {
+    deleteUserFeedPost(input: $input, condition: $condition) {
+      id
+      userID
+      postID
+      postCreatedAt
+      postOwnerID
+      Post {
+        id
+        createdAt
+        type
+        description
+        location
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
 export const createUserFollow = /* GraphQL */ `
   mutation CreateUserFollow(
     $input: CreateUserFollowInput!

@@ -1309,6 +1309,198 @@ export const onDeleteUser = /* GraphQL */ `
     }
   }
 `;
+export const onCreateUserFeedPost = /* GraphQL */ `
+  subscription OnCreateUserFeedPost(
+    $filter: ModelSubscriptionUserFeedPostFilterInput
+    $owner: String
+  ) {
+    onCreateUserFeedPost(filter: $filter, owner: $owner) {
+      id
+      userID
+      postID
+      postCreatedAt
+      postOwnerID
+      Post {
+        id
+        createdAt
+        type
+        description
+        location
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onUpdateUserFeedPost = /* GraphQL */ `
+  subscription OnUpdateUserFeedPost(
+    $filter: ModelSubscriptionUserFeedPostFilterInput
+    $owner: String
+  ) {
+    onUpdateUserFeedPost(filter: $filter, owner: $owner) {
+      id
+      userID
+      postID
+      postCreatedAt
+      postOwnerID
+      Post {
+        id
+        createdAt
+        type
+        description
+        location
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onDeleteUserFeedPost = /* GraphQL */ `
+  subscription OnDeleteUserFeedPost(
+    $filter: ModelSubscriptionUserFeedPostFilterInput
+    $owner: String
+  ) {
+    onDeleteUserFeedPost(filter: $filter, owner: $owner) {
+      id
+      userID
+      postID
+      postCreatedAt
+      postOwnerID
+      Post {
+        id
+        createdAt
+        type
+        description
+        location
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
 export const onCreateUserFollow = /* GraphQL */ `
   subscription OnCreateUserFollow(
     $filter: ModelSubscriptionUserFollowFilterInput
