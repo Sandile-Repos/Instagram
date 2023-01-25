@@ -30,10 +30,5 @@ const handleRecord = async record => {
     console.log('before calling postEventHandler for post');
     await postEventHandler(record);
   } else if (record.eventSourceARN.includes('UserFollow')) {
-    //handle follow event
-    console.log('before calling postEventHandler for UserFollow');
-    await postEventHandler(record);
-  } else {
-    console.log('Event not handled');
   }
 };

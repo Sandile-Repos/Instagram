@@ -3,7 +3,9 @@
     "Instagram": {
       "dependsOn": [
         {
-          "attributes": ["UserPoolId"],
+          "attributes": [
+            "UserPoolId"
+          ],
           "category": "auth",
           "resourceName": "Instagram"
         }
@@ -32,7 +34,10 @@
       "customAuth": false,
       "dependsOn": [
         {
-          "attributes": ["Arn", "Name"],
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
           "category": "function",
           "resourceName": "InstagramPostConfirmation",
           "triggerProvider": "Cognito"
@@ -40,7 +45,9 @@
       ],
       "frontendAuthConfig": {
         "mfaConfiguration": "OFF",
-        "mfaTypes": ["SMS"],
+        "mfaTypes": [
+          "SMS"
+        ],
         "passwordProtectionSettings": {
           "passwordPolicyCharacters": [
             "REQUIRES_LOWERCASE",
@@ -49,10 +56,20 @@
           ],
           "passwordPolicyMinLength": 8
         },
-        "signupAttributes": ["EMAIL", "NAME"],
-        "socialProviders": ["FACEBOOK", "GOOGLE"],
-        "usernameAttributes": ["EMAIL"],
-        "verificationMechanisms": ["EMAIL"]
+        "signupAttributes": [
+          "EMAIL",
+          "NAME"
+        ],
+        "socialProviders": [
+          "FACEBOOK",
+          "GOOGLE"
+        ],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
@@ -63,7 +80,10 @@
       "build": true,
       "dependsOn": [
         {
-          "attributes": ["GraphQLAPIIdOutput", "GraphQLAPIEndpointOutput"],
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
           "category": "api",
           "resourceName": "Instagram"
         }
@@ -75,7 +95,10 @@
       "build": true,
       "dependsOn": [
         {
-          "attributes": ["GraphQLAPIIdOutput", "GraphQLAPIEndpointOutput"],
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
           "category": "api",
           "resourceName": "Instagram"
         }
@@ -87,13 +110,66 @@
       "build": true,
       "dependsOn": [
         {
-          "attributes": ["GraphQLAPIIdOutput", "GraphQLAPIEndpointOutput"],
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
           "category": "api",
           "resourceName": "Instagram"
         }
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_FeedGenerator_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FeedGenerator"
+        }
+      ]
+    },
+    "AMPLIFY_function_FeedGenerator_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FeedGenerator"
+        }
+      ]
+    },
+    "AMPLIFY_function_InstagramPostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "InstagramPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_InstagramPostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "InstagramPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_UserFollowTrigger_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "UserFollowTrigger"
+        }
+      ]
+    },
+    "AMPLIFY_function_UserFollowTrigger_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "UserFollowTrigger"
+        }
+      ]
     }
   },
   "storage": {

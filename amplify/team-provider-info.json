@@ -58,7 +58,7 @@
         },
         "FeedGenerator": {
           "deploymentBucketName": "amplify-instagram-dev-223658-deployment",
-          "s3Key": "amplify-builds/FeedGenerator-4851534754444268766e-build.zip"
+          "s3Key": "amplify-builds/FeedGenerator-59694a684f77472f4767-build.zip"
         }
       },
       "api": {

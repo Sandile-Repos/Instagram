@@ -8,23 +8,29 @@ import {
 import {useQuery} from '@apollo/client';
 
 import FeedPost from '../../components/FeedPost';
-import {postsByDate} from './queries';
+// import {postsByDate} from './queries';
+import {userFeed} from './queries';
 import {
-  PostsByDateQuery,
-  PostsByDateQueryVariables,
+  // PostsByDateQuery,
+  // PostsByDateQueryVariables,
   ModelSortDirection,
+  UserFeedQuery,
+  UserFeedQueryVariables,
 } from '../../API';
 import ApiErrorMessage from '../../components/ApiErrorMessage';
+import {useAuthContext} from '../../contexts/AuthContext';
 
 const HomeScreen = () => {
+  const {userId} = useAuthContext();
   const [activePostId, setActivePostId] = useState<null | string>(null);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const {data, loading, error, refetch, fetchMore} = useQuery<
-    PostsByDateQuery,
-    PostsByDateQueryVariables
-  >(postsByDate, {
+    UserFeedQuery,
+    UserFeedQueryVariables
+  >(userFeed, {
     variables: {
-      type: 'POST',
+      // type: 'POST',
+      userID: userId,
       sortDirection: ModelSortDirection.DESC,
       limit: 10,
     },
@@ -54,11 +60,17 @@ const HomeScreen = () => {
     );
   }
   // console.log(data);
-  const posts = (data?.postsByDate?.items || []).filter(
-    post => !post?._deleted,
-  );
+  // const posts = (data?.postsByDate?.items || []).filter(
+  //   post => !post?._deleted,
+  // );
   // console.log(posts);
-  const nextToken = data?.postsByDate?.nextToken;
+  //const nextToken = data?.postsByDate?.nextToken;
+
+  const posts = (data?.userFeed?.items || [])
+    .filter(item => !item?._deleted && !item?.Post?._deleted)
+    .map(item => item?.Post);
+  const nextToken = data?.userFeed?.nextToken;
+
   const loadMore = async () => {
     if (!nextToken || isFetchingMore) {
       return;
@@ -76,7 +88,7 @@ const HomeScreen = () => {
     <FlatList
       data={posts}
       renderItem={({item}) =>
-        item && <FeedPost post={item} isVisible={activePostId === item.id} />
+        item && <FeedPost isVisible={item.id === activePostId} post={item} />
       }
       showsVerticalScrollIndicator={false}
       viewabilityConfig={viewabilityConfig}

@@ -70,7 +70,7 @@ const getFollowers = async userId => {
     KeyConditionExpression: 'followeeID = :followeeID',
     FilterExpression: 'attribute_not_exists(#deleted)', //filter out all the deleted followers
     ExpressionAttributeValues: {
-      ':followeeID': userId, //user being followed
+      ':followeeID': userId, //user being followed id taken from the post
     },
     ExpressionAttributeNames: {
       '#deleted': '_deleted',
