@@ -77,12 +77,14 @@ const PostUploadScreen = () => {
       return;
     }
     const options: CameraPictureOptions = {
-      quality: 0.5, // 0 - very compresses & low size | 1 - compression for max quality
-      base64: false, // include base64 version of the image
+      quality: 0.5, // 0 - very compresses & low size | 1 - compression for max quality - you can decrease quality to save on storage
+      base64: false, // include base64 version of the image. if true we can take it from base64  to send to custom back rather than taking from uri and transforming to base64
       skipProcessing: true, // on android, the 'processing' step messes the orientation on some devices
     };
     try {
       const result = await camera.current.takePictureAsync(options);
+      // console.log(result);
+      //{base64:'/9j/uhuchhhchvuuuii', height:7936}, width:5472, uri:'file:///data/user/o/com.intsgram/cache/Camera/66575-55f5-4555-577h5-5u5.jpg'
       navigation.navigate('Create', {
         image: result.uri,
       });
@@ -116,6 +118,7 @@ const PostUploadScreen = () => {
       video: result.uri,
     });
   };
+
   const stopRecording = () => {
     // console.warn('stop recording');
     if (isRecording) {

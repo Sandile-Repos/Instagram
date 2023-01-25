@@ -75,7 +75,6 @@ export const userFollowers = gql`
         Follower {
           id
           name
-          email
           username
           bio
           image

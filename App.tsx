@@ -1,6 +1,6 @@
 import 'react-native-get-random-values';
 import React from 'react';
-import {SafeAreaView, StyleSheet, Linking} from 'react-native';
+import {StyleSheet, Linking} from 'react-native';
 import Navigation from './src/navigation';
 import {Amplify} from 'aws-amplify';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
@@ -11,6 +11,7 @@ import Client from './src/apollo/Client';
 import {MenuProvider} from 'react-native-popup-menu';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import * as dayjs from 'dayjs';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 dayjs.extend(relativeTime);
 const urlOpener = async (url: string, redirectUrl: string) => {
   await InAppBrowser.isAvailable();
@@ -38,7 +39,7 @@ Amplify.configure(updatedConfig);
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.app}>
+    <SafeAreaProvider style={styles.app}>
       <MenuProvider>
         <AuthContextProvider>
           <Client>
@@ -46,7 +47,7 @@ const App = () => {
           </Client>
         </AuthContextProvider>
       </MenuProvider>
-    </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 

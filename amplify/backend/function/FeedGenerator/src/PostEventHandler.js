@@ -4,6 +4,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 const env = process.env.ENV;
 const AppsyncID = process.env.API_INSTAGRAM_GRAPHQLAPIIDOUTPUT;
 const UserFollowTableName = `UserFollow-${AppsyncID}-${env}`;
+const UserFeedPostTableName = `UserFeedPost-${AppsyncID}-${env}`;
 
 const handle = async record => {
   // Handle post events
@@ -20,6 +21,46 @@ const handle = async record => {
   console.log(followers);
 
   // push the new post, to their feeds
+  await Promise.all(
+    followers.map(follower =>
+      pushPostToUserFeed(record.dynamodb.NewImage, follower.followerID),
+    ),
+  );
+};
+
+const pushPostToUserFeed = async (postImage, userID) => {
+  const date = new Date();
+  const timestamp = date.getTime(); //current timestamp in milliseconds
+  const dateStr = date.toISOString();
+
+  const Item = {
+    id: `${userID}::${postImage.id.S}`, // we can create id's with libraries but we will simplify like this
+    postCreatedAt: postImage.createdAt.S,
+    postID: postImage.id.S,
+    postOwnerID: postImage.userID.S,
+    userID,
+
+    owner: `${userID}::${userID}`,
+
+    createdAt: dateStr,
+    updatedAt: dateStr,
+    _lastChangedAt: timestamp,
+    _version: 1,
+    __typename: 'UserFeedPost',
+  };
+
+  console.log(Item);
+
+  const params = {
+    TableName: UserFeedPostTableName,
+    Item,
+  };
+
+  try {
+    await docClient.put(params).promise();
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getFollowers = async userId => {
