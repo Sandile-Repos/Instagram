@@ -65,6 +65,11 @@ export type PostLikesRouteProp = RouteProp<
   'PostLikes'
 >;
 
+export type UserFollowTabNavigatorParamList = {
+  Followers: undefined;
+  Followings: undefined;
+};
+
 export type ProfileStackNavigatorParamList = {
   // Profile: undefined;
   Profile: {userId: string};
@@ -87,11 +92,6 @@ export type UserFollowScreenProps = NativeStackScreenProps<
 export type SearchTabNavigatorParamList = {
   Users: undefined;
   Posts: undefined;
-};
-
-export type UserFollowTabNavigatorParamList = {
-  Followers: undefined;
-  Followings: undefined;
 };
 
 export type UploadStackNavigatorParamList = {

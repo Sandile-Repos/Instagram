@@ -10,6 +10,7 @@ Amplify Params - DO NOT EDIT */
  */
 
 const postEventHandler = require('./PostEventHandler');
+const userFollowEventHandler = require('./UserFollowEventHandler');
 
 exports.handler = async event => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
@@ -30,5 +31,8 @@ const handleRecord = async record => {
     console.log('before calling postEventHandler for post');
     await postEventHandler(record);
   } else if (record.eventSourceARN.includes('UserFollow')) {
+    await userFollowEventHandler(record);
+  } else {
+    console.log('Event not handled');
   }
 };

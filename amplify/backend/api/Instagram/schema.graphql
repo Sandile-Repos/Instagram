@@ -76,23 +76,6 @@ type User
   Followings: [UserFollow] @hasMany(indexName: "byFollower", fields: ["id"])
 }
 
-type UserFeedPost @model @auth(rules: [{allow: owner}]) {
-  id: ID!
-
-  userID: ID!
-    @index(
-      name: "byUser"
-      sortKeyFields: ["postCreatedAt"]
-      queryField: "userFeed"
-    )
-  postID: ID! @index(name: "byPost")
-
-  postCreatedAt: AWSDateTime!
-  postOwnerID: ID! @index(name: "byPostOwner")
-
-  Post: Post @hasOne(fields: ["postID"])
-}
-
 type UserFollow
   @model
   @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
@@ -113,6 +96,23 @@ type UserFollow
 
   Follower: User @belongsTo(fields: ["followerID"])
   Followee: User @belongsTo(fields: ["followeeID"])
+}
+
+type UserFeedPost @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+
+  userID: ID!
+    @index(
+      name: "byUser"
+      sortKeyFields: ["postCreatedAt"]
+      queryField: "userFeed"
+    )
+  postID: ID! @index(name: "byPost")
+
+  postCreatedAt: AWSDateTime!
+  postOwnerID: ID! @index(name: "byPostOwner")
+
+  Post: Post @hasOne(fields: ["postID"])
 }
 
 type Subscription {
