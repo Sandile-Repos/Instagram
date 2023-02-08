@@ -15,15 +15,82 @@ const handle = async ({eventName, dynamodb}) => {
   const followerID = dynamodb.NewImage.followerID.S;
 
   if (eventName === 'INSERT') {
-    /// Add all the followee's posts to the user (follower) feed
+    /// Add all the followee's posts to the user (followerID) feed
     await addFolloweesPostsToUserFeed(followerID, followeeID);
   } else if (
     eventName === 'MODIFY' &&
     !dynamodb.OldImage._delete?.BOOL &&
     !!dynamodb.NewImage._deleted?.BOOL
   ) {
-    // Remove all the followee's posts from the user (follower) feed
+    // Remove all the followee's posts from the user (followerID) feed when unfollowing
+    await removeUserFeedPostsByFolloweeId(followerID, followeeID);
   }
+};
+
+const removeUserFeedPostsByFolloweeId = async (followerID, followeeID) => {
+  // get all UserFeedPosts on followerID's feed created by the followeeId
+  const userFeedPosts = await getUserFeedPosts(followerID, followeeID);
+  console.log(
+    `Deleting ${userFeedPosts.length} posts from the user feed.`,
+    userFeedPosts,
+  );
+
+  //batch delete them from the database
+  for (let i = 0; i < userFeedPosts.length; i += Batch_SIZE) {
+    const chunk = userFeedPosts.slice(i, i + Batch_SIZE);
+    await removeUserFeedPosts(chunk);
+  }
+};
+
+const getUserFeedPosts = async (followerID, followeeID) => {
+  // query DynamoDB table
+  const params = {
+    TableName: UserFeedPostTableName,
+    IndexName: 'byUser', //We will query the table directly on index to be more performance. Index is from Post schema,  userID
+    KeyConditionExpression: 'userID = :userID',
+    FilterExpression:
+      'attribute_not_exists(#deleted) AND postOwnerID = :postOwnerID', //filter undeleted and followeeID. Because we want to filter on both userID and followeeID
+    ExpressionAttributeValues: {
+      ':userID': followerID, //user being followed id taken from the post
+      ':postOwnerID': followeeID,
+    },
+    ExpressionAttributeNames: {
+      '#deleted': '_deleted',
+    },
+  };
+  try {
+    const results = await docClient.query(params).promise();
+    return results.Items;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+};
+
+const removeUserFeedPosts = async items => {
+  //BatchWriteItem - write or delete multiple items at the same time - increases the performance since multiple items are written or updated
+  const params = {
+    RequestItems: {
+      [UserFeedPostTableName]: items.map(generateDeleteRequest),
+    },
+  };
+  try {
+    const results = await docClient.batchWrite(params).promise();
+    return results.Items;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+};
+
+const generateDeleteRequest = userFeedPost => {
+  return {
+    DeleteRequest: {
+      Key: {
+        id: userFeedPost.id,
+      },
+    },
+  };
 };
 
 const addFolloweesPostsToUserFeed = async (followerID, followeeID) => {
