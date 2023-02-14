@@ -10,6 +10,8 @@ const PostTableName = `Post-${AppsyncID}-${env}`;
 const Batch_SIZE = 25;
 
 const handle = async ({eventName, dynamodb}) => {
+  console.log(eventName);
+  console.log('DynamoDB Record UserFollowEventHandler: %j', dynamodb);
   //handle user follow event
   const followeeID = dynamodb.NewImage.followeeID.S;
   const followerID = dynamodb.NewImage.followerID.S;

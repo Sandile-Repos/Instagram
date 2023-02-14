@@ -7,6 +7,9 @@ const UserFollowTableName = `UserFollow-${AppsyncID}-${env}`;
 const UserFeedPostTableName = `UserFeedPost-${AppsyncID}-${env}`;
 
 const handle = async record => {
+  console.log(record.eventID);
+  console.log(record.eventName);
+  console.log('DynamoDB Record PostEventHandler: %j', record.dynamodb);
   // Handle post events
   if (record.eventName !== 'INSERT') {
     //if there is no new post inserted on database just return. No need to change anything on update or getting the post. If deleted it will automatically be filtered out
