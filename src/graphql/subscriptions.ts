@@ -41,6 +41,11 @@ export const onCreateCommentByPostId = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -71,6 +76,7 @@ export const onCreateCommentByPostId = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -140,6 +146,11 @@ export const onCreateLike = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -170,6 +181,7 @@ export const onCreateLike = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -240,6 +252,11 @@ export const onUpdateLike = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -270,6 +287,7 @@ export const onUpdateLike = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -340,6 +358,11 @@ export const onDeleteLike = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -370,6 +393,7 @@ export const onDeleteLike = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -442,6 +466,11 @@ export const onCreateComment = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -472,6 +501,7 @@ export const onCreateComment = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -543,6 +573,11 @@ export const onUpdateComment = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -573,6 +608,7 @@ export const onUpdateComment = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -644,6 +680,11 @@ export const onDeleteComment = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -674,6 +715,7 @@ export const onDeleteComment = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -748,6 +790,11 @@ export const onCreatePost = /* GraphQL */ `
           startedAt
         }
         Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
           nextToken
           startedAt
         }
@@ -845,6 +892,11 @@ export const onUpdatePost = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -936,6 +988,11 @@ export const onDeletePost = /* GraphQL */ `
           startedAt
         }
         Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
           nextToken
           startedAt
         }
@@ -1084,6 +1141,25 @@ export const onCreateUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          readAt
+          type
+          userID
+          actorId
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          notificationPostId
+          owner
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -1187,6 +1263,25 @@ export const onUpdateUser = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          owner
+        }
+        nextToken
+        startedAt
+      }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          readAt
+          type
+          userID
+          actorId
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          notificationPostId
           owner
         }
         nextToken
@@ -1300,6 +1395,337 @@ export const onDeleteUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          readAt
+          type
+          userID
+          actorId
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          notificationPostId
+          owner
+        }
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onCreateUserFollow = /* GraphQL */ `
+  subscription OnCreateUserFollow(
+    $filter: ModelSubscriptionUserFollowFilterInput
+    $owner: String
+  ) {
+    onCreateUserFollow(filter: $filter, owner: $owner) {
+      id
+      followerID
+      followeeID
+      Follower {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      Followee {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onUpdateUserFollow = /* GraphQL */ `
+  subscription OnUpdateUserFollow(
+    $filter: ModelSubscriptionUserFollowFilterInput
+    $owner: String
+  ) {
+    onUpdateUserFollow(filter: $filter, owner: $owner) {
+      id
+      followerID
+      followeeID
+      Follower {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      Followee {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onDeleteUserFollow = /* GraphQL */ `
+  subscription OnDeleteUserFollow(
+    $filter: ModelSubscriptionUserFollowFilterInput
+    $owner: String
+  ) {
+    onDeleteUserFollow(filter: $filter, owner: $owner) {
+      id
+      followerID
+      followeeID
+      Follower {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      Followee {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
       createdAt
       updatedAt
       _version
@@ -1343,6 +1769,7 @@ export const onCreateUserFeedPost = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -1407,6 +1834,7 @@ export const onUpdateUserFeedPost = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -1471,6 +1899,7 @@ export const onDeleteUserFeedPost = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -1501,284 +1930,458 @@ export const onDeleteUserFeedPost = /* GraphQL */ `
     }
   }
 `;
-export const onCreateUserFollow = /* GraphQL */ `
-  subscription OnCreateUserFollow(
-    $filter: ModelSubscriptionUserFollowFilterInput
+export const onCreateNotification = /* GraphQL */ `
+  subscription OnCreateNotification(
+    $filter: ModelSubscriptionNotificationFilterInput
     $owner: String
   ) {
-    onCreateUserFollow(filter: $filter, owner: $owner) {
+    onCreateNotification(filter: $filter, owner: $owner) {
       id
-      followerID
-      followeeID
-      Follower {
-        id
-        name
-        email
-        username
-        bio
-        image
-        website
-        noOfPosts
-        noOfFollowers
-        noOfFollowing
-        Posts {
-          nextToken
-          startedAt
-        }
-        Comments {
-          nextToken
-          startedAt
-        }
-        Likes {
-          nextToken
-          startedAt
-        }
-        Followers {
-          nextToken
-          startedAt
-        }
-        Followings {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      Followee {
-        id
-        name
-        email
-        username
-        bio
-        image
-        website
-        noOfPosts
-        noOfFollowers
-        noOfFollowing
-        Posts {
-          nextToken
-          startedAt
-        }
-        Comments {
-          nextToken
-          startedAt
-        }
-        Likes {
-          nextToken
-          startedAt
-        }
-        Followers {
-          nextToken
-          startedAt
-        }
-        Followings {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
       createdAt
+      readAt
+      type
+      userID
+      User {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      actorId
+      Actor {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      Post {
+        id
+        createdAt
+        type
+        description
+        location
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      notificationPostId
       owner
     }
   }
 `;
-export const onUpdateUserFollow = /* GraphQL */ `
-  subscription OnUpdateUserFollow(
-    $filter: ModelSubscriptionUserFollowFilterInput
+export const onUpdateNotification = /* GraphQL */ `
+  subscription OnUpdateNotification(
+    $filter: ModelSubscriptionNotificationFilterInput
     $owner: String
   ) {
-    onUpdateUserFollow(filter: $filter, owner: $owner) {
+    onUpdateNotification(filter: $filter, owner: $owner) {
       id
-      followerID
-      followeeID
-      Follower {
-        id
-        name
-        email
-        username
-        bio
-        image
-        website
-        noOfPosts
-        noOfFollowers
-        noOfFollowing
-        Posts {
-          nextToken
-          startedAt
-        }
-        Comments {
-          nextToken
-          startedAt
-        }
-        Likes {
-          nextToken
-          startedAt
-        }
-        Followers {
-          nextToken
-          startedAt
-        }
-        Followings {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      Followee {
-        id
-        name
-        email
-        username
-        bio
-        image
-        website
-        noOfPosts
-        noOfFollowers
-        noOfFollowing
-        Posts {
-          nextToken
-          startedAt
-        }
-        Comments {
-          nextToken
-          startedAt
-        }
-        Likes {
-          nextToken
-          startedAt
-        }
-        Followers {
-          nextToken
-          startedAt
-        }
-        Followings {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
       createdAt
+      readAt
+      type
+      userID
+      User {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      actorId
+      Actor {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      Post {
+        id
+        createdAt
+        type
+        description
+        location
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      notificationPostId
       owner
     }
   }
 `;
-export const onDeleteUserFollow = /* GraphQL */ `
-  subscription OnDeleteUserFollow(
-    $filter: ModelSubscriptionUserFollowFilterInput
+export const onDeleteNotification = /* GraphQL */ `
+  subscription OnDeleteNotification(
+    $filter: ModelSubscriptionNotificationFilterInput
     $owner: String
   ) {
-    onDeleteUserFollow(filter: $filter, owner: $owner) {
+    onDeleteNotification(filter: $filter, owner: $owner) {
       id
-      followerID
-      followeeID
-      Follower {
-        id
-        name
-        email
-        username
-        bio
-        image
-        website
-        noOfPosts
-        noOfFollowers
-        noOfFollowing
-        Posts {
-          nextToken
-          startedAt
-        }
-        Comments {
-          nextToken
-          startedAt
-        }
-        Likes {
-          nextToken
-          startedAt
-        }
-        Followers {
-          nextToken
-          startedAt
-        }
-        Followings {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      Followee {
-        id
-        name
-        email
-        username
-        bio
-        image
-        website
-        noOfPosts
-        noOfFollowers
-        noOfFollowing
-        Posts {
-          nextToken
-          startedAt
-        }
-        Comments {
-          nextToken
-          startedAt
-        }
-        Likes {
-          nextToken
-          startedAt
-        }
-        Followers {
-          nextToken
-          startedAt
-        }
-        Followings {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
       createdAt
+      readAt
+      type
+      userID
+      User {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      actorId
+      Actor {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      Post {
+        id
+        createdAt
+        type
+        description
+        location
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      notificationPostId
       owner
     }
   }

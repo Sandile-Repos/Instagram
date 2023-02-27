@@ -2,6 +2,12 @@ import { ModelInit, MutableModel } from "@aws-amplify/datastore";
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@aws-amplify/datastore";
 
+export enum NotificationTypes {
+  NEW_FOLLOWER = "NEW_FOLLOWER",
+  NEW_LIKE = "NEW_LIKE",
+  NEW_COMMENT = "NEW_COMMENT"
+}
+
 type CommentMetaData = {
   readOnlyFields: 'updatedAt';
 }
@@ -20,6 +26,10 @@ type LikeMetaData = {
 
 type UserFollowMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type NotificationMetaData = {
+  readOnlyFields: 'updatedAt';
 }
 
 type UserFeedPostMetaData = {
@@ -66,6 +76,8 @@ type EagerUser = {
   readonly Likes?: (Like | null)[] | null;
   readonly Followers?: (UserFollow | null)[] | null;
   readonly Followings?: (UserFollow | null)[] | null;
+  readonly fcmToken?: string | null;
+  readonly Notifications?: (Notification | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -86,6 +98,8 @@ type LazyUser = {
   readonly Likes: AsyncCollection<Like>;
   readonly Followers: AsyncCollection<UserFollow>;
   readonly Followings: AsyncCollection<UserFollow>;
+  readonly fcmToken?: string | null;
+  readonly Notifications: AsyncCollection<Notification>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -178,6 +192,36 @@ export declare type UserFollow = LazyLoading extends LazyLoadingDisabled ? Eager
 
 export declare const UserFollow: (new (init: ModelInit<UserFollow, UserFollowMetaData>) => UserFollow) & {
   copyOf(source: UserFollow, mutator: (draft: MutableModel<UserFollow, UserFollowMetaData>) => MutableModel<UserFollow, UserFollowMetaData> | void): UserFollow;
+}
+
+type EagerNotification = {
+  readonly id: string;
+  readonly createdAt: string;
+  readonly readAt: number;
+  readonly type: NotificationTypes | keyof typeof NotificationTypes;
+  readonly User?: User | null;
+  readonly Actor?: User | null;
+  readonly Post?: Post | null;
+  readonly updatedAt?: string | null;
+  readonly notificationPostId?: string | null;
+}
+
+type LazyNotification = {
+  readonly id: string;
+  readonly createdAt: string;
+  readonly readAt: number;
+  readonly type: NotificationTypes | keyof typeof NotificationTypes;
+  readonly User: AsyncItem<User | undefined>;
+  readonly Actor: AsyncItem<User | undefined>;
+  readonly Post: AsyncItem<Post | undefined>;
+  readonly updatedAt?: string | null;
+  readonly notificationPostId?: string | null;
+}
+
+export declare type Notification = LazyLoading extends LazyLoadingDisabled ? EagerNotification : LazyNotification
+
+export declare const Notification: (new (init: ModelInit<Notification, NotificationMetaData>) => Notification) & {
+  copyOf(source: Notification, mutator: (draft: MutableModel<Notification, NotificationMetaData>) => MutableModel<Notification, NotificationMetaData> | void): Notification;
 }
 
 type EagerUserFeedPost = {

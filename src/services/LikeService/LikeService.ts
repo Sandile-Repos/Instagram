@@ -9,13 +9,17 @@ import {
   UpdatePostMutationVariables,
   LikesForPostByUserQuery,
   LikesForPostByUserQueryVariables,
+  CreateNotificationMutationVariables,
+  CreateNotificationMutation,
 } from '../../API';
 import {useAuthContext} from '../../contexts/AuthContext';
+import {NotificationTypes} from '../../models';
 import {
   updatePost,
   createLike,
   deleteLike,
   likesForPostByUser,
+  createNotification,
 } from './queries';
 
 const useLikeService = (post: Post) => {
@@ -44,6 +48,22 @@ const useLikeService = (post: Post) => {
     DeleteLikeMutationVariables
   >(deleteLike);
 
+  // Notification Mutation
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification, {
+    variables: {
+      input: {
+        type: NotificationTypes.NEW_LIKE,
+        userID: post.userID,
+        actorId: userId,
+        notificationPostId: post.id, // For every hasone amplify would create an id similar tp actorId. notification(1st table)Post(2nd table)id. Can be found in API.ts createNotificationInput
+        readAt: 0,
+      },
+    },
+  });
+
   const userLike = (usersLikeData?.LikesForPostByUser?.items || []).filter(
     like => !like?._deleted,
   )?.[0];
@@ -60,8 +80,9 @@ const useLikeService = (post: Post) => {
     });
   };
 
-  const onAddLike = () => {
+  const onAddLike = async () => {
     doCreateLike();
+    await doCreateNotification();
     incrementNoLikes(1);
   };
   const onDeleteLike = () => {

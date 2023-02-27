@@ -39,6 +39,11 @@ export const getLike = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -69,6 +74,7 @@ export const getLike = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -121,6 +127,7 @@ export const listLikes = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -186,6 +193,7 @@ export const syncLikes = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -255,6 +263,7 @@ export const likesForPostByUser = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -331,6 +340,11 @@ export const getComment = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -361,6 +375,7 @@ export const getComment = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -414,6 +429,7 @@ export const listComments = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -480,6 +496,7 @@ export const syncComments = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -550,6 +567,7 @@ export const commentsByPost = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -631,6 +649,11 @@ export const getPost = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -707,6 +730,7 @@ export const listPosts = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -769,6 +793,7 @@ export const syncPosts = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -835,6 +860,7 @@ export const postsByDate = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -957,6 +983,25 @@ export const getUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          readAt
+          type
+          userID
+          actorId
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          notificationPostId
+          owner
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -1001,6 +1046,11 @@ export const listUsers = /* GraphQL */ `
           startedAt
         }
         Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
           nextToken
           startedAt
         }
@@ -1057,6 +1107,11 @@ export const syncUsers = /* GraphQL */ `
           startedAt
         }
         Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
           nextToken
           startedAt
         }
@@ -1118,6 +1173,382 @@ export const userByUsername = /* GraphQL */ `
           nextToken
           startedAt
         }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getUserFollow = /* GraphQL */ `
+  query GetUserFollow($id: ID!) {
+    getUserFollow(id: $id) {
+      id
+      followerID
+      followeeID
+      Follower {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      Followee {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const listUserFollows = /* GraphQL */ `
+  query ListUserFollows(
+    $filter: ModelUserFollowFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserFollows(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        followerID
+        followeeID
+        Follower {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Followee {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncUserFollows = /* GraphQL */ `
+  query SyncUserFollows(
+    $filter: ModelUserFollowFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncUserFollows(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        followerID
+        followeeID
+        Follower {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Followee {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const userFollowings = /* GraphQL */ `
+  query UserFollowings(
+    $followerID: ID!
+    $followeeID: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFollowFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userFollowings(
+      followerID: $followerID
+      followeeID: $followeeID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        followerID
+        followeeID
+        Follower {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Followee {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const userFollowers = /* GraphQL */ `
+  query UserFollowers(
+    $followeeID: ID!
+    $followerID: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFollowFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userFollowers(
+      followeeID: $followeeID
+      followerID: $followerID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        followerID
+        followeeID
+        Follower {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Followee {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
         createdAt
         updatedAt
         _version
@@ -1161,6 +1592,7 @@ export const getUserFeedPost = /* GraphQL */ `
           noOfPosts
           noOfFollowers
           noOfFollowing
+          fcmToken
           createdAt
           updatedAt
           _version
@@ -1336,149 +1768,230 @@ export const userFeed = /* GraphQL */ `
     }
   }
 `;
-export const getUserFollow = /* GraphQL */ `
-  query GetUserFollow($id: ID!) {
-    getUserFollow(id: $id) {
+export const getNotification = /* GraphQL */ `
+  query GetNotification($id: ID!) {
+    getNotification(id: $id) {
       id
-      followerID
-      followeeID
-      Follower {
-        id
-        name
-        email
-        username
-        bio
-        image
-        website
-        noOfPosts
-        noOfFollowers
-        noOfFollowing
-        Posts {
-          nextToken
-          startedAt
-        }
-        Comments {
-          nextToken
-          startedAt
-        }
-        Likes {
-          nextToken
-          startedAt
-        }
-        Followers {
-          nextToken
-          startedAt
-        }
-        Followings {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      Followee {
-        id
-        name
-        email
-        username
-        bio
-        image
-        website
-        noOfPosts
-        noOfFollowers
-        noOfFollowing
-        Posts {
-          nextToken
-          startedAt
-        }
-        Comments {
-          nextToken
-          startedAt
-        }
-        Likes {
-          nextToken
-          startedAt
-        }
-        Followers {
-          nextToken
-          startedAt
-        }
-        Followings {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
       createdAt
+      readAt
+      type
+      userID
+      User {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      actorId
+      Actor {
+        id
+        name
+        email
+        username
+        bio
+        image
+        website
+        noOfPosts
+        noOfFollowers
+        noOfFollowing
+        Posts {
+          nextToken
+          startedAt
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        Followers {
+          nextToken
+          startedAt
+        }
+        Followings {
+          nextToken
+          startedAt
+        }
+        fcmToken
+        Notifications {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      Post {
+        id
+        createdAt
+        type
+        description
+        location
+        video
+        image
+        images
+        noOfComments
+        noOfLikes
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Comments {
+          nextToken
+          startedAt
+        }
+        Likes {
+          nextToken
+          startedAt
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      notificationPostId
       owner
     }
   }
 `;
-export const listUserFollows = /* GraphQL */ `
-  query ListUserFollows(
-    $filter: ModelUserFollowFilterInput
+export const listNotifications = /* GraphQL */ `
+  query ListNotifications(
+    $filter: ModelNotificationFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listUserFollows(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listNotifications(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        followerID
-        followeeID
-        Follower {
-          id
-          name
-          email
-          username
-          bio
-          image
-          website
-          noOfPosts
-          noOfFollowers
-          noOfFollowing
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        Followee {
-          id
-          name
-          email
-          username
-          bio
-          image
-          website
-          noOfPosts
-          noOfFollowers
-          noOfFollowing
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
         createdAt
+        readAt
+        type
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        actorId
+        Actor {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Post {
+          id
+          createdAt
+          type
+          description
+          location
+          video
+          image
+          images
+          noOfComments
+          noOfLikes
+          userID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        notificationPostId
         owner
       }
       nextToken
@@ -1486,14 +1999,14 @@ export const listUserFollows = /* GraphQL */ `
     }
   }
 `;
-export const syncUserFollows = /* GraphQL */ `
-  query SyncUserFollows(
-    $filter: ModelUserFollowFilterInput
+export const syncNotifications = /* GraphQL */ `
+  query SyncNotifications(
+    $filter: ModelNotificationFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncUserFollows(
+    syncNotifications(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -1501,49 +2014,72 @@ export const syncUserFollows = /* GraphQL */ `
     ) {
       items {
         id
-        followerID
-        followeeID
-        Follower {
-          id
-          name
-          email
-          username
-          bio
-          image
-          website
-          noOfPosts
-          noOfFollowers
-          noOfFollowing
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        Followee {
-          id
-          name
-          email
-          username
-          bio
-          image
-          website
-          noOfPosts
-          noOfFollowers
-          noOfFollowing
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
         createdAt
+        readAt
+        type
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        actorId
+        Actor {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Post {
+          id
+          createdAt
+          type
+          description
+          location
+          video
+          image
+          images
+          noOfComments
+          noOfLikes
+          userID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        notificationPostId
         owner
       }
       nextToken
@@ -1551,18 +2087,18 @@ export const syncUserFollows = /* GraphQL */ `
     }
   }
 `;
-export const userFollowings = /* GraphQL */ `
-  query UserFollowings(
-    $followerID: ID!
-    $followeeID: ModelIDKeyConditionInput
+export const userNotification = /* GraphQL */ `
+  query UserNotification(
+    $userID: ID!
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
-    $filter: ModelUserFollowFilterInput
+    $filter: ModelNotificationFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    userFollowings(
-      followerID: $followerID
-      followeeID: $followeeID
+    userNotification(
+      userID: $userID
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -1570,118 +2106,72 @@ export const userFollowings = /* GraphQL */ `
     ) {
       items {
         id
-        followerID
-        followeeID
-        Follower {
-          id
-          name
-          email
-          username
-          bio
-          image
-          website
-          noOfPosts
-          noOfFollowers
-          noOfFollowing
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        Followee {
-          id
-          name
-          email
-          username
-          bio
-          image
-          website
-          noOfPosts
-          noOfFollowers
-          noOfFollowing
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
         createdAt
+        readAt
+        type
+        userID
+        User {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        actorId
+        Actor {
+          id
+          name
+          email
+          username
+          bio
+          image
+          website
+          noOfPosts
+          noOfFollowers
+          noOfFollowing
+          fcmToken
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        Post {
+          id
+          createdAt
+          type
+          description
+          location
+          video
+          image
+          images
+          noOfComments
+          noOfLikes
+          userID
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const userFollowers = /* GraphQL */ `
-  query UserFollowers(
-    $followeeID: ID!
-    $followerID: ModelIDKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelUserFollowFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    userFollowers(
-      followeeID: $followeeID
-      followerID: $followerID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        followerID
-        followeeID
-        Follower {
-          id
-          name
-          email
-          username
-          bio
-          image
-          website
-          noOfPosts
-          noOfFollowers
-          noOfFollowing
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        Followee {
-          id
-          name
-          email
-          username
-          bio
-          image
-          website
-          noOfPosts
-          noOfFollowers
-          noOfFollowing
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          owner
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
+        notificationPostId
         owner
       }
       nextToken
