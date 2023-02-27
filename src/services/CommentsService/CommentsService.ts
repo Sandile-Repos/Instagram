@@ -32,20 +32,24 @@ const useCommentsService = (postId: string) => {
 
   const post = postData?.getPost;
 
-  const incrementNoComments = (amount: 1 | -1) => {
+  const incrementNoComments = async (amount: 1 | -1) => {
     if (!post) {
       Alert.alert('Failed to load post. Try again later');
       return;
     }
-    doUpdatePost({
-      variables: {
-        input: {
-          id: post.id,
-          _version: post._version,
-          noOfComments: post.noOfComments + amount,
+    try {
+      await doUpdatePost({
+        variables: {
+          input: {
+            id: post.id,
+            _version: post._version,
+            noOfComments: post.noOfComments + amount,
+          },
         },
-      },
-    });
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onCreateComment = async (newComment: string) => {

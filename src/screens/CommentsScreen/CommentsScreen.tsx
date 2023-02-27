@@ -49,10 +49,14 @@ const CommentsScreen = () => {
 
   useEffect(() => {
     if (newCommentsData?.onCreateCommentByPostId) {
-      setNewComments(existingNewComments => [
-        newCommentsData?.onCreateCommentByPostId as CommentType,
-        ...existingNewComments,
-      ]);
+      try {
+        setNewComments(existingNewComments => [
+          newCommentsData?.onCreateCommentByPostId as CommentType,
+          ...existingNewComments,
+        ]);
+      } catch (er) {
+        console.log(er);
+      }
     }
   }, [newCommentsData]);
 
@@ -101,9 +105,13 @@ const CommentsScreen = () => {
     if (!nextToken || isFetchingMore) {
       return;
     }
-    setIsFetchingMore(true); // to prevent fetching more if we already fetching and awaiting
-    await fetchMore({variables: {nextToken}});
-    setIsFetchingMore(false);
+    try {
+      setIsFetchingMore(true); // to prevent fetching more if we already fetching and awaiting
+      await fetchMore({variables: {nextToken}});
+      setIsFetchingMore(false);
+    } catch (er) {
+      console.log(er);
+    }
   };
 
   const isNewComment = (comment: CommentType) => {

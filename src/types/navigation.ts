@@ -3,7 +3,7 @@ import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+// import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 
 export type RootNavigatorParamList = {
   Home: undefined;
@@ -22,10 +22,10 @@ export type BottomTabNavigatorParamList = {
   MyProfile: undefined;
 };
 
-export type MyProfileNavigationProp = BottomTabNavigationProp<
-  BottomTabNavigatorParamList,
-  'MyProfile'
->;
+// export type MyProfileNavigationProp = BottomTabNavigationProp<
+//   BottomTabNavigatorParamList,
+//   'MyProfile'
+// >;
 
 export type MyProfileRouteProp = RouteProp<
   BottomTabNavigatorParamList,
