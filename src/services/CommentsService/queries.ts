@@ -60,12 +60,34 @@ export const getPost = gql`
   query GetPost($id: ID!) {
     getPost(id: $id) {
       id
+      userID
       noOfComments
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+    }
+  }
+`;
+
+export const createNotification = gql`
+  mutation CreateNotification(
+    $input: CreateNotificationInput!
+    $condition: ModelNotificationConditionInput
+  ) {
+    createNotification(input: $input, condition: $condition) {
+      id
+      createdAt
+      readAt
+      type
+      userID
+      actorId
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      notificationPostId
     }
   }
 `;

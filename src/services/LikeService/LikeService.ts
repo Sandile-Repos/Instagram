@@ -1,4 +1,5 @@
 import {useMutation, useQuery} from '@apollo/client';
+import {Alert} from 'react-native';
 import {
   Post,
   CreateLikeMutation,
@@ -68,24 +69,32 @@ const useLikeService = (post: Post) => {
     like => !like?._deleted,
   )?.[0];
 
-  const incrementNoLikes = (amount: 1 | -1) => {
-    doUpdatePost({
-      variables: {
-        input: {
-          id: post.id,
-          _version: post._version,
-          noOfLikes: post.noOfLikes + amount,
+  const incrementNoLikes = async (amount: 1 | -1) => {
+    try {
+      await doUpdatePost({
+        variables: {
+          input: {
+            id: post.id,
+            _version: post._version,
+            noOfLikes: post.noOfLikes + amount,
+          },
         },
-      },
-    });
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onAddLike = async () => {
-    doCreateLike();
-    await doCreateNotification();
-    incrementNoLikes(1);
+    try {
+      await doCreateLike();
+      await doCreateNotification();
+      incrementNoLikes(1);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const onDeleteLike = () => {
+  const onDeleteLike = async () => {
     // if (userLike) {
     //   doDeleteLike({
     //     variables: {input: {id: userLike.id, _version: userLike._version}},
@@ -93,13 +102,17 @@ const useLikeService = (post: Post) => {
     //   incrementNoLikes(-1);
     // }
 
-    if (!userLike) {
-      return;
+    try {
+      if (!userLike) {
+        return;
+      }
+      await doDeleteLike({
+        variables: {input: {id: userLike.id, _version: userLike._version}},
+      });
+      incrementNoLikes(-1);
+    } catch (error) {
+      console.log(error);
     }
-    doDeleteLike({
-      variables: {input: {id: userLike.id, _version: userLike._version}},
-    });
-    incrementNoLikes(-1);
   };
 
   const toggleLike = () => {

@@ -7,9 +7,17 @@ import {
   CreateCommentMutationVariables,
   GetPostQuery,
   GetPostQueryVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
 } from '../../API';
 import {useAuthContext} from '../../contexts/AuthContext';
-import {updatePost, createComment, getPost} from './queries';
+import {NotificationTypes} from '../../models';
+import {
+  updatePost,
+  createComment,
+  getPost,
+  createNotification,
+} from './queries';
 
 const useCommentsService = (postId: string) => {
   const {userId} = useAuthContext();
@@ -31,6 +39,12 @@ const useCommentsService = (postId: string) => {
   );
 
   const post = postData?.getPost;
+
+  // Notification Mutation
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
 
   const incrementNoComments = async (amount: 1 | -1) => {
     if (!post) {
@@ -68,6 +82,19 @@ const useCommentsService = (postId: string) => {
             comment: newComment,
             userID: userId,
             postID: post.id,
+          },
+        },
+      });
+
+      await doCreateNotification({
+        variables: {
+          input: {
+            type: NotificationTypes.NEW_COMMENT,
+            userID: post.userID,
+            actorId: userId,
+            notificationPostId: post.id, // For every hasone amplify would create an id similar to actorId. notification(1st table)Post(2nd table)id. Can be found in API.ts createNotificationInput
+            // notificationCommentId: commentID //to redirect to post comment and also highlight the post comment. You would also need to add #Comment: Comment @hasOne in Notification schema to create a connection
+            readAt: 0,
           },
         },
       });
