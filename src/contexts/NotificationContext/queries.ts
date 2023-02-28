@@ -26,3 +26,23 @@ export const userNotification = gql`
     }
   }
 `;
+
+export const onCreateNotification = gql`
+  subscription OnCreateNotification(
+    $filter: ModelSubscriptionNotificationFilterInput
+  ) {
+    onCreateNotification(filter: $filter) {
+      id
+      createdAt
+      type
+      userID
+      actorId
+      readAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      notificationPostId
+    }
+  }
+`;

@@ -69,7 +69,7 @@ const BottomTabNavigator = () => {
               color={color}
             />
           ),
-          tabBarBadge: newNotifications,
+          tabBarBadge: newNotifications || undefined, //undefined to hide badge when we have zero(0) notifications
         }}
       />
       <Tab.Screen
