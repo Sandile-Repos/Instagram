@@ -8,6 +8,7 @@ Amplify Params - DO NOT EDIT */
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
+const {v4: uuidv4} = require('uuid');
 
 const AWS = require('aws-sdk'); // no need to install sdk, ity automatically present in any lambda function
 const docClient = new AWS.DynamoDB.DocumentClient();
@@ -15,6 +16,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 const env = process.env.ENV;
 const AppsyncID = process.env.API_INSTAGRAM_GRAPHQLAPIIDOUTPUT;
 const UserTableName = `User-${AppsyncID}-${env}`;
+const NotificationTableName = `Notification-${AppsyncID}-${env}`;
 
 exports.handler = async event => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
@@ -30,30 +32,28 @@ const handleEvent = async ({eventID, eventName, dynamodb}) => {
   console.log(eventName);
   console.log('DynamoDB Record: %j', dynamodb);
 
+  const followeeID = dynamodb.NewImage.followeeID.S;
+  const followerID = dynamodb.NewImage.followerID.S;
+
   if (eventName === 'INSERT') {
+    //user A follow user B
     //increase for the user being followed
-    await increaseUserField(dynamodb.NewImage.followeeID.S, 'noOfFollowers', 1); // noOfFollowers is field from User Model
+    await increaseUserField(followeeID, 'noOfFollowers', 1); // noOfFollowers is field from User Model
 
     //increase for the user that is following
-    await increaseUserField(dynamodb.NewImage.followerID.S, 'noOfFollowing', 1); // noOfFollowings is field from User Model
+    await increaseUserField(followerID, 'noOfFollowing', 1); // noOfFollowings is field from User Model
+
+    await createFollowNotification(followeeID, followerID);
   } else if (
     eventName === 'MODIFY' &&
     !dynamodb.OldImage._delete?.BOOL && // where oldImage doesn't have deleted ie is false. not deleted
     !!dynamodb.NewImage._deleted?.BOOL // where newImage deleted is true
   ) {
     //decrease for the user being followed
-    await increaseUserField(
-      dynamodb.NewImage.followeeID.S,
-      'noOfFollowers',
-      -1,
-    ); // noOfFollowers is field from User Model
+    await increaseUserField(followeeID, 'noOfFollowers', -1); // noOfFollowers is field from User Model
 
     //decrease for the user that is following
-    await increaseUserField(
-      dynamodb.NewImage.followerID.S,
-      'noOfFollowing',
-      -1,
-    ); // noOfFollowings is field from User Model
+    await increaseUserField(followerID, 'noOfFollowing', -1); // noOfFollowings is field from User Model
   }
 };
 
@@ -70,5 +70,37 @@ const increaseUserField = async (userId, field, value) => {
     await docClient.update(params).promise();
   } catch (error) {
     console.log(error);
+  }
+};
+
+const createFollowNotification = async (userID, actorId) => {
+  const date = new Date();
+  const timestamp = date.getTime(); //current timestamp in milliseconds
+  const dateStr = date.toISOString();
+
+  const Item = {
+    id: uuidv4(),
+    type: 'NEW_FOLLOWER',
+    actorId,
+    userID,
+    readAt: 0,
+
+    owner: `${actorId}::${actorId}`,
+    createdAt: dateStr,
+    updatedAt: dateStr,
+    _lastChangedAt: timestamp,
+    _version: 1,
+    __typename: 'Notification',
+  };
+  console.log(Item);
+  const params = {
+    TableName: NotificationTableName,
+    Item,
+  };
+
+  try {
+    await docClient.put(params).promise();
+  } catch (e) {
+    console.log(e);
   }
 };
