@@ -997,7 +997,6 @@ export const getUser = /* GraphQL */ `
           _deleted
           _lastChangedAt
           notificationPostId
-          owner
         }
         nextToken
         startedAt
@@ -1913,7 +1912,6 @@ export const getNotification = /* GraphQL */ `
       _deleted
       _lastChangedAt
       notificationPostId
-      owner
     }
   }
 `;
@@ -1992,7 +1990,6 @@ export const listNotifications = /* GraphQL */ `
         _deleted
         _lastChangedAt
         notificationPostId
-        owner
       }
       nextToken
       startedAt
@@ -2080,7 +2077,6 @@ export const syncNotifications = /* GraphQL */ `
         _deleted
         _lastChangedAt
         notificationPostId
-        owner
       }
       nextToken
       startedAt
@@ -2172,7 +2168,6 @@ export const userNotification = /* GraphQL */ `
         _deleted
         _lastChangedAt
         notificationPostId
-        owner
       }
       nextToken
       startedAt

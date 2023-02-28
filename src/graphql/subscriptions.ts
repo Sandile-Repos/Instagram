@@ -1155,7 +1155,6 @@ export const onCreateUser = /* GraphQL */ `
           _deleted
           _lastChangedAt
           notificationPostId
-          owner
         }
         nextToken
         startedAt
@@ -1282,7 +1281,6 @@ export const onUpdateUser = /* GraphQL */ `
           _deleted
           _lastChangedAt
           notificationPostId
-          owner
         }
         nextToken
         startedAt
@@ -1409,7 +1407,6 @@ export const onDeleteUser = /* GraphQL */ `
           _deleted
           _lastChangedAt
           notificationPostId
-          owner
         }
         nextToken
         startedAt
@@ -1933,9 +1930,8 @@ export const onDeleteUserFeedPost = /* GraphQL */ `
 export const onCreateNotification = /* GraphQL */ `
   subscription OnCreateNotification(
     $filter: ModelSubscriptionNotificationFilterInput
-    $owner: String
   ) {
-    onCreateNotification(filter: $filter, owner: $owner) {
+    onCreateNotification(filter: $filter) {
       id
       createdAt
       readAt
@@ -2078,16 +2074,14 @@ export const onCreateNotification = /* GraphQL */ `
       _deleted
       _lastChangedAt
       notificationPostId
-      owner
     }
   }
 `;
 export const onUpdateNotification = /* GraphQL */ `
   subscription OnUpdateNotification(
     $filter: ModelSubscriptionNotificationFilterInput
-    $owner: String
   ) {
-    onUpdateNotification(filter: $filter, owner: $owner) {
+    onUpdateNotification(filter: $filter) {
       id
       createdAt
       readAt
@@ -2230,16 +2224,14 @@ export const onUpdateNotification = /* GraphQL */ `
       _deleted
       _lastChangedAt
       notificationPostId
-      owner
     }
   }
 `;
 export const onDeleteNotification = /* GraphQL */ `
   subscription OnDeleteNotification(
     $filter: ModelSubscriptionNotificationFilterInput
-    $owner: String
   ) {
-    onDeleteNotification(filter: $filter, owner: $owner) {
+    onDeleteNotification(filter: $filter) {
       id
       createdAt
       readAt
@@ -2382,7 +2374,6 @@ export const onDeleteNotification = /* GraphQL */ `
       _deleted
       _lastChangedAt
       notificationPostId
-      owner
     }
   }
 `;

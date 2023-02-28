@@ -126,7 +126,8 @@ enum NotificationTypes {
 
 type Notification
   @model
-  @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
+  @auth(rules: [{allow: private}]) { #Allow all signed in users to do all the operations
+  # @auth(rules: [{allow: private, operations: [read]}, {allow: owner}]) {
   id: ID!
   createdAt: AWSDateTime!
   readAt: AWSTimestamp!

@@ -1051,7 +1051,6 @@ export const createUser = /* GraphQL */ `
           _deleted
           _lastChangedAt
           notificationPostId
-          owner
         }
         nextToken
         startedAt
@@ -1178,7 +1177,6 @@ export const updateUser = /* GraphQL */ `
           _deleted
           _lastChangedAt
           notificationPostId
-          owner
         }
         nextToken
         startedAt
@@ -1305,7 +1303,6 @@ export const deleteUser = /* GraphQL */ `
           _deleted
           _lastChangedAt
           notificationPostId
-          owner
         }
         nextToken
         startedAt
@@ -1974,7 +1971,6 @@ export const createNotification = /* GraphQL */ `
       _deleted
       _lastChangedAt
       notificationPostId
-      owner
     }
   }
 `;
@@ -2126,7 +2122,6 @@ export const updateNotification = /* GraphQL */ `
       _deleted
       _lastChangedAt
       notificationPostId
-      owner
     }
   }
 `;
@@ -2278,7 +2273,6 @@ export const deleteNotification = /* GraphQL */ `
       _deleted
       _lastChangedAt
       notificationPostId
-      owner
     }
   }
 `;

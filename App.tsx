@@ -12,6 +12,8 @@ import {MenuProvider} from 'react-native-popup-menu';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import * as dayjs from 'dayjs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import NotificationContextProvider from './src/contexts/NotificationContext/NotificationContext';
+
 dayjs.extend(relativeTime);
 const urlOpener = async (url: string, redirectUrl: string) => {
   await InAppBrowser.isAvailable();
@@ -43,7 +45,9 @@ const App = () => {
       <MenuProvider>
         <AuthContextProvider>
           <Client>
-            <Navigation />
+            <NotificationContextProvider>
+              <Navigation />
+            </NotificationContextProvider>
           </Client>
         </AuthContextProvider>
       </MenuProvider>

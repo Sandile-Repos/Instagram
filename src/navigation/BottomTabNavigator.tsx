@@ -11,10 +11,12 @@ import {BottomTabNavigatorParamList} from '../types/navigation';
 import SearchTabNavigator from './SearchTabNavigator';
 import UploadStackNavigator from './UploadStackNavigator';
 import NotificationsScreen from '../screens/NotificationsScreen';
+import {useNotificationContext} from '../contexts/NotificationContext/NotificationContext';
 
 const Tab = createBottomTabNavigator<BottomTabNavigatorParamList>();
 
 const BottomTabNavigator = () => {
+  const {newNotifications} = useNotificationContext();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -67,6 +69,7 @@ const BottomTabNavigator = () => {
               color={color}
             />
           ),
+          tabBarBadge: newNotifications,
         }}
       />
       <Tab.Screen

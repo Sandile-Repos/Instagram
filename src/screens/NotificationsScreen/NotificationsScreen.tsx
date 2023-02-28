@@ -1,14 +1,15 @@
 import {View, Text, ActivityIndicator, FlatList} from 'react-native';
-import React from 'react';
-import {useQuery} from '@apollo/client';
+import React, {useEffect} from 'react';
+import {useMutation, useQuery} from '@apollo/client';
 import {
   ModelSortDirection,
+  UpdateNotificationMutation,
+  UpdateNotificationMutationVariables,
   UserNotificationQuery,
   UserNotificationQueryVariables,
 } from '../../API';
-import {userNotification} from './queries';
+import {updateNotification, userNotification} from './queries';
 import {useAuthContext} from '../../contexts/AuthContext';
-import ApiErrorMessage from '../../components/ApiErrorMessage';
 import NotificationListItem from '../../components/NotificationListItem';
 
 const NotificationsScreen = () => {
@@ -20,6 +21,37 @@ const NotificationsScreen = () => {
   >(userNotification, {
     variables: {userID: userId, sortDirection: ModelSortDirection.DESC},
   });
+
+  //   console.log(JSON.stringify(data?.userNotification?.items, null, 2));
+  const notifications = (data?.userNotification?.items || []).filter(
+    item => !item?._deleted,
+  );
+
+  const [doUpdateNotification] = useMutation<
+    UpdateNotificationMutation,
+    UpdateNotificationMutationVariables
+  >(updateNotification);
+
+  useEffect(() => {
+    const readNotification = async () => {
+      const unreadNotifications = notifications.filter(n => !n?.readAt);
+
+      await Promise.all(
+        unreadNotifications.map(notification =>
+          doUpdateNotification({
+            variables: {
+              input: {
+                id: notification.id,
+                _version: notification._version,
+                readAt: new Date().getTime(),
+              },
+            },
+          }),
+        ),
+      );
+    };
+    readNotification();
+  }, [doUpdateNotification, notifications]);
 
   if (loading) {
     return <ActivityIndicator />;
@@ -33,11 +65,6 @@ const NotificationsScreen = () => {
       />
     );
   }
-
-  //   console.log(JSON.stringify(data?.userNotification?.items, null, 2));
-  const notifications = (data?.userNotification?.items || []).filter(
-    item => !item?._deleted,
-  );
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>

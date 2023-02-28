@@ -50,3 +50,23 @@ export const userNotification = gql`
     }
   }
 `;
+
+export const updateNotification = gql`
+  mutation UpdateNotification(
+    $input: UpdateNotificationInput!
+    $condition: ModelNotificationConditionInput
+  ) {
+    updateNotification(input: $input, condition: $condition) {
+      id
+      createdAt
+      type
+      readAt
+      userID
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      notificationPostId
+    }
+  }
+`;

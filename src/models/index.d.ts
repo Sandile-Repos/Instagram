@@ -8,7 +8,15 @@ export enum NotificationTypes {
   NEW_COMMENT = "NEW_COMMENT"
 }
 
+type LikeMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type CommentMetaData = {
+  readOnlyFields: 'updatedAt';
+}
+
+type PostMetaData = {
   readOnlyFields: 'updatedAt';
 }
 
@@ -16,15 +24,11 @@ type UserMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type PostMetaData = {
-  readOnlyFields: 'updatedAt';
-}
-
-type LikeMetaData = {
+type UserFollowMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type UserFollowMetaData = {
+type UserFeedPostMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -32,8 +36,26 @@ type NotificationMetaData = {
   readOnlyFields: 'updatedAt';
 }
 
-type UserFeedPostMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
+type EagerLike = {
+  readonly id: string;
+  readonly User?: User | null;
+  readonly Post?: Post | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyLike = {
+  readonly id: string;
+  readonly User: AsyncItem<User | undefined>;
+  readonly Post: AsyncItem<Post | undefined>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Like = LazyLoading extends LazyLoadingDisabled ? EagerLike : LazyLike
+
+export declare const Like: (new (init: ModelInit<Like, LikeMetaData>) => Like) & {
+  copyOf(source: Like, mutator: (draft: MutableModel<Like, LikeMetaData>) => MutableModel<Like, LikeMetaData> | void): Like;
 }
 
 type EagerComment = {
@@ -58,6 +80,46 @@ export declare type Comment = LazyLoading extends LazyLoadingDisabled ? EagerCom
 
 export declare const Comment: (new (init: ModelInit<Comment, CommentMetaData>) => Comment) & {
   copyOf(source: Comment, mutator: (draft: MutableModel<Comment, CommentMetaData>) => MutableModel<Comment, CommentMetaData> | void): Comment;
+}
+
+type EagerPost = {
+  readonly id: string;
+  readonly createdAt: string;
+  readonly type: string;
+  readonly description?: string | null;
+  readonly location?: string | null;
+  readonly video?: string | null;
+  readonly image?: string | null;
+  readonly images?: string[] | null;
+  readonly noOfComments: number;
+  readonly noOfLikes: number;
+  readonly User?: User | null;
+  readonly Comments?: (Comment | null)[] | null;
+  readonly Likes?: (Like | null)[] | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyPost = {
+  readonly id: string;
+  readonly createdAt: string;
+  readonly type: string;
+  readonly description?: string | null;
+  readonly location?: string | null;
+  readonly video?: string | null;
+  readonly image?: string | null;
+  readonly images?: string[] | null;
+  readonly noOfComments: number;
+  readonly noOfLikes: number;
+  readonly User: AsyncItem<User | undefined>;
+  readonly Comments: AsyncCollection<Comment>;
+  readonly Likes: AsyncCollection<Like>;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Post = LazyLoading extends LazyLoadingDisabled ? EagerPost : LazyPost
+
+export declare const Post: (new (init: ModelInit<Post, PostMetaData>) => Post) & {
+  copyOf(source: Post, mutator: (draft: MutableModel<Post, PostMetaData>) => MutableModel<Post, PostMetaData> | void): Post;
 }
 
 type EagerUser = {
@@ -110,68 +172,6 @@ export declare const User: (new (init: ModelInit<User, UserMetaData>) => User) &
   copyOf(source: User, mutator: (draft: MutableModel<User, UserMetaData>) => MutableModel<User, UserMetaData> | void): User;
 }
 
-type EagerPost = {
-  readonly id: string;
-  readonly createdAt: string;
-  readonly type: string;
-  readonly description?: string | null;
-  readonly location?: string | null;
-  readonly video?: string | null;
-  readonly image?: string | null;
-  readonly images?: string[] | null;
-  readonly noOfComments: number;
-  readonly noOfLikes: number;
-  readonly User?: User | null;
-  readonly Comments?: (Comment | null)[] | null;
-  readonly Likes?: (Like | null)[] | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyPost = {
-  readonly id: string;
-  readonly createdAt: string;
-  readonly type: string;
-  readonly description?: string | null;
-  readonly location?: string | null;
-  readonly video?: string | null;
-  readonly image?: string | null;
-  readonly images?: string[] | null;
-  readonly noOfComments: number;
-  readonly noOfLikes: number;
-  readonly User: AsyncItem<User | undefined>;
-  readonly Comments: AsyncCollection<Comment>;
-  readonly Likes: AsyncCollection<Like>;
-  readonly updatedAt?: string | null;
-}
-
-export declare type Post = LazyLoading extends LazyLoadingDisabled ? EagerPost : LazyPost
-
-export declare const Post: (new (init: ModelInit<Post, PostMetaData>) => Post) & {
-  copyOf(source: Post, mutator: (draft: MutableModel<Post, PostMetaData>) => MutableModel<Post, PostMetaData> | void): Post;
-}
-
-type EagerLike = {
-  readonly id: string;
-  readonly User?: User | null;
-  readonly Post?: Post | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyLike = {
-  readonly id: string;
-  readonly User: AsyncItem<User | undefined>;
-  readonly Post: AsyncItem<Post | undefined>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type Like = LazyLoading extends LazyLoadingDisabled ? EagerLike : LazyLike
-
-export declare const Like: (new (init: ModelInit<Like, LikeMetaData>) => Like) & {
-  copyOf(source: Like, mutator: (draft: MutableModel<Like, LikeMetaData>) => MutableModel<Like, LikeMetaData> | void): Like;
-}
-
 type EagerUserFollow = {
   readonly id: string;
   readonly Follower?: User | null;
@@ -192,6 +192,34 @@ export declare type UserFollow = LazyLoading extends LazyLoadingDisabled ? Eager
 
 export declare const UserFollow: (new (init: ModelInit<UserFollow, UserFollowMetaData>) => UserFollow) & {
   copyOf(source: UserFollow, mutator: (draft: MutableModel<UserFollow, UserFollowMetaData>) => MutableModel<UserFollow, UserFollowMetaData> | void): UserFollow;
+}
+
+type EagerUserFeedPost = {
+  readonly id: string;
+  readonly userID: string;
+  readonly postID: string;
+  readonly postCreatedAt: string;
+  readonly postOwnerID: string;
+  readonly Post?: Post | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyUserFeedPost = {
+  readonly id: string;
+  readonly userID: string;
+  readonly postID: string;
+  readonly postCreatedAt: string;
+  readonly postOwnerID: string;
+  readonly Post: AsyncItem<Post | undefined>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type UserFeedPost = LazyLoading extends LazyLoadingDisabled ? EagerUserFeedPost : LazyUserFeedPost
+
+export declare const UserFeedPost: (new (init: ModelInit<UserFeedPost, UserFeedPostMetaData>) => UserFeedPost) & {
+  copyOf(source: UserFeedPost, mutator: (draft: MutableModel<UserFeedPost, UserFeedPostMetaData>) => MutableModel<UserFeedPost, UserFeedPostMetaData> | void): UserFeedPost;
 }
 
 type EagerNotification = {
@@ -222,32 +250,4 @@ export declare type Notification = LazyLoading extends LazyLoadingDisabled ? Eag
 
 export declare const Notification: (new (init: ModelInit<Notification, NotificationMetaData>) => Notification) & {
   copyOf(source: Notification, mutator: (draft: MutableModel<Notification, NotificationMetaData>) => MutableModel<Notification, NotificationMetaData> | void): Notification;
-}
-
-type EagerUserFeedPost = {
-  readonly id: string;
-  readonly userID: string;
-  readonly postID: string;
-  readonly postCreatedAt: string;
-  readonly postOwnerID: string;
-  readonly Post?: Post | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyUserFeedPost = {
-  readonly id: string;
-  readonly userID: string;
-  readonly postID: string;
-  readonly postCreatedAt: string;
-  readonly postOwnerID: string;
-  readonly Post: AsyncItem<Post | undefined>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type UserFeedPost = LazyLoading extends LazyLoadingDisabled ? EagerUserFeedPost : LazyUserFeedPost
-
-export declare const UserFeedPost: (new (init: ModelInit<UserFeedPost, UserFeedPostMetaData>) => UserFeedPost) & {
-  copyOf(source: UserFeedPost, mutator: (draft: MutableModel<UserFeedPost, UserFeedPostMetaData>) => MutableModel<UserFeedPost, UserFeedPostMetaData> | void): UserFeedPost;
 }
