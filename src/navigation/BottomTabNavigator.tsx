@@ -4,13 +4,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import CameraScreen from '../screens/CameraScreen';
 import colors from '../theme/colors';
 import HomeStackNavigator from './HomeStackNavigator';
 import ProfileStackNavigator from './ProfileStackNavigator';
 import {BottomTabNavigatorParamList} from '../types/navigation';
 import SearchTabNavigator from './SearchTabNavigator';
 import UploadStackNavigator from './UploadStackNavigator';
+import NotificationsScreen from '../screens/NotificationsScreen';
 
 const Tab = createBottomTabNavigator<BottomTabNavigatorParamList>();
 
@@ -58,7 +58,7 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Notifications"
-        component={CameraScreen}
+        component={NotificationsScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons

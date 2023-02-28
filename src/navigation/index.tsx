@@ -12,6 +12,7 @@ import {useQuery} from '@apollo/client';
 import {GetUserQuery, GetUserQueryVariables} from '../API';
 import {getUser} from './queries';
 import EditProfileScreen from '../screens/EditProfileScreen';
+import PostScreen from '../screens/PostScreen';
 
 const Stack = createNativeStackNavigator<RootNavigatorParamList>();
 const linking: LinkingOptions<RootNavigatorParamList> = {
@@ -78,6 +79,7 @@ const Navigation = () => {
           options={{headerShown: false}}
         />
 
+        <Stack.Screen name="Post" component={PostScreen} />
         <Stack.Screen name="Comments" component={CommentsScreen} />
       </>
     );

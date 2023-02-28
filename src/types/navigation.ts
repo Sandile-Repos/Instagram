@@ -7,6 +7,7 @@ import {
 
 export type RootNavigatorParamList = {
   Home: undefined;
+  Post: {id: string};
   Comments: {postId: string};
   Auth: undefined; // no parameters therefore undefined
   EditProfile: undefined;
