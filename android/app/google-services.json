@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "350126079681",
+    "project_id": "memoriesalbum-560c6",
+    "storage_bucket": "memoriesalbum-560c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350126079681:android:95b315a66cf6fe30fb1e40",
+        "android_client_info": {
+          "package_name": "com.memories.album"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350126079681-5gdiu9t8cr6p84q32jdfc2mhn4rq3aup.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.memories.album",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "350126079681-evbm4q6flak6up2t4v5a6aint8nbofc3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA73qXuFeVwmaavuIMxflE7MUxp1pFJQ5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "350126079681-evbm4q6flak6up2t4v5a6aint8nbofc3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
