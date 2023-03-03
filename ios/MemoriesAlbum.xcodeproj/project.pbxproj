@@ -46,6 +46,7 @@
 		74020ABF57B90A211AF92688 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-MemoriesAlbum/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		773788D31AE9AA42BEF90C57 /* Pods-MemoriesAlbum-MemoriesAlbumTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemoriesAlbum-MemoriesAlbumTests.release.xcconfig"; path = "Target Support Files/Pods-MemoriesAlbum-MemoriesAlbumTests/Pods-MemoriesAlbum-MemoriesAlbumTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MemoriesAlbum/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AA69BA3E29AFA1D900CB1F0F /* MemoriesAlbum.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MemoriesAlbum.entitlements; path = MemoriesAlbum/MemoriesAlbum.entitlements; sourceTree = "<group>"; };
 		AAE9BAE129AEC43800CB5196 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D9FA3F29E628925E7BF15D10 /* Pods_MemoriesAlbum.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MemoriesAlbum.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1D84987C9A09845DE4AD192 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-MemoriesAlbum-MemoriesAlbumTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
@@ -92,6 +93,7 @@
 		13B07FAE1A68108700A75B9A /* MemoriesAlbum */ = {
 			isa = PBXGroup;
 			children = (
+				AA69BA3E29AFA1D900CB1F0F /* MemoriesAlbum.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -536,6 +538,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MemoriesAlbum/MemoriesAlbum.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MemoriesAlbum/Info.plist;
@@ -563,6 +566,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MemoriesAlbum/MemoriesAlbum.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = MemoriesAlbum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
