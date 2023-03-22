@@ -4,6 +4,15 @@ import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 import {useNavigation} from '@react-navigation/native';
+import {
+  GetUserQuery,
+  GetUserQueryVariables,
+  UpdateUserMutation,
+  UpdateUserMutationVariables,
+} from '../../API';
+import {getUser, updateUser} from './queries';
+import {useMutation, useQuery} from '@apollo/client';
+import {useAuthContext} from '../../contexts/AuthContext';
 
 // Register background handler
 messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -18,6 +27,31 @@ const PushNotificationService = () => {
   const [token, setToken] = useState('');
 
   const navigation = useNavigation();
+
+  const {userId} = useAuthContext(); //PushNotificationService
+
+  const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
+    variables: {id: userId},
+  });
+
+  const [doUpdateUser] = useMutation<
+    UpdateUserMutation,
+    UpdateUserMutationVariables
+  >(updateUser);
+
+  useEffect(() => {
+    if (token && data?.getUser) {
+      doUpdateUser({
+        variables: {
+          input: {
+            id: data.getUser.id,
+            _version: data.getUser._version,
+            fcmToken: token,
+          },
+        },
+      });
+    }
+  }, [token, data?.getUser?.id, data?.getUser, doUpdateUser]);
 
   useEffect(() => {
     async function requestUserPermission() {

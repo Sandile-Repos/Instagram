@@ -11,6 +11,7 @@ import {
 import {updateNotification, userNotification} from './queries';
 import {useAuthContext} from '../../contexts/AuthContext';
 import NotificationListItem from '../../components/NotificationListItem';
+import ApiErrorMessage from '../../components/ApiErrorMessage';
 
 const NotificationsScreen = () => {
   const {userId} = useAuthContext();
@@ -37,16 +38,18 @@ const NotificationsScreen = () => {
       const unreadNotifications = notifications.filter(n => !n?.readAt);
 
       await Promise.all(
-        unreadNotifications.map(notification =>
-          doUpdateNotification({
-            variables: {
-              input: {
-                id: notification.id,
-                _version: notification._version,
-                readAt: new Date().getTime(),
+        unreadNotifications.map(
+          notification =>
+            notification &&
+            doUpdateNotification({
+              variables: {
+                input: {
+                  id: notification.id,
+                  _version: notification._version,
+                  readAt: new Date().getTime(),
+                },
               },
-            },
-          }),
+            }),
         ),
       );
     };
@@ -70,7 +73,9 @@ const NotificationsScreen = () => {
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <FlatList
         data={notifications}
-        renderItem={({item}) => <NotificationListItem notification={item} />}
+        renderItem={({item}) =>
+          item && <NotificationListItem notification={item} />
+        }
         onRefresh={refetch}
         refreshing={loading}
         ListEmptyComponent={() => (
