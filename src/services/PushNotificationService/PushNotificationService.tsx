@@ -39,33 +39,49 @@ const PushNotificationService = () => {
     UpdateUserMutationVariables
   >(updateUser);
 
+  // useEffect(() => {
+  //   if (token && data?.getUser) {
+  //     doUpdateUser({
+  //       variables: {
+  //         input: {
+  //           id: data.getUser.id,
+  //           _version: data.getUser._version,
+  //           fcmToken: token,
+  //         },
+  //       },
+  //     });
+  //   }
+  // }, [token, data?.getUser?.id, data?.getUser, doUpdateUser]);
+
   useEffect(() => {
-    if (token && data?.getUser) {
-      doUpdateUser({
-        variables: {
-          input: {
-            id: data.getUser.id,
-            _version: data.getUser._version,
-            fcmToken: token,
-          },
-        },
-      });
+    if (!token || !data?.getUser) {
+      return;
     }
+    const user = data.getUser;
+    doUpdateUser({
+      variables: {
+        input: {
+          id: user.id,
+          _version: user._version,
+          fcmToken: token,
+        },
+      },
+    });
   }, [token, data?.getUser?.id, data?.getUser, doUpdateUser]);
 
   useEffect(() => {
-    async function requestUserPermission() {
+    const requestUserPermission = async () => {
       const authStatus = await messaging().requestPermission();
-      const enabled =
+      const enable =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-      if (enabled) {
+      if (enable) {
         console.log('Authorization status:', authStatus);
         setEnabled(true);
         await getDeviceToken();
       }
-    }
+    };
     requestUserPermission();
   }, []);
 
@@ -86,7 +102,7 @@ const PushNotificationService = () => {
   const handleNotification = (
     remoteMessage: FirebaseMessagingTypes.RemoteMessage | null,
   ) => {
-    console.log(JSON.stringify(remoteMessage, null, 2));
+    // console.log(JSON.stringify(remoteMessage, null, 2));
 
     if (!remoteMessage) {
       return;
@@ -100,8 +116,8 @@ const PushNotificationService = () => {
     await messaging().registerDeviceForRemoteMessages();
     const newToken = await messaging().getToken();
     setToken(newToken);
+    console.log('token', newToken);
   };
-  console.log('token', token);
 
   return null;
 };

@@ -33,7 +33,7 @@ const NotificationContextProvider = ({children}) => {
             ...prev?.userNotification,
             items: [
               ...(prev?.userNotification?.items || []),
-              next.subscriptionData.data.onCreateNotification, //no need to destructure since it not an array but object
+              next.subscriptionData.data.onCreateNotification, //no need to destructure since it not an array but an object
             ],
           },
         };

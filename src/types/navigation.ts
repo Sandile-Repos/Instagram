@@ -6,21 +6,21 @@ import {
 // import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 
 export type RootNavigatorParamList = {
-  Home: undefined;
-  Post: {id: string};
-  Comments: {postId: string};
-  Auth: undefined; // no parameters therefore undefined
-  EditProfile: undefined;
+  Home: undefined; //BottomTabNavigator
+  Post: {id: string}; //PostScreen
+  Comments: {postId: string}; //CommentsScreen
+  Auth: undefined; // no parameters therefore undefined //AuthStackNavigator
+  EditProfile: undefined; //EditProfileScreen
 };
 
 export type CommentsRouteProp = RouteProp<RootNavigatorParamList, 'Comments'>;
 
 export type BottomTabNavigatorParamList = {
-  HomeStack: undefined;
-  Search: undefined;
-  Upload: undefined;
-  Notifications: undefined;
-  MyProfile: undefined;
+  HomeStack: undefined; //HomeStackNavigator
+  Search: undefined; //SearchTabNavigator
+  Upload: undefined; //UploadStackNavigator
+  Notifications: undefined; //NotificationScreen
+  MyProfile: undefined; //ProfileStackNavigator
 };
 
 // export type MyProfileNavigationProp = BottomTabNavigationProp<
@@ -34,11 +34,11 @@ export type MyProfileRouteProp = RouteProp<
 >;
 
 export type HomeStackNavigatorParamList = {
-  Feed: undefined;
+  Feed: undefined; // HomeScreen
   // UserProfile: {userId: string};
-  UserProfile: NavigatorScreenParams<ProfileStackNavigatorParamList>;
-  UpdatePost: {id: string};
-  PostLikes: {id: string};
+  UserProfile: NavigatorScreenParams<ProfileStackNavigatorParamList>; // ProfileStackNavigator
+  UpdatePost: {id: string}; // UpdatePostScreen
+  PostLikes: {id: string}; // PostLikesScreen
 };
 
 export type FeedNavigationProp = NativeStackNavigationProp<
@@ -67,17 +67,17 @@ export type PostLikesRouteProp = RouteProp<
 >;
 
 export type UserFollowTabNavigatorParamList = {
-  Followers: undefined;
-  Followings: undefined;
+  Followers: undefined; // UserFollowers
+  Followings: undefined; // UserFollowings
 };
 
 export type ProfileStackNavigatorParamList = {
   // Profile: undefined;
-  Profile: {userId: string};
-  'Edit Profile': undefined;
+  Profile: {userId: string}; // ProfileScreen
+  'Edit Profile': undefined; // EditProfileScreen
   UserFollow: {
     id: string;
-  } & NavigatorScreenParams<UserFollowTabNavigatorParamList>;
+  } & NavigatorScreenParams<UserFollowTabNavigatorParamList>; // UserFollowTabNavigator
 };
 
 export type ProfileNavigationProp = NativeStackNavigationProp<
@@ -91,17 +91,17 @@ export type UserFollowScreenProps = NativeStackScreenProps<
 >;
 
 export type SearchTabNavigatorParamList = {
-  Users: undefined;
-  Posts: undefined;
+  Users: undefined; // UserSearchScreen
+  Posts: undefined; // HomeScreen
 };
 
 export type UploadStackNavigatorParamList = {
-  Camera: undefined;
+  Camera: undefined; // CameraScreen
   Create: {
     image?: string;
     images?: string[];
     video?: string;
-  };
+  }; // CreatePostScreen
 };
 
 export type CameraNavigationProp = NativeStackNavigationProp<
@@ -120,11 +120,11 @@ export type CreateRouteProp = RouteProp<
 >;
 
 export type AuthStackNavigatorParamList = {
-  'Sign in': undefined;
-  'Sign up': undefined;
-  'Confirm email': {email?: string};
-  'Forgot password': undefined;
-  'New password': undefined;
+  'Sign in': undefined; // SignInScreen
+  'Sign up': undefined; // SignUpScreen
+  'Confirm email': {email?: string}; // ConfirmEmailScreen
+  'Forgot password': undefined; // ForgotPasswordScreen
+  'New password': undefined; // NewPasswordScreen
 };
 
 export type SignInNavigationProp = NativeStackNavigationProp<
