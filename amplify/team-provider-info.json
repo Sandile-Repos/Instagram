@@ -27,7 +27,7 @@
         },
         "NotificationTrigger": {
           "deploymentBucketName": "amplify-instagram-dev-223658-deployment",
-          "s3Key": "amplify-builds/NotificationTrigger-2f3144496b313431782f-build.zip"
+          "s3Key": "amplify-builds/NotificationTrigger-523267595855586f6c37-build.zip"
         },
         "UserFollowTrigger": {
           "deploymentBucketName": "amplify-instagram-dev-223658-deployment",

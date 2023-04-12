@@ -67,7 +67,14 @@ const handleRecord = async ({eventName, dynamodb}) => {
   //Send notification using the FCM token
   console.log('Sending a notification to: ', user.fcmToken);
   const notification = await createNotification(type, actorId);
-  await sendNotification(notification, user.fcmToken);
+  const data = {};
+  if (dynamodb.NewImage.notificationPostId?.S) {
+    const postId = dynamodb.NewImage.notificationPostId?.S;
+    console.log('log post ID', postId);
+    data.postID = postId;
+    console.log('log data', data);
+  }
+  await sendNotification(notification, data, user.fcmToken);
 };
 
 const getUser = async id => {
